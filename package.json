@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "description": "ExpressApp2",
-  "main": "app.js",
+  "main": "ExpressApp2/app.js",
   "author": {
     "name": "a.rousselot"
   },
