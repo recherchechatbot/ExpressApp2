@@ -3,9 +3,10 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node app"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "description": "ExpressApp2",
+  "main": "app.js",
   "author": {
     "name": "a.rousselot"
   },
