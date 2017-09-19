@@ -21,7 +21,8 @@
     "serve-favicon": "^2.3.0",
     "request": "^2.81.0",
     "apiai": "^4.0.3",
-    "json-bigint": "^0.2.3"
+    "json-bigint": "^0.2.3",
+    "async": "^2.5.0"
   },
   "engines": {
     "node": "~6.10.x"
