@@ -11,7 +11,7 @@ const async = require('async');
 const uuid = require('uuid');
 
 const REST_PORT = (process.env.PORT || 5000);
-const FB_PAGE_ACCESS_TOKEN = 'EAAIz3EmpCdEBADuu3ACmUqenfMmsKGuAe8rJ5UAtCVLPyFGM5lmUUnJngZAlsPQfcCMTv01qtZAc8nZBZAzYSzwrJdLoJhKZBZCBWJvItJmuPM9flN1vDkTAqZAhGmwvJic49xWClm4YIjCYSGUUMvWvxJYKKSeiLPhnT4oZCHfCbgZDZD';
+const FB_PAGE_ACCESS_TOKEN = 'EAAIz3EmpCdEBAFRYvhFNAJZC5ulzzCIE8ZAAcRo9JOy8Wfo87UlDHmhZCvSqbj0uhUeOpUD5uY3qEui5HkLjK7UbYn6iD1tZAvXvZAWZCVr4V2eth5n7NcSv4PgaNZAG9T69Qd2ystb5nQfCCPdSDRsgSTTDHZBrrcKH2pLzZCUi6bAZDZD';
 const APIAI_LANG = process.env.APIAI_LANG || 'fr';
 const FB_VERIFY_TOKEN = 'converse auto III';
 const APIAI_ACCESS_TOKEN = '812aca73113d4684b780de9821f22a7b';
