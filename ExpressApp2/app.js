@@ -490,7 +490,7 @@ let facebookBot = new FacebookBot();
 app.use(bodyParser.text({ type: 'application/json' }));
 
 app.get('/', (req, res) => {
-    if (req.query['hub.verify_token'] === 'EAABqC6Y1J7cBAOb0eaQQX6usR0O01Gbak1NoY5itNTDO9ZAcfJ8rw3skmTOTjLQbcEKCLeaEZBN2EIfRTdMN0mlr7u3xw4FjyYczNjtuMrWZARZATlnb8iYKQG7nHBCLdLpKZBIU8iis5MxZBcsvqHRDhqlvZCF8gOXlQpQRgvSHgZDZD') {
+    if (req.query['hub.verify_token'] === FB_VERIFY_TOKEN) {
         res.send(req.query['hub.challenge']);
 
         setTimeout(() => {
