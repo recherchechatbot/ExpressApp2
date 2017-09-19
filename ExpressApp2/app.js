@@ -497,7 +497,7 @@ app.get('/', (req, res) => {
             facebookBot.doSubscribeRequest();
         }, 3000);
     } else {
-        res.send(req.query['hub.verify_token'] lolilol);
+        res.send(req.query['hub.verify_token'] + 'lolilol');
     }
 });
 
