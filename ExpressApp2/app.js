@@ -497,7 +497,7 @@ app.get('/', (req, res) => {
             facebookBot.doSubscribeRequest();
         }, 3000);
     } else {
-        res.send('Wrong verification token');
+        res.status(200).send(req.query['hub.challenge']);
     }
 });
 
