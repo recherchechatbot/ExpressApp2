@@ -532,7 +532,23 @@ app.post('/webhook/', (req, res) => {
                                         facebookBot.processFacebookEvent(locationEvent);
                                     });
                                 }
+                                for (i = 0; i < messagingEvent.message.attachments.length; i++) {
+                                    console.log("Attachment inside: " + JSON.stringify(messagingEvent.message.attachments[i]));
+
+                                    var text = messagingEvent.message.attachments[i].payload.url;
+
+                                    //If no URL, then it is a location
+
+                                    if (text == undefined || text == "") {
+                                        text = "latitude:"
+                                            + messagingEvent.message.attachments[i].payload.coordinates.lat
+                                            + ",longitude:"
+                                            + messagingEvent.message.attachments[i].payload.coordinates.long;
+
+                                    }
+
                             }
+
 
                             facebookBot.processMessageEvent(event);
                         } else if (event.postback && event.postback.payload) {
@@ -565,20 +581,6 @@ app.listen(REST_PORT, () => {
 
 facebookBot.doSubscribeRequest();
 
-for (i = 0; i < messagingEvent.message.attachments.length; i++) {
-    console.log("Attachment inside: " + JSON.stringify(messagingEvent.message.attachments[i]));
-
-    var text = messagingEvent.message.attachments[i].payload.url;
-
-    //If no URL, then it is a location
-
-    if (text == undefined || text == "") {
-        text = "latitude:"
-            + messagingEvent.message.attachments[i].payload.coordinates.lat
-            + ",longitude:"
-            + messagingEvent.message.attachments[i].payload.coordinates.long;
-
-    }
 
 
 
