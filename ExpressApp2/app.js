@@ -585,14 +585,15 @@ app.post('/ai', (req, res) => {
                 + ',longitude:'
                 + messagingEvent.message.attachments[i].payload.coordinates.long;
 
+
+            return res.json({
+                speech: msg,
+                displayText: msg,
+                source: 'weather'
+            });
         }
-                return res.json({
-                    speech: msg,
-                    displayText: msg,
-                    source: 'weather'
-                });
-            }
-                });
+    }
+});
         
 
 
