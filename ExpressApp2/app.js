@@ -488,7 +488,10 @@ let facebookBot = new FacebookBot();
 
 
 app.use(bodyParser.text({ type: 'application/json' }));
-
+app.get('/test', (req, res) => {
+    res.send('coucou');
+};
+    )
 app.get('/', (req, res) => {
     if (req.query['hub.mode'] == undefined) {
         if (req.query['hub.verify_token'] === FB_VERIFY_TOKEN) {
