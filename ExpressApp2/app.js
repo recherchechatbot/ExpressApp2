@@ -516,10 +516,14 @@ app.post('/webhook/', (req, res) => {
         const data = JSONbig.parse(req.body);
 
         if (data.entry) {
+            console.log('BONJOUR1');
             let entries = data.entry;
             entries.forEach((entry) => {
+                console.log('BONJOUR2');
+                console.log(entry);
                 let messaging_events = entry.messaging;
                 if (messaging_events) {
+
                     messaging_events.forEach((event) => {
                         if (event.message && !event.message.is_echo) {
 
