@@ -492,7 +492,7 @@ app.get('/test', (req, res) => {
     res.send('coucou');
 });
 app.get('/', (req, res) => {
-    if (req.query['hub.mode'] == undefined) {
+    if (req.query['hub.mode'] == 'subscribed') {
         if (req.query['hub.verify_token'] === FB_VERIFY_TOKEN) {
             res.status(200).send(req.query['hub.challenge']);
 
