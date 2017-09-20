@@ -11,7 +11,7 @@ const async = require('async');
 const uuid = require('uuid');
 
 const REST_PORT = (process.env.PORT || 5000);
-const FB_PAGE_ACCESS_TOKEN = 'EAABqC6Y1J7cBAOb0eaQQX6usR0O01Gbak1NoY5itNTDO9ZAcfJ8rw3skmTOTjLQbcEKCLeaEZBN2EIfRTdMN0mlr7u3xw4FjyYczNjtuMrWZARZATlnb8iYKQG7nHBCLdLpKZBIU8iis5MxZBcsvqHRDhqlvZCF8gOXlQpQRgvSHgZDZD';
+const FB_PAGE_ACCESS_TOKEN = 'EAABqC6Y1J7cBAEXy3JgcrjhcUwOtxNsSrfzkowOwUUwU1zIUtHC1V4CRvle8OvxAs1ViB0ZCV1DkOW8zjeGhsfXXo4FVQoZCRezkHZCe9ZAD7pJhsdqzkihJnMOQeVWARDjlDqa9LfGaSjTxZC9INFLiuaZAz5mnYTfnFNFaaCeQZDZD';
 const APIAI_LANG = process.env.APIAI_LANG || 'fr';
 const FB_VERIFY_TOKEN = 'test';
 const APIAI_ACCESS_TOKEN = '812aca73113d4684b780de9821f22a7b';
@@ -490,7 +490,7 @@ let facebookBot = new FacebookBot();
 app.use(bodyParser.text({ type: 'application/json' }));
 
 app.get('/', (req, res) => {
-    if (req.query['hub.verify_token'] === FB_VERIFY_TOKEN && req.query['hub.mode']===subscribe) {
+    if (req.query['hub.verify_token'] === FB_VERIFY_TOKEN) {
         res.status(200).send(req.query['hub.challenge']);
 
         setTimeout(() => {
