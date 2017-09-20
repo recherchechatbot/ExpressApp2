@@ -490,7 +490,7 @@ let facebookBot = new FacebookBot();
 app.use(bodyParser.text({ type: 'application/json' }));
 
 app.get('/', (req, res) => {
-    if (req.query['hub.verify_token'] === FB_VERIFY_TOKEN) {
+    if (req.query['hub.verify_token'] === FB_VERIFY_TOKEN && req.query['hub.mode']===subscribe) {
         res.status(200).send(req.query['hub.challenge']);
 
         setTimeout(() => {
@@ -501,7 +501,7 @@ app.get('/', (req, res) => {
     }
 });
 
-app.post('/', (req, res) => {
+app.post('/webhook/', (req, res) => {
     try {
         const data = JSONbig.parse(req.body);
 
