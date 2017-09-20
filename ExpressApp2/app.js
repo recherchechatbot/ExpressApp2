@@ -18,7 +18,7 @@ const APIAI_ACCESS_TOKEN = 'b1791ee1ebc14aa88140d78699ed0d93';
 const FB_TEXT_LIMIT = 640;
 const FACEBOOK_LOCATION = "FACEBOOK_LOCATION";
 const FACEBOOK_WELCOME = "FACEBOOK_WELCOME";
-const token = process.env.FB_PAGE_ACCESS_TOKEN;
+const token = FB_PAGE_ACCESS_TOKEN;
 
 
 class FacebookBot {
@@ -532,24 +532,8 @@ app.post('/webhook/', (req, res) => {
                                         facebookBot.processFacebookEvent(locationEvent);
                                     });
                                 }
-                                for (i = 0; i < messagingEvent.message.attachments.length; i++) {
-                                    console.log("Attachment inside: " + JSON.stringify(messagingEvent.message.attachments[i]));
-
-                                    var text = messagingEvent.message.attachments[i].payload.url;
-
-                                    //If no URL, then it is a location
-
-                                    if (text == undefined || text == "") {
-                                        text = "latitude:"
-                                            + messagingEvent.message.attachments[i].payload.coordinates.lat
-                                            + ",longitude:"
-                                            + messagingEvent.message.attachments[i].payload.coordinates.long;
-
-                                    }
 
                             }
-
-
                             facebookBot.processMessageEvent(event);
                         } else if (event.postback && event.postback.payload) {
                             if (event.postback.payload === "FACEBOOK_WELCOME") {
@@ -583,7 +567,32 @@ facebookBot.doSubscribeRequest();
 
 
 
+//Webhook for API.ai to get response from 3rd party API
+app.post('/ai', (req, res) => {
+    console.log('*** Webhook for api.ai query ***');
+    console.log(req.body.result);
+    //Localisation
+    for (i = 0; i < messagingEvent.message.attachments.length; i++) {
+        console.log("Attachment inside: " + JSON.stringify(messagingEvent.message.attachments[i]));
 
+        var text = messagingEvent.message.attachments[i].payload.url;
 
+        //If no URL, then it is a location
+
+        if (text == undefined || text == "") {
+            let msg = 'latitude:'
+                + messagingEvent.message.attachments[i].payload.coordinates.lat
+                + ',longitude:'
+                + messagingEvent.message.attachments[i].payload.coordinates.long;
+
+        }
+                return res.json({
+                    speech: msg,
+                    displayText: msg,
+                    source: 'weather'
+                });
+            }
+                });
+        
 
 
