@@ -501,7 +501,7 @@ app.get('/', (req, res) => {
     }
 });
 
-app.post('/webhook/', (req, res) => {
+app.post('/', (req, res) => {
     try {
         const data = JSONbig.parse(req.body);
 
