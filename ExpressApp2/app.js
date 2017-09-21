@@ -566,7 +566,7 @@ app.use(bodyParser.text({ type: 'application/json' }));
 app.get('/test', (req, res) => {
     res.send('coucou');
 });
-app.get('/webhook', (req, res) => {
+app.get('/', (req, res) => {
     if (req.query['hub.mode'] == 'subscribed') {
         if (req.query['hub.verify_token'] === FB_VERIFY_TOKEN) {
             res.status(200).send(req.query['hub.challenge']);
@@ -586,9 +586,10 @@ app.get('/webhook', (req, res) => {
 
 app.post('/webhook/', (req, res) => {
     try {
+        console.log(${user.first_name });
         var data = JSONbig.parse(req.body);
-        console.log(data.entries);
-        if (data.entries) {
+        console.log(data.entry);
+        if (data.entry) {
             console.log('bonjour');
             let entries = data.entry;
             entries.forEach((entry) => {
