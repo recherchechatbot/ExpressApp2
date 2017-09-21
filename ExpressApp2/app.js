@@ -491,7 +491,7 @@ app.use(bodyParser.text({ type: 'application/json' }));
 app.get('/test', (req, res) => {
     res.send('coucou');
 });
-app.get('/', (req, res) => {
+app.get('/webhook', (req, res) => {
     if (req.query['hub.mode'] == 'subscribed') {
         if (req.query['hub.verify_token'] === FB_VERIFY_TOKEN) {
             res.status(200).send(req.query['hub.challenge']);
@@ -509,69 +509,18 @@ app.get('/', (req, res) => {
     }
 });
 
-app.post('/webhook/', (req, res) => {
-    console.log('coucou');
-
-    try {
-        const data = JSONbig.parse(req.body);
-        console.log(data.entries);
-
-        if (data.entries) {
-            console.log('BONJOUR1');
-            let entries = data.entries;
-            entries.forEach((entries) => {
-                console.log('BONJOUR2');
-                console.log(entries);
-                let messaging_events = entry.messaging;
-                if (messaging_events) {
-
-                    messaging_events.forEach((event) => {
-                        if (event.message && !event.message.is_echo) {
-
-                            if (event.message.attachments) {
-                                let locations = event.message.attachments.filter(a => a.type === "location");
-
-                                // delete all locations from original message
-                                event.message.attachments = event.message.attachments.filter(a => a.type !== "location");
-
-                                if (locations.length > 0) {
-                                    locations.forEach(l => {
-                                        let locationEvent = {
-                                            sender: event.sender,
-                                            postback: {
-                                                payload: "FACEBOOK_LOCATION",
-                                                data: l.payload.coordinates
-                                            }
-                                        };
-
-                                        facebookBot.processFacebookEvent(locationEvent);
-                                    });
-                                }
-
-                            }
-                            facebookBot.processMessageEvent(event);
-                        } else if (event.postback && event.postback.payload) {
-                            if (event.postback.payload === "FACEBOOK_WELCOME") {
-                                facebookBot.processFacebookEvent(event);
-                            } else {
-                                facebookBot.processMessageEvent(event);
-                            }
-                        }
-                    });
+/* Handling all messenges */
+app.post('/webhook', (req, res) => {
+    if (req.body.object === 'page') {
+        req.body.entry.forEach((entry) => {
+            entry.messaging.forEach((event) => {
+                if (event.message && event.message.text) {
+                    receivedMessage(event);
                 }
             });
-        }
-
-        return res.status(200).json({
-            status: "ok"
         });
-    } catch (err) {
-        return res.status(400).json({
-            status: "error",
-            error: err
-        });
+        res.status(200).end();
     }
-
 });
 
 app.listen(REST_PORT, () => {
