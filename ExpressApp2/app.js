@@ -512,8 +512,9 @@ app.get('/webhook', (req, res) => {
 app.post('/webhook/', (req, res) => {
     try {
         var data = JSONbig.parse(req.body);
-
+        console.log(data.entry);
         if (data.entry) {
+            console.log('bonjour');
             let entries = data.entry;
             entries.forEach((entry) => {
                 let messaging_events = entry.messaging;
