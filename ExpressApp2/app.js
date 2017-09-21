@@ -595,9 +595,11 @@ app.post('/webhook/', (req, res) => {
             entries.forEach((originalRequest) => {
                 let messaging_events = originalRequest.messaging;
                 if (messaging_events) {
+                    console.log('bonjour1');
                     messaging_events.forEach((event) => {
                         if (event.message && !event.message.is_echo ||
                             event.postback && event.postback.payload) {
+                            console.log('bonjour2');
                             processEvent(event);
                         }
                     });
