@@ -514,6 +514,7 @@ app.post('/webhook/', (req, res) => {
     console.log(req.body);
     try {
         const data = JSONbig.parse(req.body);
+        console.log(data.entry);
 
         if (data.entry) {
             console.log('BONJOUR1');
