@@ -511,10 +511,10 @@ app.get('/', (req, res) => {
 
 app.post('/webhook/', (req, res) => {
     console.log('coucou');
-    console.log(req.body);
+
     try {
         const data = JSONbig.parse(req.body);
-        console.log(data.entry);
+        console.log(data);
 
         if (data.entry) {
             console.log('BONJOUR1');
