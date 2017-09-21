@@ -588,12 +588,12 @@ app.get('/', (req, res) => {
 app.post('/webhook/', (req, res) => {
     try {
         var data = JSONbig.parse(req.body);
-        console.log(data.originalRequest);
+        console.log(data.originalRequest);//ICI originalRequest récupère tout le body, ça permet de choisir ce que l'on veut garder. Surement possible de faire une liste et de stocker les différentes entrées pour récupérer plusieurs choses.
         if (data.originalRequest) {
             console.log('OOOOOOOOOOOOOO');
-            let entries = data.entry;
-            entries.forEach((entry) => {
-                let messaging_events = entry.messaging;
+            let entries = data.originalRequest;
+            entries.forEach((originalRequest) => {
+                let messaging_events = originalRequest.messaging;
                 if (messaging_events) {
                     messaging_events.forEach((event) => {
                         if (event.message && !event.message.is_echo ||
