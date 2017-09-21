@@ -509,19 +509,35 @@ app.get('/webhook', (req, res) => {
     }
 });
 
-/* Handling all messenges */
-app.post('/webhook', (req, res) => {
-    console.log(req.body.entry);
-    if (req.body.object === 'page') {
-        req.body.entry.forEach((entry) => {
-            entry.messaging.forEach((event) => {
-                if (event.message && event.message.text) {
-                    receivedMessage(event);
+app.post('/webhook/', (req, res) => {
+    try {
+        var data = JSONbig.parse(req.body);
+
+        if (data.entry) {
+            let entries = data.entry;
+            entries.forEach((entry) => {
+                let messaging_events = entry.messaging;
+                if (messaging_events) {
+                    messaging_events.forEach((event) => {
+                        if (event.message && !event.message.is_echo ||
+                            event.postback && event.postback.payload) {
+                            processEvent(event);
+                        }
+                    });
                 }
             });
+        }
+
+        return res.status(200).json({
+            status: "ok"
         });
-        res.status(200).end();
+    } catch (err) {
+        return res.status(400).json({
+            status: "error",
+            error: err
+        });
     }
+
 });
 
 app.listen(REST_PORT, () => {
