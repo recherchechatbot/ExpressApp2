@@ -593,7 +593,7 @@ app.post('/webhook/', (req, res) => {
             console.log('OOOOOOOOOOOOOO');
             let entries = myJSON.originalRequest;
             entries.forEach((originalRequest) => {
-                let messaging_events = originalRequest.data;
+                let messaging_events = originalRequest.source;
                 console.log(messaging_events);
                 if (messaging_events) {
                     console.log('bonjour1');//passe pas
