@@ -588,7 +588,7 @@ app.get('/', (req, res) => {
 app.post('/webhook/', (req, res) => {
     try {
         var myJSON = JSONbig.parse(req.body);
-        console.log(myJSON.data);//ICI originalRequest récupère tout le body,Il suffit de piocher la catégorie souhaitée dans le JSON ça permet de choisir ce que l'on veut garder. Surement possible de faire une liste et de stocker les différentes entrées pour récupérer plusieurs choses.
+        console.log(myJSON.originalRequest);//ICI originalRequest récupère tout le body,Il suffit de piocher la catégorie souhaitée dans le JSON ça permet de choisir ce que l'on veut garder. Surement possible de faire une liste et de stocker les différentes entrées pour récupérer plusieurs choses.
         if (myJSON.data) {
             console.log('OOOOOOOOOOOOOO');
             let entries = myJSON.data;
