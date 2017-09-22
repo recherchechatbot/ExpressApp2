@@ -589,11 +589,11 @@ app.post('/webhook/', (req, res) => {
     try {
         var myJSON = JSONbig.parse(req.body);
         console.log(myJSON.originalRequest);//ICI originalRequest récupère tout le body,Il suffit de piocher la catégorie souhaitée dans le JSON ça permet de choisir ce que l'on veut garder. Surement possible de faire une liste et de stocker les différentes entrées pour récupérer plusieurs choses.
-        if (myJSON.data) {
+        if (myJSON.originalRequest) {
             console.log('OOOOOOOOOOOOOO');
-            let entries = myJSON.data;
-            entries.forEach((data) => {
-                let messaging_events = data.text;
+            let entries = myJSON.originalRequest;
+            entries.forEach((originalRequest) => {
+                let messaging_events = originalRequest.text;
                 console.log(messaging_events);
                 if (messaging_events) {
                     console.log('bonjour1');//passe pas
