@@ -585,55 +585,17 @@ app.get('/', (req, res) => {
     }
 });
 
-app.post('/webhook/', (req, res) => {
-    try {
-        var myJSON = JSONbig.parse(req.body);
-        console.log(myJSON.originalRequest);//ICI originalRequest récupère tout le body,Il suffit de piocher la catégorie souhaitée dans le JSON ça permet de choisir ce que l'on veut garder. Surement possible de faire une liste et de stocker les différentes entrées pour récupérer plusieurs choses.
-        if (myJSON.originalRequest) {
-            console.log('OOOOOOOOOOOOOO');
-            let entries = myJSON.originalRequest;
-            entries.forEach((originalRequest) => {
-                let messaging_events = originalRequest.source;
-                console.log(messaging_events);
-                if (messaging_events) {
-                    console.log('bonjour1');//passe pas
-                    messaging_events.forEach((event) => {
-                        if (event.message && !event.message.is_echo ||
-                            event.postback && event.postback.payload) {
-                            console.log('bonjour2');
-                            processEvent(event);
-                        }
-                    });
-                }
-            });
-        }
-
-        return res.status(200).json({
-            status: "ok"
-        });
-    } catch (err) {
-        return res.status(400).json({
-            status: "error",
-            error: err
-        });
-    }
-
-});
-
-app.listen(REST_PORT, () => {
-    console.log('Rest service ready on port ' + REST_PORT);
-});
-
-facebookBot.doSubscribeRequest();
-
-
-
-//Webhook for API.ai to get response from 3rd party API
 app.post('/webhook/', function (req, res) {
-    let messaging_events = req.body.originalRequest[0].data1;
+
+    var myJSON = JSONbig.parse(req.body);
+    console.log(myJSON);
+
+    let messaging_events = req.body.originalRequest[1];
+    console.log(messaging_events);
     for (let i = 0; i < messaging_events.length; i++) {
-        let event = req.body.entry[0].messaging[i]
-        let sender = event.sender.id
+        let event = req.body.originalRequest.data1[i];
+        console.log(event);
+        let sender = event.sender.id;
         if (event.message && event.message.text) {
             let text = event.message.text
             if (text === 'Generic') {
@@ -651,6 +613,43 @@ app.post('/webhook/', function (req, res) {
     }
     res.sendStatus(200)
 })
+
+
+app.listen(REST_PORT, () => {
+    console.log('Rest service ready on port ' + REST_PORT);
+});
+
+facebookBot.doSubscribeRequest();
+
+
+
+//Webhook for API.ai to get response from 3rd party API
+app.post('/ai', (req, res) => {
+    console.log('*** Webhook for api.ai query ***');
+    console.log(req.body.result);
+    //Localisation
+    for (i = 0; i < messagingEvent.message.attachments.length; i++) {
+        console.log("Attachment inside: " + JSON.stringify(messagingEvent.message.attachments[i]));
+
+        var text = messagingEvent.message.attachments[i].payload.url;
+
+        //If no URL, then it is a location
+
+        if (text == undefined || text == "") {
+            let msg = 'latitude:'
+                + messagingEvent.message.attachments[i].payload.coordinates.lat
+                + ',longitude:'
+                + messagingEvent.message.attachments[i].payload.coordinates.long;
+
+
+            return res.json({
+                speech: msg,
+                displayText: msg,
+                source: 'weather'
+            });
+        }
+    }
+});
         
 
 
