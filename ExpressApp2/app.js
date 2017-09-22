@@ -358,7 +358,7 @@ class FacebookBot {
                 {
                     sessionId: this.sessionIds.get(sender),
                     originalRequest: {
-                        data: event,
+                        data1: event,
                         source: "facebook"
                     }
                 });
@@ -383,7 +383,7 @@ class FacebookBot {
                 {
                     sessionId: this.sessionIds.get(sender),
                     originalRequest: {
-                        data: event,
+                        data1: event,
                         source: "facebook"
                     }
                 });
@@ -629,32 +629,28 @@ facebookBot.doSubscribeRequest();
 
 
 //Webhook for API.ai to get response from 3rd party API
-app.post('/ai', (req, res) => {
-    console.log('*** Webhook for api.ai query ***');
-    console.log(req.body.result);
-    //Localisation
-    for (i = 0; i < messagingEvent.message.attachments.length; i++) {
-        console.log("Attachment inside: " + JSON.stringify(messagingEvent.message.attachments[i]));
-
-        var text = messagingEvent.message.attachments[i].payload.url;
-
-        //If no URL, then it is a location
-
-        if (text == undefined || text == "") {
-            let msg = 'latitude:'
-                + messagingEvent.message.attachments[i].payload.coordinates.lat
-                + ',longitude:'
-                + messagingEvent.message.attachments[i].payload.coordinates.long;
-
-
-            return res.json({
-                speech: msg,
-                displayText: msg,
-                source: 'weather'
-            });
+app.post('/webhook/', function (req, res) {
+    let messaging_events = req.body.originalRequest[0].data1;
+    for (let i = 0; i < messaging_events.length; i++) {
+        let event = req.body.entry[0].messaging[i]
+        let sender = event.sender.id
+        if (event.message && event.message.text) {
+            let text = event.message.text
+            if (text === 'Generic') {
+                console.log("welcome to chatbot")
+                //sendGenericMessage(sender)
+                continue
+            }
+            sendTextMessage(sender, "Text received, echo: " + text.substring(0, 200))
+        }
+        if (event.postback) {
+            let text = JSON.stringify(event.postback)
+            sendTextMessage(sender, "Postback received: " + text.substring(0, 200), token)
+            continue
         }
     }
-});
+    res.sendStatus(200)
+})
         
 
 
