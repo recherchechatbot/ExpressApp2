@@ -621,6 +621,7 @@ app.post('/webhook/', function (req, res) {
     console.log(messaging_events);
     let sender = messaging_events.sender.id;
     let username = myJSON.result.contexts[0].parameters.facebook_user;
+    console.log(myJSON.result.contexts[0]);
     console.log(username);
     if (messaging_events.message && messaging_events.message.text) {
         let text = messaging_events.message.text;
