@@ -33,16 +33,6 @@ function processEvent(event) {
 
         console.log("Text", text);
 
-        let apiaiRequest = apiAiService.textRequest(text,
-            {
-                sessionId: sessionIds.get(sender),
-                contexts: [{
-                    name: "generic",
-                    parameters: {
-                        facebook_user: userName
-                    }
-                }]
-            });
 
         apiaiRequest.on('response', (response) => {
             if (isDefined(response.result)) {
@@ -358,7 +348,7 @@ class FacebookBot {
                 {
                     sessionId: this.sessionIds.get(sender),
                     originalRequest: {
-                        data1: event,
+                        data: event,
                         source: "facebook"
                     }
                 });
@@ -383,9 +373,19 @@ class FacebookBot {
                 {
                     sessionId: this.sessionIds.get(sender),
                     originalRequest: {
-                        data1: event,
+                        data: event,
                         source: "facebook"
-                    }
+                    },
+                    contexts: [
+                        {
+                            name: "generic",
+                            parameters: {
+                                facebook_user: userName
+                            },
+                            test: {
+
+                            }
+                        }]
                 });
 
             this.doApiAiRequest(apiaiRequest, sender);
@@ -585,17 +585,14 @@ app.get('/', (req, res) => {
     }
 });
 
+
+/*Recuperation des éléments du body
 app.post('/webhook/', function (req, res) {
 
     var myJSON = JSONbig.parse(req.body);
-    console.log(req.body);
-    console.log(myJSON);
-
-    let messaging_events = myJSON.originalRequest;
-    console.log(messaging_events);
-
+    let messaging_events = myJSON.originalRequest[1].data;
     for (let i = 0; i < messaging_events.length; i++) {
-        let event = req.body.originalRequest.data1[i];
+        let event = myJSON.originalRequest[1].data[i];
         console.log(event);
         let sender = event.sender.id;
         if (event.message && event.message.text) {
@@ -615,6 +612,29 @@ app.post('/webhook/', function (req, res) {
     }
     res.sendStatus(200)
 })
+*/
+
+app.post('/webhook/', function (req, res) {
+    var myJSON = JSONbig.parse(req.body);
+    console.log(myJSON);
+    let messaging_events = myJSON.originalRequest.data;
+    console.log(messaging_events);
+    let sender = messaging_events.sender.id;
+    let username = myJSON.result.contexts[0].parameters.facebook_user;
+    console.log(username);
+    if (messaging_events.message && messaging_events.message.text) {
+        let text = messaging_events.message.text;
+        console.log("Utilisateur: " + sender + ", Texte reçu: " + text.substring(0, 200));
+        }
+    if (messaging_events.postback) {
+        let text = JSON.stringify(event.postback);
+        sendTextMessage(sender, "Postback received: " + text.substring(0, 200), token);
+        }
+    res.sendStatus(200);
+});
+
+
+
 
 
 app.listen(REST_PORT, () => {
