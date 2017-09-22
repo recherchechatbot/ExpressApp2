@@ -587,13 +587,13 @@ app.get('/', (req, res) => {
 
 app.post('/webhook/', (req, res) => {
     try {
-        var data = JSONbig.parse(req.body);
-        console.log(data.originalRequest);//ICI originalRequest récupère tout le body,Il suffit de piocher la catégorie souhaitée dans le JSON ça permet de choisir ce que l'on veut garder. Surement possible de faire une liste et de stocker les différentes entrées pour récupérer plusieurs choses.
-        if (data.originalRequest) {
+        var myJSON = JSONbig.parse(req.body);
+        console.log(myJSON.data);//ICI originalRequest récupère tout le body,Il suffit de piocher la catégorie souhaitée dans le JSON ça permet de choisir ce que l'on veut garder. Surement possible de faire une liste et de stocker les différentes entrées pour récupérer plusieurs choses.
+        if (myJSON.data) {
             console.log('OOOOOOOOOOOOOO');
-            let entries = data.originalRequest;
-            entries.forEach((originalRequest) => {
-                let messaging_events = originalRequest.messaging;
+            let entries = myJSON.data;
+            entries.forEach((data) => {
+                let messaging_events = data.text;
                 console.log(messaging_events);
                 if (messaging_events) {
                     console.log('bonjour1');//passe pas
