@@ -590,8 +590,9 @@ app.post('/webhook/', function (req, res) {
     var myJSON = JSONbig.parse(req.body);
     console.log(myJSON);
 
-    let messaging_events = req.body.originalRequest[1];
+    let messaging_events = req.body.originalRequest;
     console.log(messaging_events);
+
     for (let i = 0; i < messaging_events.length; i++) {
         let event = req.body.originalRequest.data1[i];
         console.log(event);
