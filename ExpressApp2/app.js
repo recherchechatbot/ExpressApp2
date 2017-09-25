@@ -463,7 +463,7 @@ class FacebookBot {
     sendFBMessage(sender, messageData) {
         return new Promise((resolve, reject) => {
             request({
-                url: 'https://graph.facebook.com/v2.6/me/messages',
+                url: 'https://graph.facebook.com/v2.10/me/messages',
                 qs: { access_token: FB_PAGE_ACCESS_TOKEN },
                 method: 'POST',
                 json: {
@@ -637,6 +637,8 @@ app.post('/webhook/', function (req, res) {
         console.log("1111111111.11111111111");
         let text = messaging_events.message.text;
         console.log("Utilisateur: " + sender + ", Texte reçu: " + text.substring(0, 200));
+
+        facebookBot.doTextResponse(sender, "ma réponse");
         }
     if (messaging_events.postback) {
         console.log("1111111111.2222222222");
@@ -644,7 +646,7 @@ app.post('/webhook/', function (req, res) {
         let text = messaging_events.postback.data;
         console.log(text);
 
-        facebookBot.sendFBMessage(sender, "ma réponse");
+        
 
         //sendTextMessage(sender,text, token);// pour l'instant pas défini
         }
