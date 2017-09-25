@@ -89,6 +89,7 @@ function processEvent(event) {
 
 class FacebookBot {
     constructor() {
+        console.log("constructeur");
         this.apiAiService = apiai(APIAI_ACCESS_TOKEN, { language: APIAI_LANG, requestSource: "fb" });
         this.sessionIds = new Map();
         this.messagesDelay = 200;
@@ -96,6 +97,7 @@ class FacebookBot {
 
 
     doDataResponse(sender, facebookResponseData) {
+        console.log("doDataResponse");
         if (!Array.isArray(facebookResponseData)) {
             console.log('Response as formatted message');
             this.sendFBMessage(sender, facebookResponseData)
@@ -125,6 +127,7 @@ class FacebookBot {
     }
 
     doRichContentResponse(sender, messages) {
+        console.log("doRichContentResponse");
         let facebookMessages = []; // array with result messages
 
         for (let messageIndex = 0; messageIndex < messages.length; messageIndex++) {
@@ -286,6 +289,7 @@ class FacebookBot {
     }
 
     doTextResponse(sender, responseText) {
+        console.log("doTextResponse");
         console.log('Response as text message');
         // facebook API limit for text length is 640,
         // so we must split message if needed
@@ -300,6 +304,7 @@ class FacebookBot {
 
     //which webhook event
     getEventText(event) {
+        console.log("getEventText");
         if (event.message) {
             if (event.message.quick_reply && event.message.quick_reply.payload) {
                 return event.message.quick_reply.payload;
@@ -319,6 +324,7 @@ class FacebookBot {
     }
 
     getFacebookEvent(event) {
+        console.log("getFacebookEvent");
         if (event.postback && event.postback.payload) {
 
             let payload = event.postback.payload;
@@ -336,6 +342,7 @@ class FacebookBot {
     }
 
     processFacebookEvent(event) {
+        console.log("processFacebookEvent");
         const sender = event.sender.id.toString();
         const eventObject = this.getFacebookEvent(event);
 
@@ -359,7 +366,7 @@ class FacebookBot {
     }
 
     processMessageEvent(event) {
-        console.log("Ouiiiiiiiiiiiiiiiiiiiiiiiiiiiiii", text);
+        console.log("processMessageEvent");
         const sender = event.sender.id.toString();
         const text = this.getEventText(event);
 
@@ -456,6 +463,7 @@ class FacebookBot {
     }
 
     sendFBMessage(sender, messageData) {
+        console.log("sendFBMessage");
         return new Promise((resolve, reject) => {
             request({
                 url: 'https://graph.facebook.com/v2.6/me/messages',
@@ -480,6 +488,7 @@ class FacebookBot {
     }
 
     sendFBSenderAction(sender, action) {
+        console.log("sendFBSenderAction");
         return new Promise((resolve, reject) => {
             request({
                 url: 'https://graph.facebook.com/v2.6/me/messages',
