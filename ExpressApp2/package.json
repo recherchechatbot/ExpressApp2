@@ -11,17 +11,19 @@
     "name": "a.rousselot"
   },
   "dependencies": {
+    "apiai": "^4.0.3",
+    "app": "^0.1.0",
+    "async": "^2.5.0",
     "body-parser": "^1.15.0",
     "cookie-parser": "^1.4.0",
     "debug": "^2.2.0",
     "express": "^4.14.0",
+    "fb-messenger": "^1.2.0",
+    "json-bigint": "^0.2.3",
     "morgan": "^1.7.0",
     "pug": "^2.0.0-beta6",
-    "serve-favicon": "^2.3.0",
     "request": "^2.81.0",
-    "apiai": "^4.0.3",
-    "json-bigint": "^0.2.3",
-    "async": "^2.5.0"
+    "serve-favicon": "^2.3.0"
   },
   "engines": {
     "node": "~6.10.x"

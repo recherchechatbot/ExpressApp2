@@ -19,6 +19,8 @@ const FB_TEXT_LIMIT = 640;
 const FACEBOOK_LOCATION = "FACEBOOK_LOCATION";
 const FACEBOOK_WELCOME = "FACEBOOK_WELCOME";
 const token = FB_PAGE_ACCESS_TOKEN;
+const FB_Messenger = require('fb-messenger');
+const messenger = new FBMessenger(FB_PAGE_ACCESS_TOKEN);
 
 function processEvent(event) {
     var sender = event.sender.id.toString();
@@ -380,8 +382,7 @@ class FacebookBot {
                         {
                             name: "generic",
                             parameters: {
-                                facebook_user: JSONbig.parse(req.body).originalRequest.data.sender.id
-
+                                facebook_user: userName
                             },
                             test: {
 
@@ -617,6 +618,7 @@ app.post('/webhook/', function (req, res) {
 
 app.post('/webhook/', function (req, res) {
     var myJSON = JSONbig.parse(req.body);
+    console.log(req.body);
     console.log(myJSON);
     let messaging_events = myJSON.originalRequest.data;
     console.log(messaging_events);
@@ -629,8 +631,11 @@ app.post('/webhook/', function (req, res) {
         console.log("Utilisateur: " + sender + ", Texte reçu: " + text.substring(0, 200));
         }
     if (messaging_events.postback) {
-        let text = JSON.stringify(event.postback);
-        sendTextMessage(sender, "Postback received: " + text.substring(0, 200), token);
+        console.log(myJSON);
+        let postback_events = myJSON.postback.data;
+        let text = JSON.stringify(postback_events);
+        console.log(text);
+        messenger.sendTextMessage(sender, "Postback received: " + text.substring(0, 200), token);
         }
     res.sendStatus(200);
 });
