@@ -21,11 +21,7 @@ const FACEBOOK_WELCOME = "FACEBOOK_WELCOME";
 const token = FB_PAGE_ACCESS_TOKEN;
 const FBMessenger = require('fb-messenger');
 const messenger = new FBMessenger(FB_PAGE_ACCESS_TOKEN);
-var options = {
-    host: 'http://proxy.netfective.com:3128/',
-    port: '3128',
-    path: 'http://proxy.netfective.com:3128/',
-};
+
 function processEvent(event) {
     var sender = event.sender.id.toString();
 
@@ -571,7 +567,7 @@ let facebookBot = new FacebookBot();
 
 app.use(bodyParser.text({ type: 'application/json' }));
 app.get('/test', (req, res) => {
-    res.send('coucou');
+    res.send('eeee');
 });
 app.get('/', (req, res) => {
     if (req.query['hub.mode'] == 'subscribed') {
@@ -638,7 +634,7 @@ app.post('/webhook/', function (req, res) {
         console.log(myJSON);
         let text = messaging_events.postback.data;
         console.log(text);
-        messenger.sendTextMessage(sender,text, token);
+        sendTextMessage(sender,text, token);// pour l'instant pas défini
         }
     res.sendStatus(200);
 });
