@@ -363,8 +363,43 @@ class FacebookBot {
         }
     }
 
+    //processMessageEvent(event) {
+    //    const sender = event.sender.id.toString();
+    //    const text = this.getEventText(event);
+
+    //    if (text) {
+
+    //        // Handle a text message from this sender
+    //        if (!this.sessionIds.has(sender)) {
+    //            this.sessionIds.set(sender, uuid.v4());
+    //        }
+
+    //        console.log("Text", text);
+    //        //send user's text to api.ai service
+    //        let apiaiRequest = this.apiAiService.textRequest(text,
+    //            {
+    //                sessionId: this.sessionIds.get(sender),
+    //                originalRequest: {
+    //                    data: event,
+    //                    source: "facebook"
+    //                },
+    //                contexts: [
+    //                    {
+    //                        name: "given-name",
+    //                        parameters: {
+    //                            facebook_user: "DAIM"
+    //                        },
+    //                        test: {
+
+    //                        }
+    //                    }]
+    //            });
+
+    //        this.doApiAiRequest(apiaiRequest, sender);
+    //    }
+    //}
+
     processMessageEvent(event) {
-        console.log("Ouiiiiiiiiiiiiiiiiiiiiiiiiiiiiii", text);
         const sender = event.sender.id.toString();
         const text = this.getEventText(event);
 
@@ -383,17 +418,7 @@ class FacebookBot {
                     originalRequest: {
                         data: event,
                         source: "facebook"
-                    },
-                    contexts: [
-                        {
-                            name: "generic",
-                            parameters: {
-                                facebook_user: userName
-                            },
-                            test: {
-
-                            }
-                        }]
+                    }
                 });
 
             this.doApiAiRequest(apiaiRequest, sender);
@@ -622,36 +647,80 @@ app.post('/webhook/', function (req, res) {
 })
 */
 
-app.post('/webhook/', function (req, res) {
-    var myJSON = JSONbig.parse(req.body);
-    console.log(req.body);
-    console.log(myJSON);
-    let messaging_events = myJSON.originalRequest.data;
-    console.log(messaging_events);
-    let sender = messaging_events.sender.id;
-    let username = myJSON.result.contexts[0].parameters.facebook_user;
-    console.log(myJSON.result.contexts[0]);
-    console.log(username);
-    console.log("1111111111");
-    if (messaging_events.message && messaging_events.message.text) {
-        console.log("1111111111.11111111111");
-        let text = messaging_events.message.text;
-        console.log("Utilisateur: " + sender + ", Texte reçu: " + text.substring(0, 200));
 
-        facebookBot.doTextResponse(sender, "ma réponse");
+
+
+app.post('/webhook/', (req, res) => {
+    try {
+        const data = JSONbig.parse(req.body);
+
+        if (data.originalRequest) {
+            let entries = data.originalRequest;
+            entries.forEach((entry) => {
+                let messaging_events = entry.data;
+                if (messaging_events) {
+                    messaging_events.forEach((event) => {
+                        if (event.message && event.message.text) {
+                            facebookBot.processMessageEvent(event);
+                        } else if (event.postback && event.postback.payload) {
+                            if (event.postback.payload === "FACEBOOK_WELCOME") {
+                                facebookBot.processFacebookEvent(event);
+                            } else {
+                                facebookBot.processMessageEvent(event);
+                            }
+                        }
+                    });
+                }
+            });
         }
-    if (messaging_events.postback) {
-        console.log("1111111111.2222222222");
-        console.log(myJSON);
-        let text = messaging_events.postback.data;
-        console.log(text);
+
+        return res.status(200).json({
+            status: "ok"
+        });
+    } catch (err) {
+        return res.status(400).json({
+            status: "error",
+            error: err
+        });
+    }
+
+});
+
+
+
+
+
+
+//app.post('/webhook/', function (req, res) {
+//    var myJSON = JSONbig.parse(req.body);
+//    console.log(req.body);
+//    console.log(myJSON);
+//    let messaging_events = myJSON.originalRequest.data;
+//    console.log(messaging_events);
+//    let sender = messaging_events.sender.id;
+//    let username = myJSON.result.contexts[0].parameters.facebook_user;
+//    console.log(myJSON.result.contexts[0]);
+//    console.log(username);
+//    console.log("1111111111");
+//    if (messaging_events.message && messaging_events.message.text) {
+//        console.log("1111111111.11111111111");
+//        let text = messaging_events.message.text;
+//        console.log("Utilisateur: " + sender + ", Texte reçu: " + text.substring(0, 200));
+
+//        facebookBot.doTextResponse(sender, "ma réponse");
+//        }
+//    if (messaging_events.postback) {
+//        console.log("1111111111.2222222222");
+//        console.log(myJSON);
+//        let text = messaging_events.postback.data;
+//        console.log(text);
 
         
 
-        //sendTextMessage(sender,text, token);// pour l'instant pas défini
-        }
-    res.sendStatus(200);
-});
+//        //sendTextMessage(sender,text, token);// pour l'instant pas défini
+//        }
+//    res.sendStatus(200);
+//});
 
 
 
@@ -665,33 +734,33 @@ facebookBot.doSubscribeRequest();
 
 
 
-//Webhook for API.ai to get response from 3rd party API
-app.post('/ai', (req, res) => {
-    console.log('*** Webhook for api.ai query ***');
-    console.log(req.body.result);
-    //Localisation
-    for (i = 0; i < messagingEvent.message.attachments.length; i++) {
-        console.log("Attachment inside: " + JSON.stringify(messagingEvent.message.attachments[i]));
+////Webhook for API.ai to get response from 3rd party API
+//app.post('/ai', (req, res) => {
+//    console.log('*** Webhook for api.ai query ***');
+//    console.log(req.body.result);
+//    //Localisation
+//    for (i = 0; i < messagingEvent.message.attachments.length; i++) {
+//        console.log("Attachment inside: " + JSON.stringify(messagingEvent.message.attachments[i]));
 
-        var text = messagingEvent.message.attachments[i].payload.url;
+//        var text = messagingEvent.message.attachments[i].payload.url;
 
-        //If no URL, then it is a location
+//        //If no URL, then it is a location
 
-        if (text == undefined || text == "") {
-            let msg = 'latitude:'
-                + messagingEvent.message.attachments[i].payload.coordinates.lat
-                + ',longitude:'
-                + messagingEvent.message.attachments[i].payload.coordinates.long;
+//        if (text == undefined || text == "") {
+//            let msg = 'latitude:'
+//                + messagingEvent.message.attachments[i].payload.coordinates.lat
+//                + ',longitude:'
+//                + messagingEvent.message.attachments[i].payload.coordinates.long;
 
 
-            return res.json({
-                speech: msg,
-                displayText: msg,
-                source: 'weather'
-            });
-        }
-    }
-});
+//            return res.json({
+//                speech: msg,
+//                displayText: msg,
+//                source: 'weather'
+//            });
+//        }
+//    }
+//});
         
 
 
