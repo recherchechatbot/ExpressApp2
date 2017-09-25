@@ -656,31 +656,23 @@ app.post('/webhook/', (req, res) => {
         const data = JSONbig.parse(req.body);
         console.log('avant if');
         if (data.originalRequest) {
-            console.log('apres if');
-            let entries = data.originalRequest;
-            entries.forEach((entry) => {
-                console.log('foreachhhhhhhhh11111');
-                let messaging_events = entry.data;
-                if (messaging_events) {
-                    console.log("foreachhhhhhhhh");
-                    messaging_events.forEach((event) => {
-                        if (event.message && event.message.text) {
-                            //facebookBot.processMessageEvent(event);
-                            let sender = messaging_events.sender.id;
-                            console.log("ooooooo");
-                            facebookBot.doTextResponse(sender, "cccccccccccccccccccccccccccccc");
-                            //facebookBot.processFacebookEvent(event);
-                        } else if (event.postback && event.postback.payload) {
-                            if (event.postback.payload === "FACEBOOK_WELCOME") {
-                                console.log('iiiiiiiiiiii');
-                                facebookBot.processFacebookEvent(event);
-                            } else {
-                                facebookBot.processMessageEvent(event);
-                            }
-                        }
-                    });
+            let event = data.originalRequest.data;
+            if (event) {
+                if (event.message && event.message.text) {
+                    //facebookBot.processMessageEvent(event);
+                    let sender = messaging_events.sender.id;
+                    console.log("ooooooo");
+                    facebookBot.doTextResponse(sender, "cccccccccccccccccccccccccccccc");
+                    //facebookBot.processFacebookEvent(event);
+                } else if (event.postback && event.postback.payload) {
+                    if (event.postback.payload === "FACEBOOK_WELCOME") {
+                        console.log('iiiiiiiiiiii');
+                        facebookBot.processFacebookEvent(event);
+                    } else {
+                        facebookBot.processMessageEvent(event);
+                    }
                 }
-            });
+            }
         }
         console.log('apres if');
 
