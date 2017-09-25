@@ -19,7 +19,7 @@ const FB_TEXT_LIMIT = 640;
 const FACEBOOK_LOCATION = "FACEBOOK_LOCATION";
 const FACEBOOK_WELCOME = "FACEBOOK_WELCOME";
 const token = FB_PAGE_ACCESS_TOKEN;
-const FB_Messenger = require('fb-messenger');
+const FBMessenger = require('fb-messenger');
 const messenger = new FBMessenger(FB_PAGE_ACCESS_TOKEN);
 
 function processEvent(event) {
