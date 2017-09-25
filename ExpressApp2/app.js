@@ -569,7 +569,7 @@ class FacebookBot {
 
 }
 
-let facebookBot = new FacebookBot();
+//let facebookBot = new FacebookBot();
 
 
 
@@ -584,9 +584,9 @@ app.get('/', (req, res) => {
         if (req.query['hub.verify_token'] === FB_VERIFY_TOKEN) {
             res.status(200).send(req.query['hub.challenge']);
 
-            setTimeout(() => {
-                facebookBot.doSubscribeRequest();
-            }, 3000);
+            //setTimeout(() => {
+            //    facebookBot.doSubscribeRequest();
+            //}, 3000);
         }
         else {
             res.send('Wrong verification token');
@@ -634,7 +634,7 @@ app.post('/webhook/', function (req, res) {
 
     let messaging_events = myJSON.originalRequest.data;
 
-    facebookBot.processMessageEvent(messaging_events);
+    //facebookBot.processMessageEvent(messaging_events);
 
     console.log(messaging_events);
     let sender = messaging_events.sender.id;
@@ -644,13 +644,13 @@ app.post('/webhook/', function (req, res) {
     if (messaging_events.message && messaging_events.message.text) {
         let text = messaging_events.message.text;
         console.log("Utilisateur: " + sender + ", Texte reçu: " + text.substring(0, 200));
-        }
+    }
     if (messaging_events.postback) {
         console.log(myJSON);
         let text = messaging_events.postback.data;
         console.log(text);
-        sendTextMessage(sender,text, token);// pour l'instant pas défini
-        }
+        sendTextMessage(sender, text, token);// pour l'instant pas défini
+    }
     res.sendStatus(200);
 });
 
@@ -662,7 +662,7 @@ app.listen(REST_PORT, () => {
     console.log('Rest service ready on port ' + REST_PORT);
 });
 
-facebookBot.doSubscribeRequest();
+//facebookBot.doSubscribeRequest();
 
 
 
@@ -693,6 +693,6 @@ app.post('/ai', (req, res) => {
         }
     }
 });
-        
+
 
 
