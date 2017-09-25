@@ -21,7 +21,11 @@ const FACEBOOK_WELCOME = "FACEBOOK_WELCOME";
 const token = FB_PAGE_ACCESS_TOKEN;
 const FBMessenger = require('fb-messenger');
 const messenger = new FBMessenger(FB_PAGE_ACCESS_TOKEN);
-
+var options = {
+    host: 'http://proxy.netfective.com:3128/',
+    port: '3128',
+    path:'http://proxy.netfective.com:3128/',
+}
 function processEvent(event) {
     var sender = event.sender.id.toString();
 
