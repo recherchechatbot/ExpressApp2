@@ -662,9 +662,9 @@ app.post('/webhook/', (req, res) => {
                     messaging_events.forEach((event) => {
                         if (event.message && event.message.text) {
                             //facebookBot.processMessageEvent(event);
-                            //let sender = messaging_events.sender.id;
-                            //facebookBot.doTextResponse(sender, "Tu as tapé ce message : " + )
-                            facebookBot.processFacebookEvent(event);
+                            let sender = messaging_events.sender.id;
+                            facebookBot.doTextResponse(sender, "cccccccccccccccccccccccccccccc");
+                            //facebookBot.processFacebookEvent(event);
                         } else if (event.postback && event.postback.payload) {
                             if (event.postback.payload === "FACEBOOK_WELCOME") {
                                 facebookBot.processFacebookEvent(event);
