@@ -652,9 +652,11 @@ app.post('/webhook/', function (req, res) {
 
 app.post('/webhook/', (req, res) => {
     try {
+        console.log('debut');
         const data = JSONbig.parse(req.body);
-
+        console.log('avant if');
         if (data.originalRequest) {
+            console.log('apres if');
             let entries = data.originalRequest;
             entries.forEach((entry) => {
                 console.log('foreachhhhhhhhh11111');
@@ -680,6 +682,7 @@ app.post('/webhook/', (req, res) => {
                 }
             });
         }
+        console.log('apres if');
 
         return res.status(200).json({
             status: "ok"
