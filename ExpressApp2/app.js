@@ -24,8 +24,8 @@ const messenger = new FBMessenger(FB_PAGE_ACCESS_TOKEN);
 var options = {
     host: 'http://proxy.netfective.com:3128/',
     port: '3128',
-    path:'http://proxy.netfective.com:3128/',
-}
+    path: 'http://proxy.netfective.com:3128/',
+};
 function processEvent(event) {
     var sender = event.sender.id.toString();
 
@@ -636,10 +636,9 @@ app.post('/webhook/', function (req, res) {
         }
     if (messaging_events.postback) {
         console.log(myJSON);
-        let postback_events = myJSON.postback.data;
-        let text = JSON.stringify(postback_events);
+        let text = messaging_events.postback.data;
         console.log(text);
-        messenger.sendTextMessage(sender, "Postback received: " + text.substring(0, 200), token);
+        messenger.sendTextMessage(sender,text, token);
         }
     res.sendStatus(200);
 });
