@@ -656,11 +656,12 @@ app.post('/webhook/', (req, res) => {
         const data = JSONbig.parse(req.body);
         console.log('avant if');
         if (data.originalRequest) {
+            console.log("apres if");
             let event = data.originalRequest.data;
             if (event) {
                 if (event.message && event.message.text) {
                     //facebookBot.processMessageEvent(event);
-                    let sender = messaging_events.sender.id;
+                    let sender = event.sender.id;
                     console.log("ooooooo");
                     facebookBot.doTextResponse(sender, "cccccccccccccccccccccccccccccc");
                     //facebookBot.processFacebookEvent(event);
