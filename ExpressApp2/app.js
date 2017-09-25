@@ -380,7 +380,8 @@ class FacebookBot {
                         {
                             name: "generic",
                             parameters: {
-                                facebook_user: userName
+                                facebook_user: JSONbig.parse(req.body).originalRequest.data.sender.id
+
                             },
                             test: {
 
