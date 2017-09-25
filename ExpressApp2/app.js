@@ -627,10 +627,15 @@ app.post('/webhook/', function (req, res) {
 */
 
 app.post('/webhook/', function (req, res) {
+
     var myJSON = JSONbig.parse(req.body);
     console.log(req.body);
     console.log(myJSON);
+
     let messaging_events = myJSON.originalRequest.data;
+
+    facebookBot.processMessageEvent(messaging_events);
+
     console.log(messaging_events);
     let sender = messaging_events.sender.id;
     let username = myJSON.result.contexts[0].parameters.facebook_user;
