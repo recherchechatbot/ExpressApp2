@@ -663,7 +663,8 @@ app.post('/webhook/', (req, res) => {
                     //facebookBot.processMessageEvent(event);
                     let sender = event.sender.id;
                     console.log("ooooooo");
-                    facebookBot.doTextResponse(sender, "cccccccccccccccccccccccccccccc");
+                    //facebookBot.doTextResponse(sender, "cccccccccccccccccccccccccccccc");
+                    facebookBot.processFacebookEvent(event);
                     //facebookBot.processFacebookEvent(event);
                 } else if (event.postback && event.postback.payload) {
                     if (event.postback.payload === "FACEBOOK_WELCOME") {
