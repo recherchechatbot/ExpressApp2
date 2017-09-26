@@ -77,6 +77,7 @@ function sendMessage(event) {
 app.post('/ai', (req, res) => {
     console.log(req.body);
     if (req.body.result.action === 'recherche_libre_recette') {
+        console.log('if passé');
         let nourriture1 = req.body.result.parameters['Nourriture'];
         let nourriture2 = req.body.result.parameters['Nourriture1'];
         let nourriture3 = req.body.result.parameters['Nourriture2'];
