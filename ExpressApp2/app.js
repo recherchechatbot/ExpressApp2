@@ -45,7 +45,7 @@ function sendMessage(event) {
     });
 
     apiai.on('response', (response) => {
-        console.log(reponse);
+        console.log(response);
 
         let aiText = response.result.fulfillment.speech;
 
