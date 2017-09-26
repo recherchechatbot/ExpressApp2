@@ -573,7 +573,7 @@ class FacebookBot {
     data(id) {
         request({
             method: 'GET',
-            uri: 'https://graph.facebook.com/v2.10/${id}?fields=first_name,last_name,locale,timezone,gender&access_token=${FB_PAGE_ACCESS_TOKEN}',
+            uri: 'https://graph.facebook.com/v2.10/1119410371527383?fields=first_name,last_name,locale,timezone,gender&access_token=${FB_PAGE_ACCESS_TOKEN}',
         },
             (error, response, body) => {
                 if (error) {
