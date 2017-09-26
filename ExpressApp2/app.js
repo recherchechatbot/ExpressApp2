@@ -573,7 +573,7 @@ class FacebookBot {
     data(id) {
         request({
             method: 'GET',
-            uri: 'https://graph.facebook.com/v2.10/me?fields=first_name,last_name,locale,timezone,gender&access_token=${FB_PAGE_ACCESS_TOKEN}',
+            uri: 'https://graph.facebook.com/v2.10/me?fields=first_name,last_name,locale,timezone,gender&access_token=EAACEdEose0cBANFgRljsmDoZCZBa9Fkqpi5WQKzD57KXhCtfJTZAB6Av6trTo4P789QsiihH3IBg4Ma3ndZAxbKP7NdJr8A65EwCV4M27shovITaQ4Hx2MDePorljmLMgHVS6dDTI3XFdYndWLsVCZAeuK5iQBBiSUToSFfaCBULa7funF1UvzWHZAzrPF7S4ZC4uWi9UrTcQZDZD',
         },
             (error, response, body) => {
                 if (error) {
