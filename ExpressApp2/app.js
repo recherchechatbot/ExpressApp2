@@ -82,13 +82,13 @@ app.post('/ai', (req, res) => {
     console.log("req : " + req);
     if (req.body.result.action === 'recherche_libre_recette') {
         let nourriture1 = req.body.result.parameters['Nourriture'];
-        //let nourriture2 = req.body.result.parameters['Nourriture1'];
-        //let nourriture3 = req.body.result.parameters['Nourriture2'];
-        //let nourriture4 = req.body.result.parameters['Nourriture21'];
+        let nourriture2 = req.body.result.parameters['Nourriture1'];
+        let nourriture3 = req.body.result.parameters['Nourriture2'];
+        let nourriture4 = req.body.result.parameters['Nourriture21'];
 
         console.log("Nourriture : " + nourriture1);
 
-        let msg = 'Resultats des recettes avec:' + nourriture1; //+ ',' + nourriture2 + ',' + nourriture3 + ', et ' + nourriture4;
+        let msg = 'Resultats des recettes avec:' + nourriture1; + ',' + nourriture2 + ',' + nourriture3 + ', et ' + nourriture4;
         
         return res.json({
             speech: msg,
