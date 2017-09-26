@@ -676,7 +676,7 @@ app.post('/webhook/', (req, res) => {
     try {
         console.log('debut');
         const data = JSONbig.parse(req.body);
-        console.log('avant if');
+        console.log(data);
         if (data.originalRequest) {
             console.log("apres if");
             let event = data.originalRequest.data;
