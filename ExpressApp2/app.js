@@ -533,19 +533,19 @@ class FacebookBot {
         });
     }
 
-    //doSubscribeRequest() {
-    //    request({
-    //        method: 'POST',
-    //        uri: `https://graph.facebook.com/v2.6/me/subscribed_apps?access_token=${FB_PAGE_ACCESS_TOKEN}`
-    //    },
-    //        (error, response, body) => {
-    //            if (error) {
-    //                console.error('Error while subscription: ', error);
-    //            } else {
-    //                console.log('Subscription result: ', response.body);
-    //            }
-    //        });
-    //}
+    doSubscribeRequest() {
+        request({
+            method: 'POST',
+            uri: `https://graph.facebook.com/v2.6/me/subscribed_apps?access_token=${FB_PAGE_ACCESS_TOKEN}`
+        },
+            (error, response, body) => {
+                if (error) {
+                    console.error('Error while subscription: ', error);
+                } else {
+                    console.log('Subscription result: ', response.body);
+                }
+            });
+    }
 
     //configureGetStartedEvent() {
     //    request({
