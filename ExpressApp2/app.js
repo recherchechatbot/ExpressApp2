@@ -11,7 +11,7 @@ const async = require('async');
 const uuid = require('uuid');
 
 const REST_PORT = (process.env.PORT || 5000);
-const FB_PAGE_ACCESS_TOKEN = 'EAABqC6Y1J7cBAAgKjQrZCVwYYERO5vA8NJNMlZBZAN3sZAVOTZCP6BxkQWTcc2V9xaDuuRuLQTioHGdWD7uvZANX3WZCBa2JYuwG7DJYSon2JRE162t3ZBZAk6cbsFdKEOukAPtQ7hu0mxS4FFKCa9JjHQtVGyAlStBoRobJhHaHkEgZDZD';
+const FB_PAGE_ACCESS_TOKEN = 'EAACEdEose0cBANFgRljsmDoZCZBa9Fkqpi5WQKzD57KXhCtfJTZAB6Av6trTo4P789QsiihH3IBg4Ma3ndZAxbKP7NdJr8A65EwCV4M27shovITaQ4Hx2MDePorljmLMgHVS6dDTI3XFdYndWLsVCZAeuK5iQBBiSUToSFfaCBULa7funF1UvzWHZAzrPF7S4ZC4uWi9UrTcQZDZD';
 const APIAI_LANG = process.env.APIAI_LANG || 'fr';
 const FB_VERIFY_TOKEN = 'test';
 const APIAI_ACCESS_TOKEN = 'b1791ee1ebc14aa88140d78699ed0d93';
@@ -570,6 +570,21 @@ class FacebookBot {
             });
     }
 
+    data(id) {
+        request({
+            method: 'GET',
+            uri: 'https://graph.facebook.com/v2.10/${id}?fields=first_name,last_name,locale,timezone,gender&access_token=${FB_PAGE_ACCESS_TOKEN}',
+        },
+            (error, response, body) => {
+                if (error) {
+                    console.error('Error while subscription', error);
+                } else {
+                    console.log('Subscription result', response.body);
+                }
+            });
+    }
+
+
     isDefined(obj) {
         if (typeof obj == 'undefined') {
             return false;
@@ -618,6 +633,10 @@ app.get('/', (req, res) => {
     }
 });
 
+app.get('/data', (req, res) => {
+    res.send('eeee');
+});
+
 
 /*Recuperation des éléments du body
 app.post('/webhook/', function (req, res) {
@@ -664,7 +683,8 @@ app.post('/webhook/', (req, res) => {
                     let sender = event.sender.id;
                     console.log("ooooooo");
                     //facebookBot.doTextResponse(sender, "cccccccccccccccccccccccccccccc");
-                    facebookBot.processFacebookEvent(event);
+                    facebookBot.data(sender);
+                    //facebookBot.processFacebookEvent(event);
                     //facebookBot.processFacebookEvent(event);
                 } else if (event.postback && event.postback.payload) {
                     if (event.postback.payload === "FACEBOOK_WELCOME") {
@@ -689,6 +709,7 @@ app.post('/webhook/', (req, res) => {
     }
 
 });
+
 
 
 
