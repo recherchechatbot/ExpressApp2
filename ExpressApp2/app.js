@@ -23,7 +23,7 @@ app.get('/webhook', (req, res) => {
 
 /* Handling all messenges */
 app.post('/webhook', (req, res) => {
-    console.log(req.body);
+    console.log("DEBUT POST WEBHOOK");
     if (req.body.object === 'page') {
         req.body.entry.forEach((entry) => {
             entry.messaging.forEach((event) => {
@@ -34,6 +34,7 @@ app.post('/webhook', (req, res) => {
         });
         res.status(200).end();
     }
+    console.log("FIN POST WEBHOOK");
 });
 
 function sendMessage(event) {
@@ -45,7 +46,8 @@ function sendMessage(event) {
     });
 
     apiai.on('response', (response) => {
-        console.log(response);
+        console.log("REPONSE API AI SUCCES");
+        console.log("response : " + response);
 
         let aiText = response.result.fulfillment.speech;
 
@@ -67,6 +69,7 @@ function sendMessage(event) {
     });
 
     apiai.on('error', (error) => {
+        console.log("REPONSE API AI ERREUR");
         console.log(error);
     });
 
@@ -75,9 +78,9 @@ function sendMessage(event) {
 
 
 app.post('/ai', (req, res) => {
-    console.log(req.body);
+    console.log("DEBUT POST AI");
+    console.log("req : " + req);
     if (req.body.result.action === 'recherche_libre_recette') {
-        console.log('if passé');
         let nourriture1 = req.body.result.parameters['Nourriture'];
         //let nourriture2 = req.body.result.parameters['Nourriture1'];
         //let nourriture3 = req.body.result.parameters['Nourriture2'];
@@ -115,4 +118,5 @@ app.post('/ai', (req, res) => {
         //    }
         //})
     }
+    console.log("FIN POST AI");
 })
