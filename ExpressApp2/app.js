@@ -79,9 +79,9 @@ app.post('/ai', (req, res) => {
     if (req.body.result.action === 'recherche_libre_recette') {
         console.log('if passé');
         let nourriture1 = req.body.result.parameters['Nourriture'];
-        let nourriture2 = req.body.result.parameters['Nourriture1'];
-        let nourriture3 = req.body.result.parameters['Nourriture2'];
-        let nourriture4 = req.body.result.parameters['Nourriture21'];
+        //let nourriture2 = req.body.result.parameters['Nourriture1'];
+        //let nourriture3 = req.body.result.parameters['Nourriture2'];
+        //let nourriture4 = req.body.result.parameters['Nourriture21'];
 
         console.log("Nourriture : " + nourriture);
 
