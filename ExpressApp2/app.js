@@ -78,7 +78,16 @@ app.post('/ai', (req, res) => {
     console.log(req);
     if (req.body.result.action === 'recherche_libre_recette') {
         let nourriture = req.body.result.parameters['Nourriture'];
+
         console.log("Nourriture : " + nourriture);
+
+        let msg = 'Voila la première nourriture' + nourriture;
+
+        return res.json({
+            speech: msg,
+            displayText: msg,
+            source: 'recherche_libre_recette'
+        });
 
 
         //let restUrl = 'http://api.openweathermap.org/data/2.5/weather?APPID=' + WEATHER_API_KEY + '&q=' + city;
