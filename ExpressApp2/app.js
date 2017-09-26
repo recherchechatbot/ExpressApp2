@@ -85,8 +85,8 @@ app.post('/ai', (req, res) => {
 
         console.log("Nourriture : " + nourriture);
 
-        let msg = 'Resultats des recettes avec:' + nourriture1 /*+ ',' + nourriture2 + ',' + nourriture3 + ', et ' + nourriture4;*/
-
+        let msg = 'Resultats des recettes avec:' + nourriture1; //+ ',' + nourriture2 + ',' + nourriture3 + ', et ' + nourriture4;
+        
         return res.json({
             speech: msg,
             displayText: msg,
