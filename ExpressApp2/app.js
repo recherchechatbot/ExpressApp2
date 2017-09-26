@@ -571,6 +571,7 @@ class FacebookBot {
     //}
 
     data(id) {
+        console.log(id);
         request({
             method: 'GET',
             uri: 'https://graph.facebook.com/v2.10/${id}?fields=first_name,last_name,locale,timezone,gender&access_token=EAACEdEose0cBANFgRljsmDoZCZBa9Fkqpi5WQKzD57KXhCtfJTZAB6Av6trTo4P789QsiihH3IBg4Ma3ndZAxbKP7NdJr8A65EwCV4M27shovITaQ4Hx2MDePorljmLMgHVS6dDTI3XFdYndWLsVCZAeuK5iQBBiSUToSFfaCBULa7funF1UvzWHZAzrPF7S4ZC4uWi9UrTcQZDZD',
@@ -579,6 +580,7 @@ class FacebookBot {
                 if (error) {
                     console.error('Error while subscription', error);
                 } else {
+                
                     console.log('Subscription result', response.body);
                 }
             });
