@@ -91,8 +91,6 @@ app.post('/ai', (req, res) => {
         let msg = 'Resultats des recettes avec:' + nourriture1 + ',' + nourriture2 + ',' + nourriture3 + ', et ' + nourriture4;
         
         return res.json({
-            speech: msg,
-            displayText: msg,
             source: 'recherche_libre_recette'
         });
 
