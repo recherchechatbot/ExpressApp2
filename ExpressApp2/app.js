@@ -672,6 +672,7 @@ app.post('/webhook/', function (req, res) {
 
 app.post('/webhook/', (req, res) => {
     try {
+        console.log(req);
         console.log(req.body);
         const data = JSONbig.parse(req.body);
         console.log(data);
