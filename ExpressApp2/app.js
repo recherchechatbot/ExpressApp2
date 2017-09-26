@@ -571,7 +571,8 @@ class FacebookBot {
     //}
 
     data(id) {
-        console.log('test: ${id}');
+        console.log(`https://graph.facebook.com/v2.10/${id}?fields=first_name,last_name,locale,timezone,gender&access_token=${FB_PAGE_ACCESS_TOKEN}`);
+
         request({
             method: 'GET',
             uri: `https://graph.facebook.com/v2.10/${id}?fields=first_name,last_name,locale,timezone,gender&access_token=${FB_PAGE_ACCESS_TOKEN}`,
