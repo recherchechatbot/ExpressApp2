@@ -2,7 +2,7 @@
 const bodyParser = require('body-parser');
 const app = express();
 const request = require('request');
-const apiaiApp = require('apiai')('25aaefbebc494d82972ac033a202d7bd');
+const apiaiApp = require('apiai')('b1791ee1ebc14aa88140d78699ed0d93');
 const PAGE_ACCESS_TOKEN = 'EAAMkZAtH8lc4BAFZA7aVSHMp1JRANNRNe2tNnxWZCw0kX90l9Jons7nBzVaDI0fBjJOCLFMhq7AUJvOyjdO4OdpS6QrClDCYAob03KFpNkUZCyhhvDEDZA9tD3BvF0Jrad95DQJgGvV2d44T1EPZAzGFGJOWtHZADeMMcq02zYchAZDZD';
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -72,3 +72,34 @@ function sendMessage(event) {
 
     apiai.end();
 }
+
+
+app.post('/ai', (req, res) => {
+    console.log(req);
+    if (req.body.result.action === 'recherche_libre_recette') {
+        let nourriture = req.body.result.parameters['Nourriture'];
+        console.log("Nourriture : " + nourriture);
+
+
+        //let restUrl = 'http://api.openweathermap.org/data/2.5/weather?APPID=' + WEATHER_API_KEY + '&q=' + city;
+
+        //request.get(restUrl, (err, response, body) => {
+        //    if (!err && response.statusCode == 200) {
+        //        let json = JSON.parse(body);
+        //        let msg = json.weather[0].description + ' and the temperature is ' + json.main.temp + ' ℉';
+        //        return res.json({
+        //            speech: msg,
+        //            displayText: msg,
+        //            source: 'weather'
+        //        });
+        //    } else {
+        //        return res.status(400).json({
+        //            status: {
+        //                code: 400,
+        //                errorType: 'I failed to look up the city name.'
+        //            }
+        //        });
+        //    }
+        //})
+    }
+})
