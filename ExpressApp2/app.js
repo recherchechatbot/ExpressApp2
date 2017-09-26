@@ -86,7 +86,7 @@ app.post('/ai', (req, res) => {
         //let nourriture3 = req.body.result.parameters['Nourriture2'];
         //let nourriture4 = req.body.result.parameters['Nourriture21'];
 
-        console.log("Nourriture : " + nourriture);
+        console.log("Nourriture : " + nourriture1);
 
         let msg = 'Resultats des recettes avec:' + nourriture1; //+ ',' + nourriture2 + ',' + nourriture3 + ', et ' + nourriture4;
         
