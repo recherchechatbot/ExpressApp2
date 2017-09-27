@@ -97,7 +97,7 @@ app.post('/ai', (req, res) => {
 
         let msg = 'Resultats des recettes avec:' + nourriture1 + ',' + nourriture2 + ',' + nourriture3 + ', et ' + nourriture4;
 
-        console.log("1111111111111111111111111111111111111111111111111111111111111111111111");
+        console.log("11111111111111111111111111111111111111111111111111111111111111111111111");
         request.get('http://wsmcommerce-delta.integration.eco//api/v1/recherche/recette?mot=sucre', { 'TokenAuthentification': '4fccbe8f-a6a7-4230-a697-1fe6803720bf' }, (err, response, body) => {
             console.log("err = " + err);
             console.log("response = " + response);
