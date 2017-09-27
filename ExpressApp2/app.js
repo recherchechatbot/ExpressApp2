@@ -130,13 +130,15 @@ app.post('/ai', (req, res) => {
                 }
             ]
         };
-        console.log(messagedata);  
+        console.log(messagedata);
         sendGenericMessage(sender, messagedata);
+    }
+});
         //return res.json({
         //    speech: msg,
         //    message: message,
         //    source: 'recherche_libre_recette'
-        });
+        
 
 
         //let restUrl = 'http://api.openweathermap.org/data/2.5/weather?APPID=' + WEATHER_API_KEY + '&q=' + city;
