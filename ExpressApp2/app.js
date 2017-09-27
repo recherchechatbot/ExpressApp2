@@ -100,12 +100,14 @@ app.post('/ai', (req, res) => {
         for (var i = 0; i < my_array.length; i++) {
             if (my_array[i] != null && my_array != '')
             {
-                resultat += (estPremier ? '' : '%20') + my_array[i];
+                resultat += (estPremier ? '' : ' ') + my_array[i];
                 estPremier = false;
             }
         }
-        console.log(resultat);
+        
 
+        resultat = encodeURIComponent(resultat);
+        console.log(resultat);
         console.log("Nourriture : " + nourriture1 + ' ' +nourriture2);
 
         let msg = 'Resultats des recettes avec:' + nourriture1 + ',' + nourriture2 + ',' + nourriture3 + ', et ' + nourriture4;
