@@ -78,6 +78,7 @@ function sendMessage(event) {
 
 
 app.post('/ai', (req, res) => {
+    let sender = event.sender.id;
     console.log("DEBUT POST AI");
     console.log("req : " + req);
     if (req.body.result.action === 'recherche_libre_recette') {
@@ -131,9 +132,10 @@ app.post('/ai', (req, res) => {
         }
            
         return res.json({
-            speech: messagedata,
-            displayText: messagedata,
-            source: 'recherche_libre_recette'
+            //speech: messagedata,
+            recipient: { id: sender },
+            displayText: messagedata
+            //source: 'recherche_libre_recette'
         });
 
 
