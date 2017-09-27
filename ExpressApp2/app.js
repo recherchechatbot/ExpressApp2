@@ -1,5 +1,6 @@
 ﻿const express = require('express');
 const bodyParser = require('body-parser');
+const JSONbig = require('json-bigint');
 const app = express();
 const request = require('request');
 const apiaiApp = require('apiai')('b1791ee1ebc14aa88140d78699ed0d93');
