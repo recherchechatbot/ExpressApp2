@@ -131,7 +131,7 @@ app.post('/ai', (req, res) => {
             ]
         };
            
-        return res.json({
+        return json({
             speech: messagedata,
             message: messagedata,
             source: 'recherche_libre_recette'
