@@ -127,9 +127,8 @@ app.post('/ai', (req, res) => {
                 'TokenAuthentification': '53c054d2-eb10-4890-a963-59de901a43ae'
             }
         };
-
+        var output = '';
         var req = http.request(options, function (res) {
-            var output = '';
             console.log(options.host + ':' + res.statusCode);
             res.setEncoding('utf8');
 
@@ -152,7 +151,9 @@ app.post('/ai', (req, res) => {
 
         req.end();
         console.log("2222222222222222222222222222222222222222222222222222222222222222222222");
-
+        let myjson = JSONbig.Parse(output);
+        console.log(myjson.Recettes[0].Titre);
+        console.log(myjson.Recettes[0].ImageUrl);
         let messagedata = JSON.stringify({
             "attachment": {
                 "type": "template",
@@ -160,8 +161,8 @@ app.post('/ai', (req, res) => {
                     "template_type": "generic",
                     "elements": [
                         {
-                            "title": "Résultats de votre recherche",
-                            "image_url": "https://driveimg1.intermarche.com/fr/Ressources/images/publication/5358.jpg",
+                            "title": myjson.Recettes[0].Titre,
+                            "image_url": myjson.Recettes[0].ImageUrl,
                             "subtitle": "Vous serez redirigé vers notre site web",
                             "default_action": {
                                 "type": "web_url",
