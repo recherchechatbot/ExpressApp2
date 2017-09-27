@@ -100,6 +100,8 @@ app.post('/ai', (req, res) => {
 
         console.log("11111111111111111111111111111111111111111111111111111111111111111111111");
 
+        const httpProxyAgent = require('http-proxy-agent');
+        const agent = new httpProxyAgent("http://proxy.netfective.com:3128/");
 
         var options = {
             host: 'wsmcommerce-delta.integration.eco',
@@ -107,7 +109,8 @@ app.post('/ai', (req, res) => {
             method: 'GET',
             headers: {
                 'TokenAuthentification': '4fccbe8f-a6a7-4230-a697-1fe6803720bf'
-            }
+            },
+            agent: agent
         };
 
         var req = http.request(options, function (res) {
