@@ -64,7 +64,7 @@ function sendMessage(event) {
             if (error) {
                 console.log('Error sending message: ', error);
             } else if (response.body.error) {
-                console.log('response.body');
+                console.log(response.body);
                 console.log('Error: ', response.body.error);
             }
         });
