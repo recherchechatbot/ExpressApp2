@@ -140,6 +140,59 @@ app.post('/ai', (req, res) => {
                 //var obj = JSON.parse(output);
                 //onResult(res.statusCode, obj);
                 console.log("output = " + output);
+
+                let myjson = JSONbig.parse(output);
+                console.log(output);
+
+                let messagedata = JSON.stringify({
+                    "attachment": {
+                        "type": "template",
+                        "payload": {
+                            "template_type": "generic",
+                            "elements": [
+                                {
+                                    "title": "COUCOUCOUCOUCOUCUO",
+                                    "image_url": "https://driveimg1.intermarche.com/fr/Ressources/images/publication/4723.jpg",
+                                    "subtitle": "Vous serez redirigé vers notre site web",
+                                    "default_action": {
+                                        "type": "web_url",
+                                        "url": `https://www.intermarche.com/home/canal-intermarche/recettes/liste-recette.searchRecette.do?keyword=${nourriture1}&type-plat=&redirectUrl=%2Fcms%2Frender%2Flive%2Ffr_FR%2Fsites%2Fintermarche%2Fhome%2Fcanal-intermarche%2Frecettes%2Fliste-recette.html&chercher-recettes=Chercher`,
+                                        "webview_height_ratio": "tall"
+                                    },
+                                    "buttons": [
+                                        {
+                                            "title": "Cliquez ici",
+                                            "type": "web_url",
+                                            "url": `https://www.intermarche.com/home/canal-intermarche/recettes/liste-recette.searchRecette.do?keyword=${nourriture1}&type-plat=&redirectUrl=%2Fcms%2Frender%2Flive%2Ffr_FR%2Fsites%2Fintermarche%2Fhome%2Fcanal-intermarche%2Frecettes%2Fliste-recette.html&chercher-recettes=Chercher`,
+                                            "webview_height_ratio": "tall"
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    },
+                    "quick_replies": [
+                        {
+                            "content_type": "text",
+                            "title": "Autres recettes",
+                            "payload": "Autres recettes"
+                        },
+                        {
+                            "content_type": "text",
+                            "title": "Menu Principal",
+                            "payload": "Menu Principal"
+                        }
+                    ]
+                });
+                console.log(messagedata);
+                //sendGenericMessage(sender, messagedata);
+                return res.json({
+                    speech: messagedata,
+                    message: messagedata,
+                    source: 'recherche_libre_recette'
+
+                })
+
             });
         });
 
@@ -151,58 +204,10 @@ app.post('/ai', (req, res) => {
 
         req.end();
         console.log("2222222222222222222222222222222222222222222222222222222222222222222222");
-        let myjson = JSONbig.parse(output);
-        console.log(output);
+        
         //console.log('titre' + myjson.Recettes[0].Titre);
         //console.log('imageurl' + myjson.Recettes[0].ImageUrl);
-        let messagedata = JSON.stringify({
-            "attachment": {
-                "type": "template",
-                "payload": {
-                    "template_type": "generic",
-                    "elements": [
-                        {
-                            "title":"COUCOUCOUCOUCOUCUO",
-                            "image_url": "https://driveimg1.intermarche.com/fr/Ressources/images/publication/4723.jpg",
-                            "subtitle": "Vous serez redirigé vers notre site web",
-                            "default_action": {
-                                "type": "web_url",
-                                "url": `https://www.intermarche.com/home/canal-intermarche/recettes/liste-recette.searchRecette.do?keyword=${nourriture1}&type-plat=&redirectUrl=%2Fcms%2Frender%2Flive%2Ffr_FR%2Fsites%2Fintermarche%2Fhome%2Fcanal-intermarche%2Frecettes%2Fliste-recette.html&chercher-recettes=Chercher`,
-                                "webview_height_ratio": "tall"
-                            },
-                            "buttons": [
-                                {
-                                    "title": "Cliquez ici",
-                                    "type": "web_url",
-                                    "url": `https://www.intermarche.com/home/canal-intermarche/recettes/liste-recette.searchRecette.do?keyword=${nourriture1}&type-plat=&redirectUrl=%2Fcms%2Frender%2Flive%2Ffr_FR%2Fsites%2Fintermarche%2Fhome%2Fcanal-intermarche%2Frecettes%2Fliste-recette.html&chercher-recettes=Chercher`,
-                                    "webview_height_ratio": "tall"
-                                }
-                            ]
-                        }
-                    ]
-                }
-            },
-            "quick_replies": [
-                {
-                    "content_type": "text",
-                    "title": "Autres recettes",
-                    "payload": "Autres recettes"
-                },
-                {
-                    "content_type": "text",
-                    "title": "Menu Principal",
-                    "payload": "Menu Principal"
-                }
-            ]
-        });    
-        console.log(messagedata);
-        //sendGenericMessage(sender, messagedata);
-        return res.json({
-            speech: messagedata,
-            message: messagedata,
-            source: 'recherche_libre_recette'
-
-        })
+        
     }
 });
       
