@@ -88,11 +88,51 @@ app.post('/ai', (req, res) => {
 
         console.log("Nourriture : " + nourriture1);
 
-        let msg = 'Resultats des recettes avec:' + nourriture1 + ',' + nourriture2 + ',' + nourriture3 + ', et ' + nourriture4;
-        
+        //let msg = 'Resultats des recettes avec:' + nourriture1 + ',' + nourriture2 + ',' + nourriture3 + ', et ' + nourriture4;
+        let messagedata = {
+            "attachment": {
+                "type": "template",
+                "payload": {
+                    "template_type": "generic",
+                    "elements": [
+                        {
+                            "title": "Résultats de votre recherche",
+                            "image_url": "http://eganhospitality.ie/wp-content/uploads/2014/11/11.png",
+                            "subtitle": "Vous serez redirigé vers notre site web",
+                            "default_action": {
+                                "type": "web_url",
+                                "url": "https://www.intermarche.com/home/canal-intermarche/recettes/liste-recette.searchRecette.do?keyword=$Nourriture&type-plat=&redirectUrl=%2Fcms%2Frender%2Flive%2Ffr_FR%2Fsites%2Fintermarche%2Fhome%2Fcanal-intermarche%2Frecettes%2Fliste-recette.html&chercher-recettes=Chercher",
+                                "webview_height_ratio": "tall"
+                            },
+                            "buttons": [
+                                {
+                                    "title": "Cliquez ici",
+                                    "type": "web_url",
+                                    "url": "https://www.intermarche.com/home/canal-intermarche/recettes/liste-recette.searchRecette.do?keyword=$Nourriture&type-plat=&redirectUrl=%2Fcms%2Frender%2Flive%2Ffr_FR%2Fsites%2Fintermarche%2Fhome%2Fcanal-intermarche%2Frecettes%2Fliste-recette.html&chercher-recettes=Chercher",
+                                    "webview_height_ratio": "tall"
+                                }
+                            ]
+                        }
+                    ]
+                }
+            },
+            "quick_replies": [
+                {
+                    "content_type": "text",
+                    "title": "Autres recettes",
+                    "payload": "Autres recettes"
+                },
+                {
+                    "content_type": "text",
+                    "title": "Menu Principal",
+                    "payload": "Menu Principal"
+                }
+            ]
+        }
+           
         return res.json({
-            speech: msg,
-            displayText: msg,
+            speech: messagedata,
+            displayText: messagedata,
             source: 'recherche_libre_recette'
         });
 
@@ -120,3 +160,53 @@ app.post('/ai', (req, res) => {
     }
     console.log("FIN POST AI");
 })
+
+
+//function sendGenericMessage(sender) {
+//    let messageData = {
+//        "attachment": {
+//            "type": "template",
+//            "payload": {
+//                "template_type": "generic",
+//                "elements": [{
+//                    "title": "First card",
+//                    "subtitle": "Element #1 of an hscroll",
+//                    "image_url": "http://messengerdemo.parseapp.com/img/rift.png",
+//                    "buttons": [{
+//                        "type": "web_url",
+//                        "url": "https://www.messenger.com",
+//                        "title": "web url"
+//                    }, {
+//                        "type": "postback",
+//                        "title": "Postback",
+//                        "payload": "Payload for first element in a generic bubble",
+//                    }],
+//                }, {
+//                    "title": "Second card",
+//                    "subtitle": "Element #2 of an hscroll",
+//                    "image_url": "http://messengerdemo.parseapp.com/img/gearvr.png",
+//                    "buttons": [{
+//                        "type": "postback",
+//                        "title": "Postback",
+//                        "payload": "Payload for second element in a generic bubble",
+//                    }],
+//                }]
+//            }
+//        }
+//    }
+//    request({
+//        url: 'https://graph.facebook.com/v2.6/me/messages',
+//        qs: { access_token: token },
+//        method: 'POST',
+//        json: {
+//            recipient: { id: sender },
+//            message: messageData,
+//        }
+//    }, function (error, response, body) {
+//        if (error) {
+//            console.log('Error sending messages: ', error)
+//        } else if (response.body.error) {
+//            console.log('Error: ', response.body.error)
+//        }
+//    })
+//}
