@@ -100,17 +100,16 @@ app.post('/ai', (req, res) => {
 
         console.log("11111111111111111111111111111111111111111111111111111111111111111111111");
 
-        const httpProxyAgent = require('http-proxy-agent');
-        const agent = new httpProxyAgent("http://proxy.netfective.com:3128/");
+        //const httpProxyAgent = require('http-proxy-agent');
+        //const agent = new httpProxyAgent("http://proxy.netfective.com:3128/");
 
         var options = {
-            host: 'wsmcommerce-delta.integration.eco',
+            host: 'wsmcommerce.intermarche.com/',
             path: '/api/v1/recherche/recette?mot=sucre',
             method: 'GET',
             headers: {
-                'TokenAuthentification': '4fccbe8f-a6a7-4230-a697-1fe6803720bf'
-            },
-            agent: agent
+                'TokenAuthentification': '53c054d2-eb10-4890-a963-59de901a43ae'
+            }
         };
 
         var req = http.request(options, function (res) {
