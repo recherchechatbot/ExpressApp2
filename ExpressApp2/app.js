@@ -58,7 +58,7 @@ function sendMessage(event) {
             method: 'POST',
             json: {
                 recipient: { id: sender },
-                message: { text: aiText }
+                message: aiText 
             }
         }, (error, response) => {
             if (error) {
@@ -139,7 +139,7 @@ app.post('/ai', (req, res) => {
         console.log(messagedata);
         //sendGenericMessage(sender, messagedata);
         return res.json({
-            speech: 'coucou',
+            speech: messagedata,
             message: messagedata,
             source: 'recherche_libre_recette'
 
