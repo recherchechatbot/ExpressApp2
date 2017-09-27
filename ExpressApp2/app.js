@@ -127,7 +127,7 @@ app.post('/ai', (req, res) => {
         function callback(error, response, body) {
             if (!error && response.statusCode == 200) {
                 var info = JSON.parse(body);
-                console.log(info);
+                console.log("INNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNFFFFFFFFFFFFFFFFOOOOOOOOO" + info);
 
                 let messagedata = JSON.stringify({
                     "attachment": {
@@ -136,8 +136,8 @@ app.post('/ai', (req, res) => {
                             "template_type": "generic",
                             "elements": [
                                 {
-                                    "title": "COUCOUCOUCOUCOUCUO",
-                                    "image_url": "https://driveimg1.intermarche.com/fr/Ressources/images/publication/4723.jpg",
+                                    "title": info.Recettes[0].Titre,
+                                    "image_url": info.Recettes[0].ImageUrl,
                                     "subtitle": "Vous serez redirigé vers notre site web",
                                     "default_action": {
                                         "type": "web_url",
