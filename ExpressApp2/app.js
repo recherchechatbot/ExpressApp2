@@ -96,6 +96,19 @@ app.post('/ai', (req, res) => {
         console.log("Nourriture : " + nourriture1);
 
         let msg = 'Resultats des recettes avec:' + nourriture1 + ',' + nourriture2 + ',' + nourriture3 + ', et ' + nourriture4;
+
+        console.log("1111111111111111111111111111111111111111111111111111111111111111111111");
+        request.get('http://wsmcommerce-delta.integration.eco//api/v1/recherche/recette?mot=sucre', { 'TokenAuthentification': '4fccbe8f-a6a7-4230-a697-1fe6803720bf' }, (err, response, body) => {
+            if (!err && response.statusCode == 200) {
+                console.log("SUCCES RECUP RECETTES");
+                let json = JSON.parse(body);
+                console.log(json);
+            } else {
+                console.log("ERREUR RECUP RECETTES");
+            }
+        });
+        console.log("2222222222222222222222222222222222222222222222222222222222222222222222");
+
         let messagedata = JSON.stringify({
             "attachment": {
                 "type": "template",
@@ -192,3 +205,6 @@ function sendGenericMessage(sender, messagedata) {
         }
     })
 }
+
+
+
