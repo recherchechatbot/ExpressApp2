@@ -139,7 +139,7 @@ app.post('/ai', (req, res) => {
         console.log(messagedata);
         //sendGenericMessage(sender, messagedata);
         return res.json({
-            speech: messagedata,
+            speech: 'coucou',
             message: messagedata,
             source: 'recherche_libre_recette'
 
