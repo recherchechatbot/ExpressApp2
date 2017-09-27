@@ -135,14 +135,16 @@ app.post('/ai', (req, res) => {
                 }
             ]
         };
-        console.log(messagedata);
-        sendGenericMessage(sender, messagedata);
-    }
+        //console.log(messagedata);
+        //sendGenericMessage(sender, messagedata);
+        return res.json({
+            speech: msg,
+            message: message,
+            source: 'recherche_libre_recette'
+
+        })
 });
-        //return res.json({
-        //    speech: msg,
-        //    message: message,
-        //    source: 'recherche_libre_recette'
+      
         
 
 
