@@ -104,6 +104,7 @@ app.post('/ai', (req, res) => {
                 estPremier = false;
             }
         }
+        console.log(resultat);
 
         console.log("Nourriture : " + nourriture1);
 
