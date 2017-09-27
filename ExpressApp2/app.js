@@ -99,6 +99,9 @@ app.post('/ai', (req, res) => {
 
         console.log("1111111111111111111111111111111111111111111111111111111111111111111111");
         request.get('http://wsmcommerce-delta.integration.eco//api/v1/recherche/recette?mot=sucre', { 'TokenAuthentification': '4fccbe8f-a6a7-4230-a697-1fe6803720bf' }, (err, response, body) => {
+            console.log("err = " + err);
+            console.log("response = " + response);
+            console.log("response.statusCode = " + response.statusCode);
             if (!err && response.statusCode == 200) {
                 console.log("SUCCES RECUP RECETTES");
                 let json = JSON.parse(body);
