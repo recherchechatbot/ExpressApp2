@@ -102,7 +102,7 @@ app.post('/ai', (req, res) => {
 
 
         var options = {
-            host: 'http://wsmcommerce-delta.integration.eco',
+            host: 'wsmcommerce-delta.integration.eco',
             port: 80,
             path: '/api/v1/recherche/recette?mot=sucre',
             method: 'GET',
