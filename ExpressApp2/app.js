@@ -99,8 +99,7 @@ app.post('/ai', (req, res) => {
 
         console.log("11111111111111111111111111111111111111111111111111111111111111111111111");
         var options = {
-            hostname: 'http://wsmcommerce-delta.integration.eco',
-            path: '/api/v1/recherche/recette?mot=sucre',
+            uri: 'http://wsmcommerce-delta.integration.eco/api/v1/recherche/recette?mot=sucre',
             method: 'GET',
             json: true,
             headers: { 'TokenAuthentification': '4fccbe8f-a6a7-4230-a697-1fe6803720bf' }
