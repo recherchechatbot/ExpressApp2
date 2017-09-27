@@ -152,8 +152,8 @@ app.post('/ai', (req, res) => {
         req.end();
         console.log("2222222222222222222222222222222222222222222222222222222222222222222222");
         let myjson = JSONbig.parse(output);
-        //console.log(myjson.Recettes[0].Titre);
-        console.log('test' + myjson.Recettes[0].ImageUrl);
+        console.log('titre' + myjson.Recettes[0].Titre);
+        console.log('imageurl' + myjson.Recettes[0].ImageUrl);
         let messagedata = JSON.stringify({
             "attachment": {
                 "type": "template",
@@ -161,8 +161,8 @@ app.post('/ai', (req, res) => {
                     "template_type": "generic",
                     "elements": [
                         {
-                            "title": JSON.stringify(myjson.Recettes[0].Titre),
-                            "image_url": JSON.stringify(myjson.Recettes[0].ImageUrl),
+                            "title":"COUCOUCOUCOUCOUCUO",
+                            "image_url": "https://driveimg1.intermarche.com/fr/Ressources/images/publication/4723.jpg",
                             "subtitle": "Vous serez redirigé vers notre site web",
                             "default_action": {
                                 "type": "web_url",
