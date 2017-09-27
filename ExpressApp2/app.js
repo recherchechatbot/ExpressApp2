@@ -98,16 +98,24 @@ app.post('/ai', (req, res) => {
         let msg = 'Resultats des recettes avec:' + nourriture1 + ',' + nourriture2 + ',' + nourriture3 + ', et ' + nourriture4;
 
         console.log("11111111111111111111111111111111111111111111111111111111111111111111111");
-        request.get('http://wsmcommerce-delta.integration.eco//api/v1/recherche/recette?mot=sucre', { 'TokenAuthentification': '4fccbe8f-a6a7-4230-a697-1fe6803720bf' }, (err, response, body) => {
-            console.log("err = " + err);
-            console.log("response = " + response);
-            console.log("response.statusCode = " + response.statusCode);
-            if (!err && response.statusCode == 200) {
-                console.log("SUCCES RECUP RECETTES");
-                let json = JSON.parse(body);
-                console.log(json);
-            } else {
-                console.log("ERREUR RECUP RECETTES");
+        var options = {
+            hostname: 'http://wsmcommerce-delta.integration.eco',
+            path: '/api/v1/recherche/recette?mot=sucre',
+            method: 'GET',
+            json: true,
+            headers: { 'TokenAuthentification': '4fccbe8f-a6a7-4230-a697-1fe6803720bf' }
+        }
+
+
+
+        request.get(options, (error, response, body) => {
+            if (error)
+            {
+                console.log(error);
+            }
+            else
+            {
+                console.log(body);
             }
         });
         console.log("2222222222222222222222222222222222222222222222222222222222222222222222");
