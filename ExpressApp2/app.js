@@ -89,7 +89,7 @@ app.post('/ai', (req, res) => {
 
         console.log("Nourriture : " + nourriture1);
 
-        //let msg = 'Resultats des recettes avec:' + nourriture1 + ',' + nourriture2 + ',' + nourriture3 + ', et ' + nourriture4;
+        let msg = 'Resultats des recettes avec:' + nourriture1 + ',' + nourriture2 + ',' + nourriture3 + ', et ' + nourriture4;
         let messagedata = {
             "attachment": {
                 "type": "template",
@@ -133,7 +133,7 @@ app.post('/ai', (req, res) => {
         console.log(messagedata);  
         return res.json({
             speech: messagedata,
-            message: JSONbig.parse(messagedata),
+            message: msg,
             source: 'recherche_libre_recette'
         });
 
