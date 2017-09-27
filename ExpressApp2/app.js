@@ -103,11 +103,9 @@ app.post('/ai', (req, res) => {
 
         var options = {
             host: 'wsmcommerce-delta.integration.eco',
-            port: 80,
             path: '/api/v1/recherche/recette?mot=sucre',
             method: 'GET',
             headers: {
-                'Content-Type': 'application/json',
                 'TokenAuthentification': '4fccbe8f-a6a7-4230-a697-1fe6803720bf'
             }
         };
@@ -122,9 +120,9 @@ app.post('/ai', (req, res) => {
             });
 
             res.on('end', function () {
-                var obj = JSON.parse(output);
+                //var obj = JSON.parse(output);
                 //onResult(res.statusCode, obj);
-                console.log("obj = " + obj);
+                console.log("output = " + output);
             });
         });
 
