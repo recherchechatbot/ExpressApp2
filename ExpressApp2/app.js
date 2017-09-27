@@ -78,7 +78,8 @@ function sendMessage(event) {
 
 
 app.post('/ai', (req, res) => {
-    let sender = req.body.originalRequest.data.sender.id;
+    let myjson = JSONbig(req.body);
+    let sender = myjson.originalRequest.data.sender.id;
     console.log("DEBUT POST AI");
     console.log("req : " + req);
     if (req.body.result.action === 'recherche_libre_recette') {
