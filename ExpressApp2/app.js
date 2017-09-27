@@ -161,9 +161,9 @@ app.post('/ai', (req, res) => {
         //        });
         //    }
         //})
-    }
-    console.log("FIN POST AI");
-})
+//    }
+//    console.log("FIN POST AI");
+//})
 
 
 function sendGenericMessage(sender, messagedata) {
