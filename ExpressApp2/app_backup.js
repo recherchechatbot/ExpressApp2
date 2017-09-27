@@ -536,7 +536,7 @@
 //    //doSubscribeRequest() {
 //    //    request({
 //    //        method: 'POST',
-//    //        uri: `https://graph.facebook.com/v2.6/me/subscribed_apps?access_token=${FB_PAGE_ACCESS_TOKEN}`
+            //uri: `https://graph.facebook.com/v2.6/me/subscribed_apps?access_token=${FB_PAGE_ACCESS_TOKEN}`
 //    //    },
 //    //        (error, response, body) => {
 //    //            if (error) {
