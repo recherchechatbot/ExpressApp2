@@ -133,7 +133,7 @@ app.post('/ai', (req, res) => {
         console.log(messagedata);  
         return res.json({
             speech: msg,
-            message: msg,
+            message: messagedata,
             source: 'recherche_libre_recette'
         });
 
