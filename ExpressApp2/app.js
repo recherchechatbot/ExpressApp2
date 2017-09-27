@@ -106,9 +106,11 @@ app.post('/ai', (req, res) => {
         }
         console.log(resultat);
 
-        console.log("Nourriture : " + nourriture1);
+        console.log("Nourriture : " + nourriture1 + ' ' +nourriture2);
 
         let msg = 'Resultats des recettes avec:' + nourriture1 + ',' + nourriture2 + ',' + nourriture3 + ', et ' + nourriture4;
+        console.log(msg);
+      
 
         console.log("11111111111111111111111111111111111111111111111111111111111111111111111");
 
