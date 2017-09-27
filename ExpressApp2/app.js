@@ -116,33 +116,18 @@ app.post('/ai', (req, res) => {
 
         console.log("11111111111111111111111111111111111111111111111111111111111111111111111");
 
-        //const httpProxyAgent = require('http-proxy-agent');
-        //const agent = new httpProxyAgent("http://proxy.netfective.com:3128/");
-
         var options = {
-            host: 'wsmcommerce.intermarche.com',
-            path: `/api/v1/recherche/recette?mot=${resultat}`,
             method: 'GET',
+            url: 'http://wsmcommerce.intermarche.com/api/v1/recherche/recette?mot=poulet',
             headers: {
                 'TokenAuthentification': '53c054d2-eb10-4890-a963-59de901a43ae'
             }
         };
-        var output = '';
-        var req = http.request(options, function (res) {
-            console.log(options.host + ':' + res.statusCode);
-            res.setEncoding('utf8');
 
-            res.on('data', function (chunk) {
-                output += chunk;
-            });
-
-            res.on('end', function () {
-                //var obj = JSON.parse(output);
-                //onResult(res.statusCode, obj);
-                console.log("output = " + output);
-
-                let myjson = JSONbig.parse(output);
-                console.log(output);
+        function callback(error, response, body) {
+            if (!error && response.statusCode == 200) {
+                var info = JSON.parse(body);
+                console.log(info);
 
                 let messagedata = JSON.stringify({
                     "attachment": {
@@ -185,24 +170,72 @@ app.post('/ai', (req, res) => {
                     ]
                 });
                 console.log(messagedata);
-                //sendGenericMessage(sender, messagedata);
+
                 return res.json({
                     speech: messagedata,
                     message: messagedata,
                     source: 'recherche_libre_recette'
 
-                })
+                });
 
-            });
-        });
 
-        req.on('error', function (err) {
-            //res.send('error: ' + err.message);
+            }
+            else
+            {
+                console.log("EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE");
 
-            console.log("errrrrrrrrrrrrror : " + err);
-        });
+                return res.json({
+                    speech: "ERRRRRRRRRRRRRRRRRRREUUUUUUUUUUUR",
+                    message: "ERRRRRRRRRRRRRRRRRRREUUUUUUUUUUUR",
+                    source: 'recherche_libre_recette'
 
-        req.end();
+                });
+            }
+        }
+
+        request(options, callback);
+
+
+
+
+
+
+
+
+        //var options = {
+        //    host: 'wsmcommerce.intermarche.com',
+        //    path: `/api/v1/recherche/recette?mot=${resultat}`,
+        //    method: 'GET',
+        //    headers: {
+        //        'TokenAuthentification': '53c054d2-eb10-4890-a963-59de901a43ae'
+        //    }
+        //};
+
+        //var output = '';
+        //var req = http.request(options, function (res) {
+        //    console.log(options.host + ':' + res.statusCode);
+        //    res.setEncoding('utf8');
+
+        //    res.on('data', function (chunk) {
+        //        output += chunk;
+        //    });
+
+        //    res.on('end', function () {
+        //        console.log("output = " + output);
+
+        //        let myjson = JSONbig.parse(output);
+        //        console.log(output);
+
+                
+
+        //    });
+        //});
+
+        //req.on('error', function (err) {
+        //    console.log("errrrrrrrrrrrrror : " + err);
+        //});
+
+        //req.end();
         console.log("2222222222222222222222222222222222222222222222222222222222222222222222");
         
         //console.log('titre' + myjson.Recettes[0].Titre);
