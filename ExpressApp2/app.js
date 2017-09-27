@@ -143,6 +143,7 @@ app.post('/ai', (req, res) => {
             source: 'recherche_libre_recette'
 
         })
+    }
 });
       
         
