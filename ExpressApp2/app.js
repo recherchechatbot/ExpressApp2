@@ -145,7 +145,7 @@ app.post('/ai', (req, res) => {
                     "elements": [
                         {
                             "title": "Résultats de votre recherche",
-                            "image_url": "http://eganhospitality.ie/wp-content/uploads/2014/11/11.png",
+                            "image_url": "https://driveimg1.intermarche.com/fr/Ressources/images/publication/5358.jpg",
                             "subtitle": "Vous serez redirigé vers notre site web",
                             "default_action": {
                                 "type": "web_url",
