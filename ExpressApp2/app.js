@@ -107,7 +107,7 @@ app.post('/ai', (req, res) => {
 
 
 
-        request.get(options, (error, response, body) => {
+        request.get('http://wsmcommerce-delta.integration.eco/api/v1/recherche/recette?mot=sucre', (error, response, body) => {
             if (error)
             {
                 console.log(error);
