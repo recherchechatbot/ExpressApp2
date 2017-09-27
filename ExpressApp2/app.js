@@ -161,8 +161,8 @@ app.post('/ai', (req, res) => {
                     "template_type": "generic",
                     "elements": [
                         {
-                            "title": myjson.Recettes[0].Titre,
-                            "image_url": myjson.Recettes[0].ImageUrl,
+                            "title": JSON.stringify(myjson.Recettes[0].Titre),
+                            "image_url": JSON.stringify(myjson.Recettes[0].ImageUrl),
                             "subtitle": "Vous serez redirigé vers notre site web",
                             "default_action": {
                                 "type": "web_url",
