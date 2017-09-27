@@ -104,7 +104,7 @@ app.post('/ai', (req, res) => {
         //const agent = new httpProxyAgent("http://proxy.netfective.com:3128/");
 
         var options = {
-            host: 'wsmcommerce.intermarche.com/',
+            host: 'wsmcommerce.intermarche.com',
             path: '/api/v1/recherche/recette?mot=sucre',
             method: 'GET',
             headers: {
