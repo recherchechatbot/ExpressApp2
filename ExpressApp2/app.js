@@ -93,6 +93,17 @@ app.post('/ai', (req, res) => {
         let nourriture2 = req.body.result.parameters['Nourriture1'];
         let nourriture3 = req.body.result.parameters['Nourriture2'];
         let nourriture4 = req.body.result.parameters['Nourriture21'];
+        let my_array = [nourriture1, nourriture2, nourriture3, nourriture4];
+
+        let resultat = '';
+        let estPremier = true;
+        for (var i = 0; i < my_array.length; i++) {
+            if (my_array[i] != null && my_array != '')
+            {
+                resultat += (estPremier ? '' : '%20') + my_array[i];
+                estPremier = false;
+            }
+        }
 
         console.log("Nourriture : " + nourriture1);
 
@@ -105,7 +116,7 @@ app.post('/ai', (req, res) => {
 
         var options = {
             host: 'wsmcommerce.intermarche.com',
-            path: '/api/v1/recherche/recette?mot=sucre',
+            path: `/api/v1/recherche/recette?mot=${resultat}`,
             method: 'GET',
             headers: {
                 'TokenAuthentification': '53c054d2-eb10-4890-a963-59de901a43ae'
