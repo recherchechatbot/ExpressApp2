@@ -3,6 +3,7 @@ const bodyParser = require('body-parser');
 const JSONbig = require('json-bigint');
 const app = express();
 const request = require('request');
+var http = require("http");
 const apiaiApp = require('apiai')('b1791ee1ebc14aa88140d78699ed0d93');
 const PAGE_ACCESS_TOKEN = 'EAAMkZAtH8lc4BAFZA7aVSHMp1JRANNRNe2tNnxWZCw0kX90l9Jons7nBzVaDI0fBjJOCLFMhq7AUJvOyjdO4OdpS6QrClDCYAob03KFpNkUZCyhhvDEDZA9tD3BvF0Jrad95DQJgGvV2d44T1EPZAzGFGJOWtHZADeMMcq02zYchAZDZD';
 app.use(bodyParser.json());
@@ -99,18 +100,41 @@ app.post('/ai', (req, res) => {
 
         console.log("11111111111111111111111111111111111111111111111111111111111111111111111");
 
-        request({
-            url: 'http://wsmcommerce-delta.integration.eco/api/v1/recherche/recette?mot=sucre',
+
+        var options = {
+            host: 'http://wsmcommerce-delta.integration.eco',
+            port: 80,
+            path: '/api/v1/recherche/recette?mot=sucre',
             method: 'GET',
-            headers: { 'TokenAuthentification': '4fccbe8f-a6a7-4230-a697-1fe6803720bf' }
-        }, function (error, response, body) {
-            if (error) {
-                console.log('Error sending messages: ', error)
-            } else if (response.body.error) {
-                console.log('Error: ', response.body.error)
+            headers: {
+                'Content-Type': 'application/json',
+                'TokenAuthentification': '4fccbe8f-a6a7-4230-a697-1fe6803720bf'
             }
-            console.log("body : " + response.body);
-        })
+        };
+
+        var req = http.request(options, function (res) {
+            var output = '';
+            console.log(options.host + ':' + res.statusCode);
+            res.setEncoding('utf8');
+
+            res.on('data', function (chunk) {
+                output += chunk;
+            });
+
+            res.on('end', function () {
+                var obj = JSON.parse(output);
+                //onResult(res.statusCode, obj);
+                console.log("obj = " + obj);
+            });
+        });
+
+        req.on('error', function (err) {
+            //res.send('error: ' + err.message);
+
+            console.log("errrrrrrrrrrrrror : " + err);
+        });
+
+        req.end();
         console.log("2222222222222222222222222222222222222222222222222222222222222222222222");
 
         let messagedata = JSON.stringify({
