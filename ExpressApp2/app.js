@@ -80,6 +80,7 @@ function sendMessage(event) {
 
 app.post('/ai', (req, res) => {
     let myjson = JSONbig(req.body);
+    console.log(myjson);
     let sender = myjson.originalRequest.data.sender.id;
     console.log("DEBUT POST AI");
     console.log("req : " + req);
