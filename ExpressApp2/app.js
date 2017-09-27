@@ -152,8 +152,9 @@ app.post('/ai', (req, res) => {
         req.end();
         console.log("2222222222222222222222222222222222222222222222222222222222222222222222");
         let myjson = JSONbig.parse(output);
-        console.log('titre' + myjson.Recettes[0].Titre);
-        console.log('imageurl' + myjson.Recettes[0].ImageUrl);
+        console.log(myjson);
+        //console.log('titre' + myjson.Recettes[0].Titre);
+        //console.log('imageurl' + myjson.Recettes[0].ImageUrl);
         let messagedata = JSON.stringify({
             "attachment": {
                 "type": "template",
