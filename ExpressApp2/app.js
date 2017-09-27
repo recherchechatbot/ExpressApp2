@@ -64,6 +64,7 @@ function sendMessage(event) {
             if (error) {
                 console.log('Error sending message: ', error);
             } else if (response.body.error) {
+                console.log('0000000000000000000000000000000')
                 console.log('Error: ', response.body.error);
             }
         });
