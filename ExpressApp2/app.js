@@ -193,6 +193,7 @@ app.post('/ai', (req, res) => {
             }
         };
         console.log('ereeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeees' + res);
+        console.log('bodyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy' + req.body);
         
         
         var options = {
