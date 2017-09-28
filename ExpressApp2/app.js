@@ -94,6 +94,8 @@ app.post('/ai', (req, res) => {
         
         getRecette(req.body.result.parameters)
             .then((recette) => {
+                console.log("/ai : on est dans le then (recette = " + recette + ")");
+
                 let messagedata = JSON.stringify({
                     "attachment": {
                         "type": "template",
@@ -142,7 +144,8 @@ app.post('/ai', (req, res) => {
                 });
             })
             .catch(err => {
-                console.log(err);
+
+                console.log("/ai : on est dans le catch (err = " + err + ")");
 
                 return res.json({
                     speech: "ERREUR : " + err,
@@ -155,6 +158,8 @@ app.post('/ai', (req, res) => {
 });
 
 function getRecette(param) {
+    console.log("getRecette : DEBUT (param = " + param + ")");
+
     let nourriture1 = param['Nourriture'];
     let nourriture2 = param['Nourriture1'];
     let nourriture3 = param['Nourriture2'];
@@ -172,19 +177,24 @@ function getRecette(param) {
 
     resultat = encodeURIComponent(resultat);
 
+    console.log("getRecette : resultat = " + resultat);
+
     var options = {
-        url: `http://wsmcommerce.intermarche.com/api/v1/recherche/recette?mot=${resultat}`,
+        method: 'GET',
+        uri: `http://wsmcommerce.intermarche.com/api/v1/recherche/recette?mot=${resultat}`,
         headers: {
             'TokenAuthentification': '53c054d2-eb10-4890-a963-59de901a43ae'
         }
     };
 
     return new Promise((resolve, reject) => {
-        request.get(options, (error, response) => {
+        request(options, (error, response) => {
             if (!error && response.statusCode == 200) {
+                console.log("getRecette : SUCCES RECUP RECETTES");
                 resolve(response.body);
             }
             else {
+                console.log("getRecette : ERREUR RECUP RECETTES");
                 reject(error);
             }
         })
