@@ -225,9 +225,10 @@ app.post('/ai', (req, res) => {
                 let myjson = JSONbig.parse(output);
                 console.log(output);
 
-                
 
-            });
+
+            })
+        };
         //});
 
         //req.on('error', function (err) {
