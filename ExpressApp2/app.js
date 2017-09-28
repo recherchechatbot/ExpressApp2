@@ -118,14 +118,14 @@ app.post('/ai', (req, res) => {
         console.log("11111111111111111111111111111111111111111111111111111111111111111111111");
 
         var options = {
-            method: 'GET',
             url: `http://wsmcommerce.intermarche.com/api/v1/recherche/recette?mot=${resultat}`,
             headers: {
                 'TokenAuthentification': '53c054d2-eb10-4890-a963-59de901a43ae'
             }
         };
 
-        function callback(error, response, body) {
+
+        request.get(options, (error, response, body) => {
             if (!error && response.statusCode == 200) {
                 var info = JSON.parse(body);
                 console.log(info.Recettes[0].Titre);
@@ -171,7 +171,9 @@ app.post('/ai', (req, res) => {
                         }
                     ]
                 });
-                console.log(messagedata)
+
+
+                console.log("on retourne le json number 1");
 
                 return res.json({
                     speech: messagedata,
@@ -180,9 +182,8 @@ app.post('/ai', (req, res) => {
                 });
 
             }
-            else
-            {
-                console.log("EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE");
+            else {
+                console.log("on retourne le json number 2");
 
                 return res.json({
                     speech: "ERRRRRRRRRRRRRRRRRRREUUUUUUUUUUUR",
@@ -191,9 +192,7 @@ app.post('/ai', (req, res) => {
 
                 });
             }
-        };
-        console.log('ereeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeees' + res);
-        console.log('bodyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy' + req.body);
+        })
         
         
         //var options = {
@@ -204,8 +203,7 @@ app.post('/ai', (req, res) => {
         //        'TokenAuthentification': '53c054d2-eb10-4890-a963-59de901a43ae'
         //    }
         //};
-        console.log("2222222222222222222222222222222222222222222222222222222222222222222222");
-        var t = request(options, callback);
+
         //var output = '';
         //var req = http.request(options, function (res) {
         //    console.log(options.host + ':' + res.statusCode);
