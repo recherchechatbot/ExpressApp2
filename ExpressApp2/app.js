@@ -171,7 +171,7 @@ app.post('/ai', (req, res) => {
                         }
                     ]
                 });
-                console.log(messagedata);
+                console.log(messagedata)
 
                 return res.json({
                     speech: messagedata,
@@ -192,15 +192,9 @@ app.post('/ai', (req, res) => {
                 });
             }
         };
+        console.log('ereeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeees' + res);
         
         
-
-
-
-
-
-
-
         var options = {
             host: 'wsmcommerce.intermarche.com',
             path: `/api/v1/recherche/recette?mot=${resultat}`,
