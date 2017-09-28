@@ -161,7 +161,7 @@ app.post('/ai', (req, res) => {
         let messagedata = 'Je suis désolé mais je ne comprends pas encore votre requête. Souhaitez vous que je vous redirige vers un interlocuteur humain?';
 
         return res.json({
-            speech: { text: messagedata },
+            speech: JSON.stringify({ text: messagedata }),
             message: messagedata,
             source: 'input.unknown'
         });
