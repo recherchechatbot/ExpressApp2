@@ -178,8 +178,6 @@ app.post('/ai', (req, res) => {
                     message: messagedata,
                     source: 'recherche_libre_recette'
                 });
-                console.log('SPEEEEEEEEEEEEEEEEEEEEEEEEEEEEEECH:' + speech);
-
 
             }
             else
@@ -193,9 +191,9 @@ app.post('/ai', (req, res) => {
 
                 });
             }
-        }
-
-        request(options, callback);
+        };
+        http.request(options, callback);
+        
 
 
 
