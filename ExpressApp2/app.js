@@ -60,7 +60,7 @@ function sendMessage(event) {
             method: 'POST',
             json: {
                 recipient: { id: sender },
-                message: 'voila ton message connard' 
+                message: { text: 'voila ton message connard' }
             }
         }, (error, response) => {
             if (error) {
