@@ -53,7 +53,7 @@ function sendMessage(event) {
 
         let aiText = response.result.fulfillment.speech;
         console.log('aaaaaaaaaaaaaaaaaaaaaaaaaaaaa' + aiText);
-        console.log('Response.Resullllltttt' + ': ' + response.result )
+        console.log('Response.Resullllltttt.FULLFIIIIIILLLL' + ': ' + response.result.fulfilllment);
 
         request({
             url: 'https://graph.facebook.com/v2.10/me/messages',
