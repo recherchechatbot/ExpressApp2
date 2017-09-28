@@ -178,7 +178,7 @@ app.post('/ai', (req, res) => {
                     message: messagedata,
                     source: 'recherche_libre_recette'
                 });
-                console.log('SPEEEEEEEEEEEEEEEEEEEEEEEEEEEEEECH:' + speech)
+                console.log('SPEEEEEEEEEEEEEEEEEEEEEEEEEEEEEECH:' + speech);
 
 
             }
