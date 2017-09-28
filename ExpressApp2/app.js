@@ -131,7 +131,7 @@ app.post('/ai', (req, res) => {
                 console.log(info.Recettes[0].Titre);
                 console.log(info.Recettes[0].ImageUrl);
 
-                let messagedata = JSON.stringify({
+                let messagedata = {
                     "attachment": {
                         "type": "template",
                         "payload": {
@@ -170,7 +170,7 @@ app.post('/ai', (req, res) => {
                             "payload": "Menu Principal"
                         }
                     ]
-                });
+                };
                 console.log(messagedata);
 
                 return res.json({
