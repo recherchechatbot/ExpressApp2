@@ -39,46 +39,9 @@ app.post('/webhook', (req, res) => {
     console.log("FIN POST WEBHOOK");
 });
 
-function sendMessage(event) {
-    let sender = event.sender.id;
-    let text = event.message.text;
 
-    let apiai = apiaiApp.textRequest(text, {
-        sessionId: 'tabby_cat' // use any arbitrary id
-    });
 
-    apiai.on('response', (response) => {
-        console.log("REPONSE API AI SUCCES");
-        console.log("response : " + response);
 
-        let aiText = response.result.fulfillment.speech;
-        console.log('aaaaaaaaaaaaaaaaaaaaaaaaaaaaa' + aiText);
-        console.log('Response.Resullllltttt' + ': ' + JSON.stringify(response.result));
-
-        request({
-            url: 'https://graph.facebook.com/v2.10/me/messages',
-            qs: { access_token: PAGE_ACCESS_TOKEN },
-            method: 'POST',
-            json: {
-                recipient: { id: sender },
-                message: aiText 
-            }
-        }, (error, response) => {
-            if (error) {
-                console.log('Error sending message: ', error);
-            } else if (response.body.error) {
-                console.log('Error: ', response.body.error);
-            }
-        });
-    });
-
-    apiai.on('error', (error) => {
-        console.log("REPONSE API AI ERREUR");
-        console.log(error);
-    });
-
-    apiai.end();
-}
 
 
 app.post('/ai', (req, res) => {
@@ -99,21 +62,20 @@ app.post('/ai', (req, res) => {
         let resultat = '';
         let estPremier = true;
         for (var i = 0; i < my_array.length; i++) {
-            if (my_array[i] != null && my_array != '')
-            {
+            if (my_array[i] != null && my_array != '') {
                 resultat += (estPremier ? '' : ' ') + my_array[i];
                 estPremier = false;
             }
         }
-        
+
 
         resultat = encodeURIComponent(resultat);
         console.log(resultat);
-        console.log("Nourriture : " + nourriture1 + ' ' +nourriture2);
+        console.log("Nourriture : " + nourriture1 + ' ' + nourriture2);
 
         let msg = 'Resultats des recettes avec:' + nourriture1 + ',' + nourriture2 + ',' + nourriture3 + ', et ' + nourriture4;
         console.log(msg);
-      
+
 
         console.log("11111111111111111111111111111111111111111111111111111111111111111111111");
 
@@ -193,8 +155,8 @@ app.post('/ai', (req, res) => {
                 });
             }
         })
-        
-        
+
+
         //var options = {
         //    host: 'wsmcommerce.intermarche.com',
         //    path: `/api/v1/recherche/recette?mot=${resultat}`,
@@ -223,7 +185,7 @@ app.post('/ai', (req, res) => {
 
         //    })
         //});
-       
+
         //});
 
         //req.on('error', function (err) {
@@ -231,13 +193,58 @@ app.post('/ai', (req, res) => {
         //});
 
         //req.end();
-        
-        
+
+
         //console.log('titre' + myjson.Recettes[0].Titre);
         //console.log('imageurl' + myjson.Recettes[0].ImageUrl);
-        
+
     }
 });
+
+
+
+function sendMessage(event) {
+    let sender = event.sender.id;
+    let text = event.message.text;
+
+    let apiai = apiaiApp.textRequest(text, {
+        sessionId: 'tabby_cat' // use any arbitrary id
+    });
+
+    apiai.on('response', (response) => {
+        console.log("REPONSE API AI SUCCES");
+        console.log("response : " + response);
+
+        let aiText = response.result.fulfillment.speech;
+        console.log('aaaaaaaaaaaaaaaaaaaaaaaaaaaaa' + aiText);
+        console.log('Response.Resullllltttt' + ': ' + JSON.stringify(response.result));
+
+        request({
+            url: 'https://graph.facebook.com/v2.10/me/messages',
+            qs: { access_token: PAGE_ACCESS_TOKEN },
+            method: 'POST',
+            json: {
+                recipient: { id: sender },
+                message: aiText 
+            }
+        }, (error, response) => {
+            if (error) {
+                console.log('Error sending message: ', error);
+            } else if (response.body.error) {
+                console.log('Error: ', response.body.error);
+            }
+        });
+    });
+
+    apiai.on('error', (error) => {
+        console.log("REPONSE API AI ERREUR");
+        console.log(error);
+    });
+
+    apiai.end();
+}
+
+
       
         
 
