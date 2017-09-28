@@ -49,12 +49,9 @@ function sendMessage(event) {
 
     apiai.on('response', (response) => {
         console.log("REPONSE API AI SUCCES");
-        console.log("response : " + response);
+        console.log("response : " + JSON.stringify(response));
 
         let aiText = response.result.fulfillment.speech;
-       
-        console.log('aaaaaaaaaaaaaaaaaaaaaaaaaaaaa' + aiText);
-        console.log('Response.Resullllltttt' + ': ' + JSON.stringify(response.result));
 
         request({
             url: 'https://graph.facebook.com/v2.10/me/messages',
@@ -103,19 +100,19 @@ app.post('/ai', (req, res) => {
                             "template_type": "generic",
                             "elements": [
                                 {
-                                    "title": recette.Recettes[0].Titre,
-                                    "image_url": recette.Recettes[0].ImageUrl,
+                                    "title": recette[0].Titre,
+                                    "image_url": recette[0].ImageUrl,
                                     "subtitle": "Vous serez redirigé vers notre site web",
                                     "default_action": {
                                         "type": "web_url",
-                                        "url": `https://www.intermarche.com/home/canal-intermarche/recettes/liste-recette.searchRecette.do?keyword=${nourriture1}&type-plat=&redirectUrl=%2Fcms%2Frender%2Flive%2Ffr_FR%2Fsites%2Fintermarche%2Fhome%2Fcanal-intermarche%2Frecettes%2Fliste-recette.html&chercher-recettes=Chercher`,
+                                        "url": "http://google.fr",
                                         "webview_height_ratio": "tall"
                                     },
                                     "buttons": [
                                         {
                                             "title": "Cliquez ici",
                                             "type": "web_url",
-                                            "url": `https://www.intermarche.com/home/canal-intermarche/recettes/liste-recette.searchRecette.do?keyword=${nourriture1}&type-plat=&redirectUrl=%2Fcms%2Frender%2Flive%2Ffr_FR%2Fsites%2Fintermarche%2Fhome%2Fcanal-intermarche%2Frecettes%2Fliste-recette.html&chercher-recettes=Chercher`,
+                                            "url": "http://google.fr",
                                             "webview_height_ratio": "tall"
                                         }
                                     ]
@@ -179,9 +176,11 @@ function getRecette(param) {
 
     console.log("getRecette : resultat = " + resultat);
 
+    //http://wsmcommerce.intermarche.com/api/v1/recherche/recette?mot=${resultat},
+
     var options = {
         method: 'GET',
-        uri: `http://wsmcommerce.intermarche.com/api/v1/recherche/recette?mot=${resultat}`,
+        uri: `http://wsmcommerce.intermarche.com/api/v1/recette`,
         headers: {
             'TokenAuthentification': '53c054d2-eb10-4890-a963-59de901a43ae'
         }
