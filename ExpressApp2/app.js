@@ -184,7 +184,7 @@ app.post('/ai', (req, res) => {
             {
                 console.log("EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE");
 
-                return res.json({
+                return response.json({
                     speech: "ERRRRRRRRRRRRRRRRRRREUUUUUUUUUUUR",
                     message: "ERRRRRRRRRRRRRRRRRRREUUUUUUUUUUUR",
                     source: 'recherche_libre_recette'
