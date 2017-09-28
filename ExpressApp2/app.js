@@ -51,7 +51,7 @@ function sendMessage(event) {
         console.log("REPONSE API AI SUCCES");
         console.log("response : " + JSON.stringify(response));
 
-        let aiText = response.result.fulfillment.speech;
+        let aiText = response.fulfillment.speech;
 
         request({
             url: 'https://graph.facebook.com/v2.10/me/messages',
