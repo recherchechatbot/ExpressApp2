@@ -60,7 +60,7 @@ function sendMessage(event) {
             method: 'POST',
             json: {
                 recipient: { id: sender },
-                message: { text: 'voila ton message connard' }
+                message: aiText 
             }
         }, (error, response) => {
             if (error) {
@@ -161,7 +161,7 @@ app.post('/ai', (req, res) => {
         let messagedata = 'Je suis désolé mais je ne comprends pas encore votre requête. Souhaitez vous que je vous redirige vers un interlocuteur humain?';
 
         return res.json({
-            speech: messagedata,
+            speech: { text: messagedata },
             message: messagedata,
             source: 'input.unknown'
         });
