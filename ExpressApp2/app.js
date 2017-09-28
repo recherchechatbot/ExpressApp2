@@ -91,47 +91,9 @@ app.post('/ai', (req, res) => {
     console.log("DEBUT POST AI");
     console.log("req : " + req);
     if (req.body.result.action === 'recherche_libre_recette') {
-        let nourriture1 = req.body.result.parameters['Nourriture'];
-        let nourriture2 = req.body.result.parameters['Nourriture1'];
-        let nourriture3 = req.body.result.parameters['Nourriture2'];
-        let nourriture4 = req.body.result.parameters['Nourriture21'];
-        let my_array = [nourriture1, nourriture2, nourriture3, nourriture4];
-
-        let resultat = '';
-        let estPremier = true;
-        for (var i = 0; i < my_array.length; i++) {
-            if (my_array[i] != null && my_array != '')
-            {
-                resultat += (estPremier ? '' : ' ') + my_array[i];
-                estPremier = false;
-            }
-        }
         
-
-        resultat = encodeURIComponent(resultat);
-        console.log(resultat);
-        console.log("Nourriture : " + nourriture1 + ' ' +nourriture2);
-
-        let msg = 'Resultats des recettes avec:' + nourriture1 + ',' + nourriture2 + ',' + nourriture3 + ', et ' + nourriture4;
-        console.log(msg);
-      
-
-        console.log("11111111111111111111111111111111111111111111111111111111111111111111111");
-
-        var options = {
-            url: `http://wsmcommerce.intermarche.com/api/v1/recherche/recette?mot=${resultat}`,
-            headers: {
-                'TokenAuthentification': '53c054d2-eb10-4890-a963-59de901a43ae'
-            }
-        };
-
-        console.log('ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ');
-        request.get(options, (error, response, body) => {
-            if (!error && response.statusCode == 200) {
-                var info = JSON.parse(body);
-                console.log(info.Recettes[0].Titre);
-                console.log(info.Recettes[0].ImageUrl);
-
+        getRecette(req.body.result.parameters)
+            .then((recette) => {
                 let messagedata = JSON.stringify({
                     "attachment": {
                         "type": "template",
@@ -139,8 +101,8 @@ app.post('/ai', (req, res) => {
                             "template_type": "generic",
                             "elements": [
                                 {
-                                    "title": info.Recettes[0].Titre,
-                                    "image_url": info.Recettes[0].ImageUrl,
+                                    "title": recette.Recettes[0].Titre,
+                                    "image_url": recette.Recettes[0].ImageUrl,
                                     "subtitle": "Vous serez redirigé vers notre site web",
                                     "default_action": {
                                         "type": "web_url",
@@ -173,119 +135,60 @@ app.post('/ai', (req, res) => {
                     ]
                 });
 
-
-                console.log("on retourne le json number 1");
-
                 return res.json({
                     speech: messagedata,
                     message: messagedata,
                     source: 'recherche_libre_recette'
                 });
-
-            }
-            else {
-                console.log("on retourne le json number 2");
+            })
+            .catch(err => {
+                console.log(err);
 
                 return res.json({
-                    speech: "ERRRRRRRRRRRRRRRRRRREUUUUUUUUUUUR",
-                    message: "ERRRRRRRRRRRRRRRRRRREUUUUUUUUUUUR",
+                    speech: "ERREUR : " + err,
+                    message: "ERREUR : " + err,
                     source: 'recherche_libre_recette'
-
                 });
-            }
-            
-        })
-        
-        
-        //var options = {
-        //    host: 'wsmcommerce.intermarche.com',
-        //    path: `/api/v1/recherche/recette?mot=${resultat}`,
-        //    method: 'GET',
-        //    headers: {
-        //        'TokenAuthentification': '53c054d2-eb10-4890-a963-59de901a43ae'
-        //    }
-        //};
-
-        //var output = '';
-        //var req = http.request(options, function (res) {
-        //    console.log(options.host + ':' + res.statusCode);
-        //    res.setEncoding('utf8');
-
-        //    res.on('data', function (chunk) {
-        //        output += chunk;
-        //    });
-
-        //    res.on('end', function () {
-        //        console.log("output = " + output);
-
-        //        let myjson = JSONbig.parse(output);
-        //        console.log(output);
-
-
-
-        //    })
-        //});
-       
-        //});
-
-        //req.on('error', function (err) {
-        //    console.log("errrrrrrrrrrrrror : " + err);
-        //});
-
-        //req.end();
-        
-        
-        //console.log('titre' + myjson.Recettes[0].Titre);
-        //console.log('imageurl' + myjson.Recettes[0].ImageUrl);
+            });
         
     }
 });
-      
-        
 
+function getRecette(param) {
+    let nourriture1 = param['Nourriture'];
+    let nourriture2 = param['Nourriture1'];
+    let nourriture3 = param['Nourriture2'];
+    let nourriture4 = param['Nourriture21'];
+    let my_array = [nourriture1, nourriture2, nourriture3, nourriture4];
 
-        //let restUrl = 'http://api.openweathermap.org/data/2.5/weather?APPID=' + WEATHER_API_KEY + '&q=' + city;
+    let resultat = '';
+    let estPremier = true;
+    for (var i = 0; i < my_array.length; i++) {
+        if (my_array[i] != null && my_array != '') {
+            resultat += (estPremier ? '' : ' ') + my_array[i];
+            estPremier = false;
+        }
+    }
 
-        //request.get(restUrl, (err, response, body) => {
-        //    if (!err && response.statusCode == 200) {
-        //        let json = JSON.parse(body);
-        //        let msg = json.weather[0].description + ' and the temperature is ' + json.main.temp + ' ℉';
-        //        return res.json({
-        //            speech: msg,
-        //            displayText: msg,
-        //            source: 'weather'
-        //        });
-        //    } else {
-        //        return res.status(400).json({
-        //            status: {
-        //                code: 400,
-        //                errorType: 'I failed to look up the city name.'
-        //            }
-        //        });
-        //    }
-        //})
-//    }
-//    console.log("FIN POST AI");
-//})
+    resultat = encodeURIComponent(resultat);
 
+    var options = {
+        url: `http://wsmcommerce.intermarche.com/api/v1/recherche/recette?mot=${resultat}`,
+        headers: {
+            'TokenAuthentification': '53c054d2-eb10-4890-a963-59de901a43ae'
+        }
+    };
 
-//function sendGenericMessage(sender, messagedata) {
-//    request({
-//        url: 'https://graph.facebook.com/v2.10/me/messages',
-//        qs: { access_token: PAGE_ACCESS_TOKEN },
-//        method: 'POST',
-//        json: {
-//            recipient: { id: sender },
-//            message: messageData,
-//        }
-//    }, function (error, response, body) {
-//        if (error) {
-//            console.log('Error sending messages: ', error)
-//        } else if (response.body.error) {
-//            console.log('Error: ', response.body.error)
-//        }
-//    })
-//}
-
+    return new Promise((resolve, reject) => {
+        request.get(options, (error, response) => {
+            if (!error && response.statusCode == 200) {
+                resolve(response.body);
+            }
+            else {
+                reject(error);
+            }
+        })
+    })
+}
 
 
