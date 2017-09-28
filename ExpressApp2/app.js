@@ -52,6 +52,7 @@ function sendMessage(event) {
         console.log("response : " + response);
 
         let aiText = response.result.fulfillment.speech;
+        console.log('aaaaaaaaaaaaaaaaaaaaaaaaaaaaa' + aiText);
 
         request({
             url: 'https://graph.facebook.com/v2.10/me/messages',
@@ -65,7 +66,7 @@ function sendMessage(event) {
             if (error) {
                 console.log('Error sending message: ', error);
             } else if (response.body.error) {
-                console.log('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa' + response.body);
+                console.log(response.body);
                 console.log('Error: ', response.body.error);
             }
         });
