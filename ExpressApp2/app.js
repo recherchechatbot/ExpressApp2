@@ -205,7 +205,7 @@ app.post('/ai', (req, res) => {
         //    }
         //};
         console.log("2222222222222222222222222222222222222222222222222222222222222222222222");
-        return request(options, callback);
+        var t = request(options, callback);
         //var output = '';
         //var req = http.request(options, function (res) {
         //    console.log(options.host + ':' + res.statusCode);
