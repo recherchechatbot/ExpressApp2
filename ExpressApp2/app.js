@@ -228,7 +228,7 @@ app.post('/ai', (req, res) => {
 
 
             })
-        };
+        })
         //});
 
         //req.on('error', function (err) {
