@@ -154,9 +154,9 @@ app.post('/ai', (req, res) => {
             });
         
     };
-    if (req.body.result.action === 'input.unknown') {
+    else if (req.body.result.action === 'input.unknown') {
 
-        let messagedata = 'Je suis désolé mais je ne comprends pas encore votre requête. Souhaitez vous que je vous redirige vers un interlocuteur humain?'
+        let messagedata = 'Je suis désolé mais je ne comprends pas encore votre requête. Souhaitez vous que je vous redirige vers un interlocuteur humain?';
 
         return res.json({
             speech: messagedata,
