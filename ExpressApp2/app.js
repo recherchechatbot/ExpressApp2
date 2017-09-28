@@ -119,7 +119,7 @@ app.post('/ai', (req, res) => {
 
         var options = {
             method: 'GET',
-            url: 'http://wsmcommerce.intermarche.com/api/v1/recherche/recette?mot=poulet',
+            url: `http://wsmcommerce.intermarche.com/api/v1/recherche/recette?mot=${resultat}`,
             headers: {
                 'TokenAuthentification': '53c054d2-eb10-4890-a963-59de901a43ae'
             }
@@ -173,7 +173,7 @@ app.post('/ai', (req, res) => {
                 });
                 console.log(messagedata)
 
-                return response.json({
+                return res.json({
                     speech: messagedata,
                     message: messagedata,
                     source: 'recherche_libre_recette'
@@ -184,7 +184,7 @@ app.post('/ai', (req, res) => {
             {
                 console.log("EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE");
 
-                return response.json({
+                return res.json({
                     speech: "ERRRRRRRRRRRRRRRRRRREUUUUUUUUUUUR",
                     message: "ERRRRRRRRRRRRRRRRRRREUUUUUUUUUUUR",
                     source: 'recherche_libre_recette'
@@ -196,14 +196,14 @@ app.post('/ai', (req, res) => {
         console.log('bodyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy' + req.body);
         
         
-        var options = {
-            host: 'wsmcommerce.intermarche.com',
-            path: `/api/v1/recherche/recette?mot=${resultat}`,
-            method: 'GET',
-            headers: {
-                'TokenAuthentification': '53c054d2-eb10-4890-a963-59de901a43ae'
-            }
-        };
+        //var options = {
+        //    host: 'wsmcommerce.intermarche.com',
+        //    path: `/api/v1/recherche/recette?mot=${resultat}`,
+        //    method: 'GET',
+        //    headers: {
+        //        'TokenAuthentification': '53c054d2-eb10-4890-a963-59de901a43ae'
+        //    }
+        //};
         request(options, callback);
         //var output = '';
         //var req = http.request(options, function (res) {
