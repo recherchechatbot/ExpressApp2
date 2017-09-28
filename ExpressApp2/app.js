@@ -91,8 +91,9 @@ app.post('/ai', (req, res) => {
         
         getRecette(req.body.result.parameters)
             .then((r) => {
-                console.log("/ai : on est dans le then (recette = " + recette + ")");
                 var listeRecette = JSONbig.parse(r);
+
+                console.log("/ai : on est dans le then (listeRecette = " + listeRecette + ")");
 
                 let messagedata = JSON.stringify({
                     "attachment": {
