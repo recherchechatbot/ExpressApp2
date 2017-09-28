@@ -44,7 +44,7 @@ function sendMessage(event) {
     let text = event.message.text;
 
     let apiai = apiaiApp.textRequest(text, {
-        sessionId: 'tabby_cat' // use any arbitrary id
+        sessionId: 'Wesh_Wesh_Wesh' // use any arbitrary id
     });
 
     apiai.on('response', (response) => {
