@@ -53,7 +53,7 @@ function sendMessage(event) {
 
         let aiText = response.result.fulfillment.speech;
         console.log('aaaaaaaaaaaaaaaaaaaaaaaaaaaaa' + aiText);
-        console.log('Response.Resullllltttt.FULLFIIIIIILLLL' + ': ' + response.result.fulfilllment);
+        console.log('Response.Resullllltttt' + ': ' + JSON.stringify(response.result));
 
         request({
             url: 'https://graph.facebook.com/v2.10/me/messages',
@@ -67,7 +67,6 @@ function sendMessage(event) {
             if (error) {
                 console.log('Error sending message: ', error);
             } else if (response.body.error) {
-                console.log(response.body);
                 console.log('Error: ', response.body.error);
             }
         });
@@ -275,23 +274,23 @@ app.post('/ai', (req, res) => {
 //})
 
 
-function sendGenericMessage(sender, messagedata) {
-    request({
-        url: 'https://graph.facebook.com/v2.10/me/messages',
-        qs: { access_token: PAGE_ACCESS_TOKEN },
-        method: 'POST',
-        json: {
-            recipient: { id: sender },
-            message: messageData,
-        }
-    }, function (error, response, body) {
-        if (error) {
-            console.log('Error sending messages: ', error)
-        } else if (response.body.error) {
-            console.log('Error: ', response.body.error)
-        }
-    })
-}
+//function sendGenericMessage(sender, messagedata) {
+//    request({
+//        url: 'https://graph.facebook.com/v2.10/me/messages',
+//        qs: { access_token: PAGE_ACCESS_TOKEN },
+//        method: 'POST',
+//        json: {
+//            recipient: { id: sender },
+//            message: messageData,
+//        }
+//    }, function (error, response, body) {
+//        if (error) {
+//            console.log('Error sending messages: ', error)
+//        } else if (response.body.error) {
+//            console.log('Error: ', response.body.error)
+//        }
+//    })
+//}
 
 
 
