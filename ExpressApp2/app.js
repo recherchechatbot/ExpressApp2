@@ -51,8 +51,8 @@ function sendMessage(event) {
         console.log("REPONSE API AI SUCCES");
         console.log("response : " + response);
 
-        //let aiText = response.result.fulfillment.speech;
-        let aiText = messagedata;
+        let aiText = response.result.fulfillment.speech;
+       
         console.log('aaaaaaaaaaaaaaaaaaaaaaaaaaaaa' + aiText);
         console.log('Response.Resullllltttt' + ': ' + JSON.stringify(response.result));
 
