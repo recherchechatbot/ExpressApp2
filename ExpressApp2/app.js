@@ -39,47 +39,47 @@ app.post('/webhook', (req, res) => {
     console.log("FIN POST WEBHOOK");
 });
 
-function sendMessage(event) {
-    let sender = event.sender.id;
-    let text = event.message.text;
+//function sendMessage(event) {
+//    let sender = event.sender.id;
+//    let text = event.message.text;
 
-    let apiai = apiaiApp.textRequest(text, {
-        sessionId: 'tabby_cat' // use any arbitrary id
-    });
+//    let apiai = apiaiApp.textRequest(text, {
+//        sessionId: 'tabby_cat' // use any arbitrary id
+//    });
 
-    apiai.on('response', (response) => {
-        console.log("REPONSE API AI SUCCES");
-        console.log("response : " + response);
+//    apiai.on('response', (response) => {
+//        console.log("REPONSE API AI SUCCES");
+//        console.log("response : " + response);
 
-        let aiText = response.result.fulfillment.speech;
+//        let aiText = response.result.fulfillment.speech;
        
-        console.log('aaaaaaaaaaaaaaaaaaaaaaaaaaaaa' + aiText);
-        console.log('Response.Resullllltttt' + ': ' + JSON.stringify(response.result));
+//        console.log('aaaaaaaaaaaaaaaaaaaaaaaaaaaaa' + aiText);
+//        console.log('Response.Resullllltttt' + ': ' + JSON.stringify(response.result));
 
-        request({
-            url: 'https://graph.facebook.com/v2.10/me/messages',
-            qs: { access_token: PAGE_ACCESS_TOKEN },
-            method: 'POST',
-            json: {
-                recipient: { id: sender },
-                message: aiText 
-            }
-        }, (error, response) => {
-            if (error) {
-                console.log('Error sending message: ', error);
-            } else if (response.body.error) {
-                console.log('Error: ', response.body.error);
-            }
-        });
-    });
+//        request({
+//            url: 'https://graph.facebook.com/v2.10/me/messages',
+//            qs: { access_token: PAGE_ACCESS_TOKEN },
+//            method: 'POST',
+//            json: {
+//                recipient: { id: sender },
+//                message: aiText 
+//            }
+//        }, (error, response) => {
+//            if (error) {
+//                console.log('Error sending message: ', error);
+//            } else if (response.body.error) {
+//                console.log('Error: ', response.body.error);
+//            }
+//        });
+//    });
 
-    apiai.on('error', (error) => {
-        console.log("REPONSE API AI ERREUR");
-        console.log(error);
-    });
+//    apiai.on('error', (error) => {
+//        console.log("REPONSE API AI ERREUR");
+//        console.log(error);
+//    });
 
-    apiai.end();
-}
+//    apiai.end();
+//}
 
 
 app.post('/ai', (req, res) => {
@@ -193,6 +193,45 @@ app.post('/ai', (req, res) => {
 
                 });
             }
+            let sender = event.sender.id;
+            let text = event.message.text;
+
+            let apiai = apiaiApp.textRequest(text, {
+                sessionId: 'tabby_cat' // use any arbitrary id
+            });
+
+            apiai.on('response', (response) => {
+                console.log("REPONSE API AI SUCCES");
+                console.log("response : " + response);
+
+                let aiText = response.result.fulfillment.speech;
+
+                console.log('aaaaaaaaaaaaaaaaaaaaaaaaaaaaa' + aiText);
+                console.log('Response.Resullllltttt' + ': ' + JSON.stringify(response.result));
+
+                request({
+                    url: 'https://graph.facebook.com/v2.10/me/messages',
+                    qs: { access_token: PAGE_ACCESS_TOKEN },
+                    method: 'POST',
+                    json: {
+                        recipient: { id: sender },
+                        message: aiText
+                    }
+                }, (error, response) => {
+                    if (error) {
+                        console.log('Error sending message: ', error);
+                    } else if (response.body.error) {
+                        console.log('Error: ', response.body.error);
+                    }
+                });
+            });
+
+            apiai.on('error', (error) => {
+                console.log("REPONSE API AI ERREUR");
+                console.log(error);
+            });
+
+            apiai.end();
         })
         
         
