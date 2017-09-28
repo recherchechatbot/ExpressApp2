@@ -204,7 +204,8 @@ app.post('/ai', (req, res) => {
         //        'TokenAuthentification': '53c054d2-eb10-4890-a963-59de901a43ae'
         //    }
         //};
-        request(options, callback);
+        console.log("2222222222222222222222222222222222222222222222222222222222222222222222");
+        return request(options, callback);
         //var output = '';
         //var req = http.request(options, function (res) {
         //    console.log(options.host + ':' + res.statusCode);
@@ -232,7 +233,7 @@ app.post('/ai', (req, res) => {
         //});
 
         //req.end();
-        console.log("2222222222222222222222222222222222222222222222222222222222222222222222");
+        
         
         //console.log('titre' + myjson.Recettes[0].Titre);
         //console.log('imageurl' + myjson.Recettes[0].ImageUrl);
