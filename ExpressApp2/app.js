@@ -51,6 +51,7 @@ function sendMessage(event) {
         console.log("REPONSE API AI SUCCES");
         console.log("response : " + JSON.stringify(response));
 
+        console.log("response.result.fulfillment.speech = " + response.result.fulfillment.speech);
         let aiText = response.result.fulfillment.speech;
 
         request({
@@ -164,8 +165,6 @@ app.post('/ai', (req, res) => {
             message: messagedata,
             source: 'input.unknown'
         });
-
-        console.log('fin elsif');
     }
 });
 
