@@ -173,7 +173,7 @@ app.post('/ai', (req, res) => {
                 });
                 console.log(messagedata)
 
-                return res.json({
+                return response.json({
                     speech: messagedata,
                     message: messagedata,
                     source: 'recherche_libre_recette'
@@ -204,27 +204,27 @@ app.post('/ai', (req, res) => {
                 'TokenAuthentification': '53c054d2-eb10-4890-a963-59de901a43ae'
             }
         };
-
-        var output = '';
-        var req = http.request(options, function (res) {
-            console.log(options.host + ':' + res.statusCode);
-            res.setEncoding('utf8');
-
-            res.on('data', function (chunk) {
-                output += chunk;
-            });
-
-            res.on('end', function () {
-                console.log("output = " + output);
-
-                let myjson = JSONbig.parse(output);
-                console.log(output);
-
-
-
-            })
-        });
         request(options, callback);
+        //var output = '';
+        //var req = http.request(options, function (res) {
+        //    console.log(options.host + ':' + res.statusCode);
+        //    res.setEncoding('utf8');
+
+        //    res.on('data', function (chunk) {
+        //        output += chunk;
+        //    });
+
+        //    res.on('end', function () {
+        //        console.log("output = " + output);
+
+        //        let myjson = JSONbig.parse(output);
+        //        console.log(output);
+
+
+
+        //    })
+        //});
+       
         //});
 
         //req.on('error', function (err) {
