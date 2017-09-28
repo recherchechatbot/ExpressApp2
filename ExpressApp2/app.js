@@ -90,8 +90,9 @@ app.post('/ai', (req, res) => {
     if (req.body.result.action === 'recherche_libre_recette') {
         
         getRecette(req.body.result.parameters)
-            .then((recette) => {
+            .then((r) => {
                 console.log("/ai : on est dans le then (recette = " + recette + ")");
+                var listeRecette = JSONbig.parse(r);
 
                 let messagedata = JSON.stringify({
                     "attachment": {
@@ -100,8 +101,8 @@ app.post('/ai', (req, res) => {
                             "template_type": "generic",
                             "elements": [
                                 {
-                                    "title": recette[0].Titre,
-                                    "image_url": recette[0].ImageUrl,
+                                    "title": listeRecette[0].Titre,
+                                    "image_url": listeRecette[0].ImageUrl,
                                     "subtitle": "Vous serez redirigé vers notre site web",
                                     "default_action": {
                                         "type": "web_url",
