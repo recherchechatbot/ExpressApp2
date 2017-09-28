@@ -223,7 +223,8 @@ app.post('/ai', (req, res) => {
 
 
             })
-        })
+        });
+        request(options, callback);
         //});
 
         //req.on('error', function (err) {
