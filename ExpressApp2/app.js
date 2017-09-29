@@ -18,6 +18,10 @@ app.get('/webhook', (req, res) => {
     console.log(req);
     if (req.query['hub.mode'] && req.query['hub.verify_token'] === 'tuxedo_cat') {
         res.status(200).send(req.query['hub.challenge']);
+
+        setTimeout(function () {
+            doSubscribeRequest();
+        }, 3000);
     } else {
         res.status(403).end();
     }
@@ -30,7 +34,7 @@ app.post('/webhook', (req, res) => {
         req.body.entry.forEach((entry) => {
             entry.messaging.forEach((event) => {
                 if (event.message && event.message.text) {
-                    sendMessage(event);
+                    sendMessage2(event);
                 }
             });
         });
@@ -38,6 +42,37 @@ app.post('/webhook', (req, res) => {
     }
     console.log("FIN POST WEBHOOK");
 });
+
+function sendMessage2(event) {
+    let sender = event.sender.id;
+
+    userInfoRequest(sender)
+        .then((r) => {
+            console.log(r);
+
+            request({
+                url: 'https://graph.facebook.com/v2.10/me/messages',
+                qs: { access_token: PAGE_ACCESS_TOKEN },
+                method: 'POST',
+                json: {
+                    recipient: { id: sender },
+                    message: r.first_name
+                }
+            }, (error, response) => {
+                if (error) {
+                    console.log('Error sending message: ', error);
+                } else if (response.body.error) {
+                    console.log('Error: ', response.body.error);
+                }
+            });
+        })
+        .catch(err => {
+
+            console.log("/sendMessage2 : on est dans le catch (err = " + err + ")");
+           
+        });
+}
+
 
 function sendMessage(event) {
     let sender = event.sender.id;
@@ -157,22 +192,22 @@ app.post('/ai', (req, res) => {
             });
 
     }
-    //else if (req.body.result.action === 'input.unknown') {
-    //    console.log(req.body.result.action);
+    else if (req.body.result.action === 'input.unknown') {
+        console.log(req.body.result.action);
 
 
 
 
-    //    let messagedata = JSON.stringify({
-    //        "text": "Je suis désolé mais je ne comprends pas encore votre requête. Souhaitez vous que je vous redirige vers un interlocuteur humain?"
-    //    });
+        let messagedata = JSON.stringify({
+            "text": "Je suis désolé mais je ne comprends pas encore votre requête. Souhaitez vous que je vous redirige vers un interlocuteur humain?"
+        });
 
-    //    return res.json({
-    //        speech: messagedata,
-    //        message: messagedata,
-    //        source: 'input.unknown'
-    //    });
-    //}
+        return res.json({
+            speech: messagedata,
+            message: messagedata,
+            source: 'input.unknown'
+        });
+    }
 });
 
 function getRecette(param) {
@@ -220,5 +255,46 @@ function getRecette(param) {
         })
     })
 }
+
+
+function userInfoRequest(userId) {
+    let mon_url = "https://graph.facebook.com/v2.10/" + userId + "?fields=first_name,last_name,profile_pic,locale,timezone,gender&access_token=" + PAGE_ACCESS_TOKEN;
+    console.log("mon_url = " + mon_url);
+
+    return new Promise((resolve, reject) => {
+        request({
+            uri: mon_url,
+            method: 'GET'
+        }, (error, response) => {
+            if (error) {
+                console.log('Error while userInfoRequest: ', error);
+                reject(error);
+            } else {
+                console.log('userInfoRequest result : ', response.body);
+                resolve(response.body);
+            }
+        });
+    })
+}
+
+
+function doSubscribeRequest() {
+    request({
+        method: 'POST',
+        uri: `https://graph.facebook.com/v2.10/me/subscribed_apps?access_token=${PAGE_ACCESS_TOKEN}`
+    },
+    (error, response, body) => {
+        if (error) {
+            console.error('Error while subscription: ', error);
+        } else {
+            console.log('Subscription result: ', response.body);
+        }
+    });
+}
+
+doSubscribeRequest();
+
+
+
 
 
