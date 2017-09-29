@@ -212,6 +212,7 @@ app.post('/ai', (req, res) => {
         console.log(req.body.result.action);
 
         let messagedata = JSON.stringify({
+            "text": "allez vous faire foutre",
             "attachment": {
                 "type": "template",
                 "payload": {
