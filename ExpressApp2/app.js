@@ -92,7 +92,7 @@ function sendMessage(event) {
         console.log("response : " + JSON.stringify(response));
 
         console.log("response.result.fulfillment.speech = " + response.result.fulfillment.speech);
-        let aiText = response.result.fulfillment.speech;
+        let aiText = response.result.fulfillment.messages;
 
         request({
             url: 'https://graph.facebook.com/v2.10/me/messages',
@@ -238,7 +238,7 @@ app.post('/ai', (req, res) => {
                 "speech": "Comment puis-je vous aider? Vous pouvez choisir une catégorie dans le menu ci-dessous ou directement me poser votre question. Vous pouvez revenir à ce menu à tout moment, tout simplement en tapant la commande \"menu\"."
             }
         ]);
-
+        console.log(messagedata);
 
         return res.json({
             speech: messagedata,
