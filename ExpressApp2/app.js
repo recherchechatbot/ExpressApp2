@@ -219,20 +219,20 @@ app.post('/ai', (req, res) => {
                     "elements": [
                         {
                             "title": "Menu Principal",
-                            "image_url": "https://img11.hostingpics.net/pics/345337MenuPrincipal.png"
-                        },
-                        "buttons": [
-                            {
-                                "title": "Recettes",
-                                "type": "postback",
-                                "webview_height_ratio": "tall"
-                            },
-                            {
-                                "title": "Faire ses courses",
-                                "type": "postback",
-                                "webview_height_ratio": "tall"
-                            }
-                        ]
+                            "image_url": "https://img11.hostingpics.net/pics/345337MenuPrincipal.png",
+                            "buttons": [
+                                {
+                                    "title": "Recettes",
+                                    "type": "postback",
+                                    "webview_height_ratio": "tall"
+                                },
+                                {
+                                    "title": "Faire ses courses",
+                                    "type": "postback",
+                                    "webview_height_ratio": "tall"
+                                }
+                            ]
+                        }
                     ]
                 }
             }
