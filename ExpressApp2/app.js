@@ -89,7 +89,7 @@ app.post('/ai', (req, res) => {
     //let sender = myjson.originalRequest.data.sender.id;
     //console.log(sender);
     console.log("DEBUT POST AI");
-    console.log("req : " + req);
+    console.log("req : " + JSON.stringify(req));
     if (req.body.result.action === 'recherche_libre_recette') {
 
         getRecette(req.body.result.parameters)
