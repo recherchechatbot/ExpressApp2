@@ -43,6 +43,8 @@ function sendMessage(event) {
     let sender = event.sender.id;
     let text = event.message.text;
 
+    console.log("ENVOI A API.AI text = " + text);
+
     let apiai = apiaiApp.textRequest(text, {
         sessionId: 'Wesh_Wesh_Wesh' // use any arbitrary id
     });
