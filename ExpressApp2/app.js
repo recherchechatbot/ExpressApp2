@@ -211,8 +211,7 @@ app.post('/ai', (req, res) => {
     else if (req.body.result.action === 'Menu.Principal') {
         console.log(req.body.result.action);
 
-        let messagedata = JSON.stringify({
-            "text": "allez vous faire foutre",
+        let messagedata = {
             "attachment": {
                 "type": "template",
                 "payload": {
@@ -220,6 +219,7 @@ app.post('/ai', (req, res) => {
                     "elements": [
                         {
                             "title": "Menu Principal",
+                            "subtitle": "Comment puis-je vous aider? Vous pouvez choisir une catégorie dans le menu ci-dessous ou directement me poser votre question. Vous pouvez revenir à ce menu à tout moment, tout simplement en tapant la commande \"menu\".",
                             "image_url": "https://img11.hostingpics.net/pics/345337MenuPrincipal.png",
                             "buttons": [
                                 {
@@ -237,7 +237,7 @@ app.post('/ai', (req, res) => {
                     ]
                 }
             }
-        });
+        };
             // [
             //   {
             //        "type": 0,
