@@ -49,6 +49,9 @@ function sendMessage2(event) {
     userInfoRequest(sender)
         .then((r) => {
             var profil = JSONbig.parse(r);
+            console.log("rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr :" + r);
+            console.log("profil :" + profil);
+            console.log("profil stringify :" + JSON.stringify(profil));
 
             request({
                 url: 'https://graph.facebook.com/v2.10/me/messages',
@@ -56,7 +59,7 @@ function sendMessage2(event) {
                 method: 'POST',
                 json: {
                     recipient: { id: sender },
-                    message: "Ton prénom c'est " + profil.first_name
+                    message: profil.first_name
                 }
             }, (error, response) => {
                 if (error) {
