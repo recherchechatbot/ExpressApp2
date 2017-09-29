@@ -198,9 +198,6 @@ app.post('/ai', (req, res) => {
     else if (req.body.result.action === 'input.unknown') {
         console.log(req.body.result.action);
 
-
-
-
         let messagedata = JSON.stringify({
             "text": "Je suis désolé mais je ne comprends pas encore votre requête. Souhaitez vous que je vous redirige vers un interlocuteur humain?"
         });
@@ -211,6 +208,46 @@ app.post('/ai', (req, res) => {
             source: 'input.unknown'
         });
     }
+    else if (req.body.result.action === 'Menu.Principal') {
+        console.log(req.body.result.action);
+
+        let messagedata = JSON.stringify([
+            {
+                "type": 0,
+                "platform": "facebook",
+                "speech": "Comment puis-je vous aider? Vous pouvez choisir une catégorie dans le menu ci-dessous ou directement me poser votre question. Vous pouvez revenir à ce menu à tout moment, tout simplement en tapant la commande \"menu\"."
+            },
+            {
+                "type": 1,
+                "platform": "facebook",
+                "title": "Menu Principal",
+                "imageUrl": "https://img11.hostingpics.net/pics/345337MenuPrincipal.png",
+                "buttons": [
+                    {
+                        "text": "Recettes",
+                        "postback": "Recettes"
+                    },
+                    {
+                        "text": "Faire ses courses",
+                        "postback": "Faire ses courses"
+                    }
+                ]
+            },
+            {
+                "type": 0,
+                "speech": "Comment puis-je vous aider? Vous pouvez choisir une catégorie dans le menu ci-dessous ou directement me poser votre question. Vous pouvez revenir à ce menu à tout moment, tout simplement en tapant la commande \"menu\"."
+            }
+        ]);
+
+
+        return res.json({
+            speech: messagedata,
+            message: messagedata,
+            source: 'Menu.Principal'
+        });
+    }
+
+
 });
 
 function getRecette(param) {
