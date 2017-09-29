@@ -5,7 +5,7 @@ const app = express();
 const request = require('request');
 var http = require("http");
 const apiaiApp = require('apiai')('30dfeddc13344176b6cefa6c09056e73');
-const PAGE_ACCESS_TOKEN = 'EAACEdEose0cBACrTLG6HIkEHkZCNMBvfiSQPHgyFC0iyc1HQTsQM1SvaLPja0gXznCjv9IP9PFCkNdd2hPV3alUaUlY7TtYabULmreWWxCORNVPjihkEEi7N0WGZBt9zkOnDtGFH3ULfoGUqFxKSTNvxncsjxW454B9l1JVz6afEoixNUvnJkoB6vKZAJR6YZBVNqFbD2QZDZD';
+const PAGE_ACCESS_TOKEN = 'EAAMkZAtH8lc4BADZBikUDtmMPVjJUE2Ybf601hzdI3TboCoEfg9EKPUYjUa56XRcSaZCZA1UbFyS4CdAk7ntspT3Nhw3WGLv5AxJSf24biLXreuSaR8YIDFcZArVK7HQ8bTtRZA6SlNLoMMZCLZBNjOJDHqfK47oJKTl60rnZAgnpwQZDZD';
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
