@@ -171,7 +171,7 @@ app.post('/ai', (req, res) => {
     //        source: 'input.unknown'
     //    });
     }
-});
+);
 
 function getRecette(param) {
     console.log("getRecette : DEBUT (param = " + param + ")");
