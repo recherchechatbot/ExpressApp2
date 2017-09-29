@@ -89,7 +89,7 @@ function sendMessage(event) {
 
     apiai.on('response', (response) => {
         console.log("REPONSE API AI SUCCES");
-        console.log("response APIIIIIIIIII AI : " + JSON.stringify(response));
+        console.log("response : " + JSON.stringify(response));
 
         console.log("response.result.fulfillment.speech = " + response.result.fulfillment.speech);
         let aiText = response.result.fulfillment.speech;
@@ -275,37 +275,37 @@ app.post('/ai', (req, res) => {
         //});
 
         res.json({
-            'speech': 'When',
+            'speech': 'Comment puis-je vous aider? Vous pouvez choisir une catégorie dans le menu ci-dessous ou directement me poser votre question. Vous pouvez revenir à ce menu à tout moment, tout simplement en tapant la commande \"menu\".',
             'displayText': 'When',
             'messages':
             [
-                {
-                    "type": 0,
-                    "platform": "facebook",
-                    "speech": "Comment puis-je vous aider? Vous pouvez choisir une catégorie dans le menu ci-dessous ou directement me poser votre question. Vous pouvez revenir à ce menu à tout moment, tout simplement en tapant la commande \"menu\"."
-                },
-                {
-                    "type": 1,
-                    "platform": "facebook",
-                    "title": "Menu Principal",
-                    "imageUrl": "https://img11.hostingpics.net/pics/345337MenuPrincipal.png",
-                    "buttons": [
-                        {
-                            "text": "Recettes",
-                            "postback": "Recettes"
-                        },
-                        {
-                            "text": "Faire ses courses",
-                            "postback": "Faire ses courses"
-                        }
-                    ]
-                },
-                {
-                    "type": 0,
-                    "speech": "Comment puis-je vous aider? Vous pouvez choisir une catégorie dans le menu ci-dessous ou directement me poser votre question. Vous pouvez revenir à ce menu à tout moment, tout simplement en tapant la commande \"menu\"."
-                }
-            ],
-            'source': 'Menu.Principal'
+        {
+          "type": 0,
+          "platform": "facebook",
+          "speech": "Comment puis-je vous aider? Vous pouvez choisir une catégorie dans le menu ci-dessous ou directement me poser votre question. Vous pouvez revenir à ce menu à tout moment, tout simplement en tapant la commande \"menu\"."
+        },
+        {
+          "type": 1,
+          "platform": "facebook",
+          "title": "Menu Principal",
+          "imageUrl": "https://img11.hostingpics.net/pics/345337MenuPrincipal.png",
+          "buttons": [
+            {
+              "text": "Recettes",
+              "postback": "Recettes"
+            },
+            {
+              "text": "Faire ses courses",
+              "postback": "Faire ses courses"
+            }
+          ]
+        },
+        {
+          "type": 0,
+          "speech": "Comment puis-je vous aider? Vous pouvez choisir une catégorie dans le menu ci-dessous ou directement me poser votre question. Vous pouvez revenir à ce menu à tout moment, tout simplement en tapant la commande \"menu\"."
+        }
+      ],
+            'source': 'dimwei.com'
         });
     }
 });
