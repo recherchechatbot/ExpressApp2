@@ -9,10 +9,10 @@ const JSONbig = require('json-bigint');
 const async = require('async');
 
 const REST_PORT = (process.env.PORT || 5000);
-const APIAI_ACCESS_TOKEN = process.env.APIAI_ACCESS_TOKEN;
-const APIAI_LANG = process.env.APIAI_LANG || 'en';
-const FB_VERIFY_TOKEN = process.env.FB_VERIFY_TOKEN;
-const FB_PAGE_ACCESS_TOKEN = process.env.FB_PAGE_ACCESS_TOKEN;
+const APIAI_ACCESS_TOKEN = "30dfeddc13344176b6cefa6c09056e73";
+const APIAI_LANG = 'fr';
+const FB_VERIFY_TOKEN = "tuxedo_cat";
+const FB_PAGE_ACCESS_TOKEN = "EAAMkZAtH8lc4BADZBikUDtmMPVjJUE2Ybf601hzdI3TboCoEfg9EKPUYjUa56XRcSaZCZA1UbFyS4CdAk7ntspT3Nhw3WGLv5AxJSf24biLXreuSaR8YIDFcZArVK7HQ8bTtRZA6SlNLoMMZCLZBNjOJDHqfK47oJKTl60rnZAgnpwQZDZD";
 const FB_TEXT_LIMIT = 640;
 
 const FACEBOOK_LOCATION = "FACEBOOK_LOCATION";
