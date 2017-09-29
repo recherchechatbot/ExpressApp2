@@ -25,7 +25,8 @@
     "promise": "^8.0.1",
     "pug": "^2.0.0-beta6",
     "request": "^2.81.0",
-    "serve-favicon": "^2.3.0"
+    "serve-favicon": "^2.3.0",
+    "uuid": "^3.1.0"
   },
   "engines": {
     "node": "~6.10.x"
