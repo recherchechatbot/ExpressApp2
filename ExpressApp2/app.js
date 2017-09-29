@@ -34,7 +34,7 @@ app.post('/webhook', (req, res) => {
         req.body.entry.forEach((entry) => {
             entry.messaging.forEach((event) => {
                 if (event.message && event.message.text) {
-                    sendMessage2(event);
+                    sendMessage(event);
                 }
             });
         });
