@@ -157,22 +157,22 @@ app.post('/ai', (req, res) => {
             });
 
     }
-    else if (req.body.result.action === 'input.unknown') {
-        console.log(req.body.result.action);
+    //else if (req.body.result.action === 'input.unknown') {
+    //    console.log(req.body.result.action);
 
 
 
 
-        let messagedata = JSON.stringify({
-            "text": "Je suis désolé mais je ne comprends pas encore votre requête. Souhaitez vous que je vous redirige vers un interlocuteur humain?"
-        });
+    //    let messagedata = JSON.stringify({
+    //        "text": "Je suis désolé mais je ne comprends pas encore votre requête. Souhaitez vous que je vous redirige vers un interlocuteur humain?"
+    //    });
 
-        return res.json({
-            speech: messagedata,
-            message: messagedata,
-            source: 'input.unknown'
-        });
-    }
+    //    return res.json({
+    //        speech: messagedata,
+    //        message: messagedata,
+    //        source: 'input.unknown'
+    //    });
+    //}
 });
 
 function getRecette(param) {
