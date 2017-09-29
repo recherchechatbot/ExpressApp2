@@ -59,7 +59,7 @@ function sendMessage2(event) {
                 method: 'POST',
                 json: {
                     recipient: { id: sender },
-                    message: { text: profil.first_name }
+                    message: JSON.stringify({ "text": r })
                 }
             }, (error, response) => {
                 if (error) {
