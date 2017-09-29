@@ -224,12 +224,12 @@ app.post('/ai', (req, res) => {
                                 {
                                     "title": "Recettes",
                                     "type": "postback",
-                                    "webview_height_ratio": "tall"
+                                    "payload":"Recettes"
                                 },
                                 {
                                     "title": "Faire ses courses",
                                     "type": "postback",
-                                    "webview_height_ratio": "tall"
+                                    "payload":"Faire ses courses"
                                 }
                             ]
                         }
