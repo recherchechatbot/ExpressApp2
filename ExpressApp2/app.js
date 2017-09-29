@@ -211,7 +211,7 @@ app.post('/ai', (req, res) => {
     else if (req.body.result.action === 'Menu.Principal') {
         console.log(req.body.result.action);
 
-        let messagedata = {
+        let messagedata = JSON.stringidfy({
             "attachment": {
                 "type": "template",
                 "payload": {
@@ -237,7 +237,7 @@ app.post('/ai', (req, res) => {
                     ]
                 }
             }
-        };
+        });
             // [
             //   {
             //        "type": 0,
