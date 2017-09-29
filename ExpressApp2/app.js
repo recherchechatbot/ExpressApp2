@@ -316,7 +316,7 @@ class FacebookBot {
 
     doApiAiRequest(apiaiRequest, sender) {
         apiaiRequest.on('response', (response) => {
-            console.log("api ai response : " + response);
+            console.log("api ai response : " + JSON.stringify(response.result));
 
             if (this.isDefined(response.result) && this.isDefined(response.result.fulfillment)) {
                 let responseText = response.result.fulfillment.speech;
