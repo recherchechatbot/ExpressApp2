@@ -92,7 +92,7 @@ function sendMessage(event) {
         console.log("response : " + JSON.stringify(response));
 
         console.log("response.result.fulfillment.speech = " + response.result.fulfillment.speech);
-        let aiText = response.result.fulfillment.messages;
+        let aiText = response.result.fulfillment.speech;
 
         request({
             url: 'https://graph.facebook.com/v2.10/me/messages',
@@ -211,33 +211,35 @@ app.post('/ai', (req, res) => {
     else if (req.body.result.action === 'Menu.Principal') {
         console.log(req.body.result.action);
 
-        let messagedata = JSON.stringify([
-            {
-                "type": 0,
-                "platform": "facebook",
-                "speech": "Comment puis-je vous aider? Vous pouvez choisir une catégorie dans le menu ci-dessous ou directement me poser votre question. Vous pouvez revenir à ce menu à tout moment, tout simplement en tapant la commande \"menu\"."
-            },
-            {
-                "type": 1,
-                "platform": "facebook",
-                "title": "Menu Principal",
-                "imageUrl": "https://img11.hostingpics.net/pics/345337MenuPrincipal.png",
-                "buttons": [
-                    {
-                        "text": "Recettes",
-                        "postback": "Recettes"
-                    },
-                    {
-                        "text": "Faire ses courses",
-                        "postback": "Faire ses courses"
-                    }
-                ]
-            },
-            {
-                "type": 0,
-                "speech": "Comment puis-je vous aider? Vous pouvez choisir une catégorie dans le menu ci-dessous ou directement me poser votre question. Vous pouvez revenir à ce menu à tout moment, tout simplement en tapant la commande \"menu\"."
-            }
-        ]);
+        let messagedata = JSON.stringify({
+            "text": [
+                {
+                    "type": 0,
+                    "platform": "facebook",
+                    "speech": "Comment puis-je vous aider? Vous pouvez choisir une catégorie dans le menu ci-dessous ou directement me poser votre question. Vous pouvez revenir à ce menu à tout moment, tout simplement en tapant la commande \"menu\"."
+                },
+                {
+                    "type": 1,
+                    "platform": "facebook",
+                    "title": "Menu Principal",
+                    "imageUrl": "https://img11.hostingpics.net/pics/345337MenuPrincipal.png",
+                    "buttons": [
+                        {
+                            "text": "Recettes",
+                            "postback": "Recettes"
+                        },
+                        {
+                            "text": "Faire ses courses",
+                            "postback": "Faire ses courses"
+                        }
+                    ]
+                },
+                {
+                    "type": 0,
+                    "speech": "Comment puis-je vous aider? Vous pouvez choisir une catégorie dans le menu ci-dessous ou directement me poser votre question. Vous pouvez revenir à ce menu à tout moment, tout simplement en tapant la commande \"menu\"."
+                }
+            ]
+        });
         console.log(messagedata);
 
         return res.json({
