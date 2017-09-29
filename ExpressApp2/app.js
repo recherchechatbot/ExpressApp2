@@ -89,7 +89,7 @@ app.post('/ai', (req, res) => {
     console.log("DEBUT POST AI");
     console.log("req : " + req);
     if (req.body.result.action === 'recherche_libre_recette') {
-        
+
         getRecette(req.body.result.parameters)
             .then((r) => {
                 var listeRecette = JSONbig.parse(r);
@@ -153,25 +153,25 @@ app.post('/ai', (req, res) => {
                     source: 'recherche_libre_recette'
                 });
             });
-        
+
     }
-    //else if (req.body.result.action === 'input.unknown') {
-    //    console.log(req.body.result.action);
+    else if (req.body.result.action === 'input.unknown') {
+        console.log(req.body.result.action);
 
 
 
 
-    //    let messagedata = JSON.stringify({
-    //        "text": "Je suis désolé mais je ne comprends pas encore votre requête. Souhaitez vous que je vous redirige vers un interlocuteur humain?"
-    //    });
+        let messagedata = JSON.stringify({
+            "text": "Je suis désolé mais je ne comprends pas encore votre requête. Souhaitez vous que je vous redirige vers un interlocuteur humain?"
+        });
 
-    //    return res.json({
-    //        speech: messagedata,
-    //        message: messagedata,
-    //        source: 'input.unknown'
-    //    });
+        return res.json({
+            speech: messagedata,
+            message: messagedata,
+            source: 'input.unknown'
+        });
     }
-);
+});
 
 function getRecette(param) {
     console.log("getRecette : DEBUT (param = " + param + ")");
