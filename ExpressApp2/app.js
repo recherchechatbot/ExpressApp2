@@ -212,34 +212,59 @@ app.post('/ai', (req, res) => {
         console.log(req.body.result.action);
 
         let messagedata = JSON.stringify({
-            "text": [
-                {
-                    "type": 0,
-                    "platform": "facebook",
-                    "speech": "Comment puis-je vous aider? Vous pouvez choisir une catégorie dans le menu ci-dessous ou directement me poser votre question. Vous pouvez revenir à ce menu à tout moment, tout simplement en tapant la commande \"menu\"."
-                },
-                {
-                    "type": 1,
-                    "platform": "facebook",
-                    "title": "Menu Principal",
-                    "imageUrl": "https://img11.hostingpics.net/pics/345337MenuPrincipal.png",
-                    "buttons": [
+            "attachment": {
+                "type": "template",
+                "payload": {
+                    "template_type": "generic",
+                    "elements": [
                         {
-                            "text": "Recettes",
-                            "postback": "Recettes"
+                            "title": "Menu Principal",
+                            "image_url": "https://img11.hostingpics.net/pics/345337MenuPrincipal.png"
                         },
-                        {
-                            "text": "Faire ses courses",
-                            "postback": "Faire ses courses"
-                        }
+                        "buttons": [
+                            {
+                                "title": "Recettes",
+                                "type": "postback",
+                                "webview_height_ratio": "tall"
+                            },
+                            {
+                                "title": "Faire ses courses",
+                                "type": "postback",
+                                "webview_height_ratio": "tall"
+                            }
+                        ]
                     ]
-                },
-                {
-                    "type": 0,
-                    "speech": "Comment puis-je vous aider? Vous pouvez choisir une catégorie dans le menu ci-dessous ou directement me poser votre question. Vous pouvez revenir à ce menu à tout moment, tout simplement en tapant la commande \"menu\"."
                 }
-            ]
+            }
         });
+            // [
+            //   {
+            //        "type": 0,
+            //        "platform": "facebook",
+            //        "speech": "Comment puis-je vous aider? Vous pouvez choisir une catégorie dans le menu ci-dessous ou directement me poser votre question. Vous pouvez revenir à ce menu à tout moment, tout simplement en tapant la commande \"menu\"."
+            //    },
+            //    {
+            //        "type": 1,
+            //        "platform": "facebook",
+            //        "title": "Menu Principal",
+            //        "imageUrl": "https://img11.hostingpics.net/pics/345337MenuPrincipal.png",
+            //        "buttons": [
+            //            {
+            //                "text": "Recettes",
+            //                "postback": "Recettes"
+            //            },
+            //            {
+            //                "text": "Faire ses courses",
+            //                "postback": "Faire ses courses"
+            //            }
+            //        ]
+            //    },
+            //    {
+            //        "type": 0,
+            //        "speech": "Comment puis-je vous aider? Vous pouvez choisir une catégorie dans le menu ci-dessous ou directement me poser votre question. Vous pouvez revenir à ce menu à tout moment, tout simplement en tapant la commande \"menu\"."
+            //    }
+            //]
+
         console.log(messagedata);
 
         return res.json({
@@ -248,8 +273,6 @@ app.post('/ai', (req, res) => {
             source: 'Menu.Principal'
         });
     }
-
-
 });
 
 function getRecette(param) {
