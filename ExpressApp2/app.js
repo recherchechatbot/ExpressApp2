@@ -509,7 +509,7 @@ app.use(bodyParser.text({ type: 'application/json' }));
 app.get('/recherche/recette/:m', (req, res) => {
     let mot = req.param('m');
 
-    switch (mot) {
+    switch (mot.toLowerCase()) {
         case "poulet":
             return res.status(200).json({
                 "Recettes": [
@@ -694,31 +694,15 @@ app.get('/recherche/recette/:m', (req, res) => {
             break;
 
         default:
+            return res.status(200).json({
+                "Recettes": [{
+                    "Titre": "Veuillez rentrer quelque chose d'autre",
+                    "ImageUrl": "https://www.formassembly.com/images/illustrations/robot-msg-error.png"
+                }
+                ]
+
+            });
             break;
-    }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    if (req.query['hub.verify_token'] === FB_VERIFY_TOKEN) {
-        res.send(req.query['hub.challenge']);
-
-        setTimeout(() => {
-            facebookBot.doSubscribeRequest();
-        }, 3000);
-    } else {
-        res.send('Error, wrong validation token');
     }
 });
 
