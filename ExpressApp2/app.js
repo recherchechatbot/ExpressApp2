@@ -802,6 +802,24 @@ app.post('/ai', (req, res) => {
                                             "webview_height_ratio": "tall"
                                         }
                                     ]
+                                },
+                                {
+                                    "title": listeRecette.Recettes[1].Titre,
+                                    "image_url": listeRecette.Recettes[1].ImageUrl,
+                                    "subtitle": "Vous serez redirigé vers notre site web",
+                                    "default_action": {
+                                        "type": "web_url",
+                                        "url": "http://google.fr",
+                                        "webview_height_ratio": "tall"
+                                    },
+                                    "buttons": [
+                                        {
+                                            "title": "Cliquez ici",
+                                            "type": "web_url",
+                                            "url": "http://google.fr",
+                                            "webview_height_ratio": "tall"
+                                        }
+                                    ]
                                 }
                             ]
                         }
