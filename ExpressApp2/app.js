@@ -577,10 +577,120 @@ app.get('/recherche/recette/:m', (req, res) => {
 
             break;
         case "tomate": 
+            return res.status(200).json({
+                "Recettes": [
+                    {
+                        "IdRecette": 23,
+                        "Titre": "Salade de billes de melon, tomates cerises et mozzarella",
+                        "Description": "Détaillé le melon en petites billes, otez le pédoncule des tomates cerises et bien les laver.Dans un saladier, melangez les billes de melon, de mozzarella et les tomates cerises.Versez le vinaigre balsamique et l'huile d'olive puis le sel et le poivre.Melangez et rajoutez le basilic et les feuilles de menthe.Mettre au frais 1h avant de servir.",
+                        "ImageUrl": "https://driveimg1.intermarche.com/fr/Ressources/images/publication/4668.jpg",
+                        "Personnes": 4,
+                        "Difficulte": 1,
+                        "DureePreparation": 10,
+                        "DureeCuisson": 0,
+                        "DureeRepos": 0,
+                        "DureeCongelation": 0,
+                        "IngredientsPrincipaux": [
+                            "1 melon bien mûr",
+                            "500 g de tomates-cerises",
+                            "500 g de cerisettes de mozzarella",
+                            "1 cs vinaigre Balsamique"
+                        ],
+                        "IngredientsPlacard": [
+                            "Menthe fraîche",
+                            "basilic frais",
+                            "2 cs d'huile d'olive",
+                            "sel",
+                            "poivre"
+                        ],
+                        "ProduitsIngredients": [],
+                        "ProduitsAnnexes": []
+                    },
+                    {
+                        "IdRecette": 39,
+                        "Titre": "Clafoutis aux tomates cerises",
+                        "Description": "Utilisez 1 cs d'huile d'olive pour huiler le plat à gratin, puis frottez le avec la gousse d'aïl. Préchauffez le four à 210°C (th 8). Lavez et séchez les tomates, puis passez les 5 minutes à la poêle dans l'huile restante, avec les herbes de Provence. Otez du feu.Hachez la mozzarella. Fouettez dans un saladier les oeufs, la crème, la mozzarella et la gousse écrasée. Ajoutez aux tomates dans la poele refroidie. Salez et poivrez, puis remuez doucement.\nVersez dans le plat à gratin, et enfournez pour un quart d'heure. Au moment de servir, parsemez de feuilles de basilic.\n",
+                        "ImageUrl": "https://driveimg1.intermarche.com/fr/Ressources/images/publication/4911.jpg",
+                        "Personnes": 4,
+                        "Difficulte": 1,
+                        "DureePreparation": 10,
+                        "DureeCuisson": 15,
+                        "DureeRepos": 0,
+                        "DureeCongelation": 0,
+                        "IngredientsPrincipaux": [
+                            "500 Gr de tomates cerises",
+                            "16 feuilles de basilic",
+                            "1 gousse d'ail",
+                            "mozzarella"
+                        ],
+                        "IngredientsPlacard": [
+                            "crème fraiche",
+                            "3 oeufs",
+                            "1 cc d'herbes de provence",
+                            "5 cs d'huile d'olive",
+                            "sel",
+                            "poivre"
+                        ],
+                        "ProduitsIngredients": [],
+                        "ProduitsAnnexes": []
+                    }  
+                ]
 
+            });
             break;
         case "concombre": 
+            return res.status(200).json({
+                "Recettes": [
+                    {
+                        "IdRecette": 196,
+                        "Titre": "Tartelettes de concombre comme un montblanc   ",
+                        "Description": "Eplucher le concombre et prélever des lanières à l'aide d'un économe. Saupoudrer de gros sel et les laisser lanières dégorger une quinzaine de minutes. Les rincer longuement et les sécher sur du papier absorbant. Mélanger le fromage blanc, les lanières de concombre et la menthe finement ciselée. Rectifier l'assaisonnement.\nDéposer des couches successives de ricotta émiettée et de fromage blanc au concombre sur les fonds de tartelettes précuites et terminer par la ricotta. Servir aussitôt. Les trucs et astuces de Sonia Ezgulian : Gagnez du temps en râpant le concombre et en le mélangeant avec le fromage blanc sans le faire dégorger et dégustez les tartelettes rapidement pour qu'elles ne détrempent pas.\n",
+                        "ImageUrl": "https://driveimg1.intermarche.com/fr/Ressources/images/publication/5543.jpg",
+                        "Personnes": 4,
+                        "Difficulte": 1,
+                        "DureePreparation": 10,
+                        "DureeCuisson": 20,
+                        "DureeRepos": 0,
+                        "DureeCongelation": 0,
+                        "IngredientsPrincipaux": [
+                            "1 concombre",
+                            "100 gr de fromage blanc",
+                            "100 gr de ricotta",
+                            " pâte brisée"
+                        ],
+                        "IngredientsPlacard": [
+                            "1 cuillerée à soupe de gros sel",
+                            "4 feuilles de menthe"
+                        ],
+                        "ProduitsIngredients": [],
+                        "ProduitsAnnexes": []
+                    },
+                    {
+                        "IdRecette": 441,
+                        "Titre": "Rillettes de thon au concombre",
+                        "Description": "Mettre le thon dans un saladier. Ajouter le demi-concombre coupé en dés fins (on aura pris soin d'évider les graines au centre).Ajouter de la mayonnaise jusqu'à obtenir la consistance souhaitée. Saler, poivrer.",
+                        "ImageUrl": "https://driveimg1.intermarche.com/fr/Ressources/images/publication/5260.jpg",
+                        "Personnes": 4,
+                        "Difficulte": 0,
+                        "DureePreparation": 10,
+                        "DureeCuisson": 0,
+                        "DureeRepos": 0,
+                        "DureeCongelation": 0,
+                        "IngredientsPrincipaux": [
+                            "1 boite de thon",
+                            "1/2 concombre",
+                            "Mayonnaise"
+                        ],
+                        "IngredientsPlacard": [
+                            "sel",
+                            "poivre"
+                        ],
+                        "ProduitsIngredients": [],
+                        "ProduitsAnnexes": []
+                    }
+                ]
 
+            });
             break;
 
         default:
