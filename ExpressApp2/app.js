@@ -590,50 +590,50 @@ app.post('/ai', (req, res) => {
 
                 console.log("retour WS recettes OK : " + listeRecette);
 
-                //let messagedata = {
-                //    "attachment": {
-                //        "type": "template",
-                //        "payload": {
-                //            "template_type": "generic",
-                //            "elements": [
-                //                {
-                //                    "title": listeRecette[0].Titre,
-                //                    "image_url": listeRecette[0].ImageUrl,
-                //                    "subtitle": "Vous serez redirigé vers notre site web",
-                //                    "default_action": {
-                //                        "type": "web_url",
-                //                        "url": "http://google.fr",
-                //                        "webview_height_ratio": "tall"
-                //                    },
-                //                    "buttons": [
-                //                        {
-                //                            "title": "Cliquez ici",
-                //                            "type": "web_url",
-                //                            "url": "http://google.fr",
-                //                            "webview_height_ratio": "tall"
-                //                        }
-                //                    ]
-                //                }
-                //            ]
-                //        }
-                //    },
-                //    "quick_replies": [
-                //        {
-                //            "content_type": "text",
-                //            "title": "Autres recettes",
-                //            "payload": "Autres recettes"
-                //        },
-                //        {
-                //            "content_type": "text",
-                //            "title": "Menu Principal",
-                //            "payload": "Menu Principal"
-                //        }
-                //    ]
-                //};
+                let messagedata = {
+                    "attachment": {
+                        "type": "template",
+                        "payload": {
+                            "template_type": "generic",
+                            "elements": [
+                                {
+                                    "title": listeRecette[0].Titre,
+                                    "image_url": listeRecette[0].ImageUrl,
+                                    "subtitle": "Vous serez redirigé vers notre site web",
+                                    "default_action": {
+                                        "type": "web_url",
+                                        "url": "http://google.fr",
+                                        "webview_height_ratio": "tall"
+                                    },
+                                    "buttons": [
+                                        {
+                                            "title": "Cliquez ici",
+                                            "type": "web_url",
+                                            "url": "http://google.fr",
+                                            "webview_height_ratio": "tall"
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    },
+                    "quick_replies": [
+                        {
+                            "content_type": "text",
+                            "title": "Autres recettes",
+                            "payload": "Autres recettes"
+                        },
+                        {
+                            "content_type": "text",
+                            "title": "Menu Principal",
+                            "payload": "Menu Principal"
+                        }
+                    ]
+                };
 
                 return res.json({
                     speech: "Titre première recette : " + listeRecette[0].Titre,
-                    message: "Titre première recette : " + listeRecette[0].Titre,
+                    data: messagedata,
                     source: 'recherche_libre_recette'
                 });
             })
