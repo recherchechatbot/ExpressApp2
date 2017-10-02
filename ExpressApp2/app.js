@@ -854,7 +854,7 @@ app.post('/ai', (req, res) => {
 
     }
     else if (body.result.action === 'input.unknown') {
-        console.log(JSON.stringify(body.result));
+        console.log("body.result = " +JSON.stringify(body.result));
 
 
         return res.json({
