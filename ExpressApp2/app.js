@@ -577,7 +577,7 @@ app.post('/webhook/', (req, res) => {
 
 app.post('/ai', (req, res) => {
     console.log('bonjouurrrrrrr');
-
+    console.log(req.body.result);
 
     if (req.body.result.action === 'recherche_libre_recette') {
    
