@@ -854,8 +854,15 @@ app.post('/ai', (req, res) => {
 
     }
     else if (body.result.action === 'Localisation.Recue') {
-        console.log('body.result = ' + JSON.stringify(body.result));
-        console.log('body.result.contexts')
+        console.log("body.result = " + JSON.stringify(body.result));
+
+        let context = getContextByName(body.result.contexts, "facebook_location");
+        console.log('contexttttttttttttttt' + context);
+
+        if (context) {
+            console.log('le contexte est defini');
+            console.log("coordonnées : long =" + context.parameters.long + " lat = " + context.parameters.lat);
+        }
         return res.json({
             speech: "Localisation bien recue",
             source: 'Localisation.Recue'
@@ -863,16 +870,6 @@ app.post('/ai', (req, res) => {
 
     }
     else if (body.result.action === 'input.unknown') {
-        console.log("body.result = " + JSON.stringify(body.result));
-
-        let context = getContextByName(body.result.contexts, "facebook_location");
-        console.log('contexttttttttttttttt' + context);
-
-        if (context)
-        {
-            console.log('le contexte est defini');
-            console.log("coordonnées : long =" + context.parameters.long + " lat = " + context.parameters.lat);
-        }
 
         return res.json({
             speech: "Je suis désolé mais je ne comprends pas encore votre requête. Souhaitez vous que je vous redirige vers un interlocuteur humain?",
