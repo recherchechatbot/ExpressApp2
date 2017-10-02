@@ -677,13 +677,13 @@ function getRecette(param) {
             resultat += (estPremier ? '' : ' ') + my_array[i];
             estPremier = false;
         }
-    }
+    } recette: poulet
 
     resultat = encodeURIComponent(resultat);
 
     var options = {
         method: 'GET',
-        uri: `http://wsmcommerce.intermarche.com/api/v1/recette?mot=${resultat}`,
+        uri: `http://wsmcommerce.intermarche.com/api/v1/recherche/recette?mot=${resultat}`,
         headers: {
             'TokenAuthentification': '1deaaf3c-0850-47c6-bbcf-c817da686dff'
         }
