@@ -853,6 +853,15 @@ app.post('/ai', (req, res) => {
             });
 
     }
+    else if (body.result.action === 'Localisation.Recue') {
+        console.log('Je suis ok');
+        console.log('body.result = ' + body.result);
+        return res.json({
+            speech: "Localisation bien recue",
+            source: 'Localisation.Recue'
+        });
+
+    }
     else if (body.result.action === 'input.unknown') {
         console.log("body.result = " +JSON.stringify(body.result));
 
