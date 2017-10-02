@@ -881,7 +881,6 @@ app.post('/ai', (req, res) => {
                     }
                     return res.json({
                         speech: "Id premier magasin: " + listeMagasins[0].IdPdv,
-                        data: { "facebook": messagedata },
                         source: 'Localisation.Recue'
                     });
                 })
