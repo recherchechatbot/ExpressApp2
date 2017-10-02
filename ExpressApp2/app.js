@@ -506,7 +506,101 @@ const app = express();
 
 app.use(bodyParser.text({ type: 'application/json' }));
 
-app.get('/webhook/', (req, res) => {
+app.get('/recherche/recette?mot=:m', (req, res) => {
+    let mot = req.param('m');
+
+    switch (mot) {
+        case "poulet":
+            return res.status(200).json({
+                "Recettes": [
+                    {
+                        "IdRecette": 28,
+                        "Titre": "Escalope de poulet à la crème et aux champignons",
+                        "Description": "Nettoyez les champignons et faîtes-les risoler dans une poëlle avec un peu d'huile ou de beurre. Salez et poivrez à votre convenance. Puis ajoutez la ciboulette et le persil. Ajoutez la crème fraîche et laissez mijoter. Faîte rissolez les escaloppes de poulet dans un peu de d'huile ou de beurre. Puis salez et poivrez à votre convenance. Servez le poulet dans des grandes assiettes accompagné de riz ou de pâte et nappez de sauce aux champignons.",
+                        "ImageUrl": "https://driveimg1.intermarche.com/fr/Ressources/images/publication/4723.jpg",
+                        "Personnes": 4,
+                        "Difficulte": 1,
+                        "DureePreparation": 10,
+                        "DureeCuisson": 10,
+                        "DureeRepos": 0,
+                        "DureeCongelation": 0,
+                        "IngredientsPrincipaux": [
+                            "1 pot de crème fraîche ",
+                            "250 Gr de champignons",
+                            "Sel",
+                            "Ciboulette"
+                        ],
+                        "IngredientsPlacard": [
+                            "Poivre",
+                            "Persil"
+                        ],
+                        "ProduitsIngredients": [],
+                        "ProduitsAnnexes": []
+                    },
+                    {
+                        "IdRecette": 70,
+                        "Titre": "Soupe thaï au lait de coco et émincé de poulet",
+                        "Description": "Peler et couper en quatre la carotte et l'oignon. Emincer en lamelle le poulet.Plonger dans une grande casserole le poulet émincé, l'oignon et la carotte. Ajouter le bouquet garni, saler et poivrer. Couvrir et laisser cuire 30 minutes à feu doux et à couvert.  Verser le bouillon de volaille dans une casserole. Ajouter la citronnelle,      le gingembre, la pâte de curry et le lait de coco. Mélanger et porter à ébullition.Ajouter les petits pois et les champignons coupés en quatre puis laisser frémir 5 minutes. Ajouter le poulet et laisser à nouveau 5 minutes à feu doux. Ajouter les tomates cerises coupées en deux, le jus de citron et la coriandre ciselée. Servir sans plus attendre.\n",
+                        "ImageUrl": "https://driveimg1.intermarche.com/fr/Ressources/images/publication/4916.jpg",
+                        "Personnes": 4,
+                        "Difficulte": 1,
+                        "DureePreparation": 25,
+                        "DureeCuisson": 45,
+                        "DureeRepos": 0,
+                        "DureeCongelation": 0,
+                        "IngredientsPrincipaux": [
+                            "100 Gr de champignons de Paris rosés ",
+                            "12 tomates cerises",
+                            "20 Cl de lait de coco",
+                            "2 escalopes de poulet"
+                        ],
+                        "IngredientsPlacard": [
+                            "50 Gr de petits pois frais écossés ou surgelés",
+                            "1 oignon\t\t\t\t\t         ",
+                            "1 carotte\t\t\t\t\t        ",
+                            "1 bouquet garni\t\t\t\t        ",
+                            "1/2 l de bouillon de volaille\t\t        ",
+                            "1 citron vert",
+                            "1 c. à soupe de pâte de curry jaune      ",
+                            "Coriandre",
+                            "citronnelle\t\t\t\t ",
+                            "Sel",
+                            "1 c. à c. de gingembre",
+                            "Poivre"
+                        ],
+                        "ProduitsIngredients": [],
+                        "ProduitsAnnexes": []
+                    }
+                ]
+
+            });
+
+            break;
+        case "tomate": 
+
+            break;
+        case "concombre": 
+
+            break;
+
+        default:
+            break;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     if (req.query['hub.verify_token'] === FB_VERIFY_TOKEN) {
         res.send(req.query['hub.challenge']);
 
@@ -659,6 +753,18 @@ app.post('/ai', (req, res) => {
             message: messagedata,
             source: 'input.unknown'
         });
+    }
+});
+
+app.get('/recette/', (req, res) => {
+    if (req.query['hub.verify_token'] === FB_VERIFY_TOKEN) {
+        res.send(req.query['hub.challenge']);
+
+        setTimeout(() => {
+            facebookBot.doSubscribeRequest();
+        }, 3000);
+    } else {
+        res.send('Error, wrong validation token');
     }
 });
 
