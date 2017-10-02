@@ -885,8 +885,6 @@ function getContextByName(contexts, name) {
     );
 }
 
-var found = getCountryByCode('DZ');
-
 app.get('/recette/', (req, res) => {
     if (req.query['hub.verify_token'] === FB_VERIFY_TOKEN) {
         res.send(req.query['hub.challenge']);
