@@ -861,8 +861,41 @@ app.post('/ai', (req, res) => {
 
         if (context) {
             console.log('le contexte est defini');
-            console.log("coordonnées : long =" + context.parameters.long + " lat = " + context.parameters.lat);
+            let long = context.parameters.long;
+            let lat = context.parameters.lat;
+            console.log("coordonnées : long =" + long + " lat = " + lat);
+            getMagasin(lat, long)
+                .then((m) => {
+                    var listeMagasins = JSONbig.parse(m);
+
+                    console.log("retour WS magasins OK : " + JSON.stringify(listeMagasins));
+
+                    if (listeMagasins[0])
+                    {
+                        console.log("ID premier Magasin : " + JSON.stringify(listeMagasins[0].IdPdv));
+
+                    }
+                    if (listeMagasins[1]) {
+                        console.log("ID deuxième Magasin : " + JSON.stringify(listeMagasins[1].IdPdv));
+
+                    }
+                    return res.json({
+                        speech: "Id premier magasin: " + listeMagasins[0].IdPdv,
+                        data: { "facebook": messagedata },
+                        source: 'Localisation.Recue'
+                    });
+                })
+                .catch(err => {
+                    return res.status(400).json({
+                        speech: "ERREUR : " + err,
+                        message: "ERREUR : " + err,
+                        source: 'recherche_libre_recette'
+                    });
+                });
+
+
         }
+        
         return res.json({
             speech: "Localisation bien recue",
             source: 'Localisation.Recue'
@@ -877,6 +910,30 @@ app.post('/ai', (req, res) => {
         });
     }
 });
+
+function getMagasin(lat, long) {
+    let url = `http://wsmcommerce.intermarche.com/api/v1/pdv/distance?latitude=${lat}&longitude=${long}`;
+
+    var options = {
+        method: 'GET',
+        uri: url,
+        headers: {
+            'TokenAuthentification': '1deaaf3c-0850-47c6-bbcf-c817da686dff'
+        }
+    };
+
+
+    return new Promise((resolve, reject) => {
+        request(options, (error, response) => {
+            if (!error && response.statusCode == 200) {
+                resolve(response.body);
+            }
+            else {
+                reject(error);
+            }
+        })
+    })
+}
 
 function getContextByName(contexts, name) {
     return contexts.filter(
