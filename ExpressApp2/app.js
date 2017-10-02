@@ -787,7 +787,7 @@ function getRecette(param) {
     }
 
     resultat = encodeURIComponent(resultat);
-    let url = `http://wsmcommerce.intermarche.com/api/v1/recherche/recette?mot=${resultat}`;
+    let url = `https://converseauto3.herokuapp.com/recherche/recette/${nourriture1}`;
 
     console.log("URRRRRRRRRRRRRRRRRRRRRRLLLLL : " + url);
 
