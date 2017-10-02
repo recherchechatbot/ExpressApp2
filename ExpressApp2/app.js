@@ -864,6 +864,7 @@ app.post('/ai', (req, res) => {
             let long = context.parameters.long;
             let lat = context.parameters.lat;
             console.log("coordonnées : long =" + long + " lat = " + lat);
+
             getMagasin(lat, long)
                 .then((m) => {
                     var listeMagasins = JSONbig.parse(m);
@@ -915,10 +916,7 @@ function getMagasin(lat, long) {
 
     var options = {
         method: 'GET',
-        uri: url,
-        headers: {
-            'TokenAuthentification': '1deaaf3c-0850-47c6-bbcf-c817da686dff'
-        }
+        uri: url
     };
 
 
