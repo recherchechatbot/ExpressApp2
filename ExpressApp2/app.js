@@ -588,7 +588,8 @@ app.post('/ai', (req, res) => {
             .then((r) => {
                 var listeRecette = JSONbig.parse(r);
 
-                console.log("retour WS recettes OK : " + listeRecette);
+                console.log("retour WS recettes OK : " + JSON.stringify(listeRecette));
+                console.lof("première recette : " + JSON.stringify(listeRecette.Recettes[0]));
 
                 let messagedata = {
                     "attachment": {
@@ -680,10 +681,13 @@ function getRecette(param) {
     }
 
     resultat = encodeURIComponent(resultat);
+    let url = `http://wsmcommerce.intermarche.com/api/v1/recherche/recette?mot=${resultat}`;
+
+    console.log("URRRRRRRRRRRRRRRRRRRRRRLLLLL : " + url);
 
     var options = {
         method: 'GET',
-        uri: `http://wsmcommerce.intermarche.com/api/v1/recherche/recette?mot=${resultat}`,
+        uri: url,
         headers: {
             'TokenAuthentification': '1deaaf3c-0850-47c6-bbcf-c817da686dff'
         }
