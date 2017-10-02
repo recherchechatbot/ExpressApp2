@@ -866,9 +866,11 @@ app.post('/ai', (req, res) => {
         console.log("body.result = " + JSON.stringify(body.result));
 
         let context = getContextByName(body.result.contexts, "facebook_location");
+        console.log('contexttttttttttttttt' + context);
 
         if (context)
         {
+            console.log('le contexte est defini');
             console.log("coordonnées : long =" + context.parameters.long + " lat = " + context.parameters.lat);
         }
 
