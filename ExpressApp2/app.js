@@ -597,8 +597,8 @@ app.post('/ai', (req, res) => {
                             "template_type": "generic",
                             "elements": [
                                 {
-                                    "title": listeRecette[0].Titre,
-                                    "image_url": listeRecette[0].ImageUrl,
+                                    "title": listeRecette.Recettes[0].Titre,
+                                    "image_url": listeRecette.Recettes[0].ImageUrl,
                                     "subtitle": "Vous serez redirigé vers notre site web",
                                     "default_action": {
                                         "type": "web_url",
