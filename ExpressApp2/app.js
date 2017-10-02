@@ -893,12 +893,13 @@ app.post('/ai', (req, res) => {
                     });
                 });
         }
-        
-        return res.json({
-            speech: "Localisation bien recue",
-            source: 'Localisation.Recue'
-        });
-
+        else
+        {
+            return res.json({
+                speech: "Localisation non recue",
+                source: 'Localisation.Recue'
+            });
+        }
     }
     else if (body.result.action === 'input.unknown') {
 
