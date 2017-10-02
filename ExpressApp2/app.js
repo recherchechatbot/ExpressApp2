@@ -576,12 +576,6 @@ app.post('/webhook/', (req, res) => {
 });
 
 app.post('/ai', (req, res) => {
-    console.log('body :');
-    console.log(req.body);
-    console.log('result :');
-    console.log(req.body.result);
-    console.log('action :');
-    console.log(req.body.result.action);
 
     console.log('body :');
     console.log(JSONbig.parse(req.body));
