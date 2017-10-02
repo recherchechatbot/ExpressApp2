@@ -889,11 +889,9 @@ app.post('/ai', (req, res) => {
                     return res.status(400).json({
                         speech: "ERREUR : " + err,
                         message: "ERREUR : " + err,
-                        source: 'recherche_libre_recette'
+                        source: 'Localisation.Recue'
                     });
                 });
-
-
         }
         
         return res.json({
@@ -919,7 +917,6 @@ function getMagasin(lat, long) {
         uri: url
     };
 
-
     return new Promise((resolve, reject) => {
         request(options, (error, response) => {
             if (!error && response.statusCode == 200) {
@@ -929,7 +926,7 @@ function getMagasin(lat, long) {
                 reject(error);
             }
         })
-    })
+    });
 }
 
 function getContextByName(contexts, name) {
