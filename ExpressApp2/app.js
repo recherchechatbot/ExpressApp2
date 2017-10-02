@@ -881,7 +881,7 @@ app.post('/ai', (req, res) => {
 function getContextByName(contexts, name) {
     return contexts.filter(
         function (c) { return c.name == name }
-    );
+    )[0];
 }
 
 app.get('/recette/', (req, res) => {
