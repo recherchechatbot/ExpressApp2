@@ -683,7 +683,7 @@ function getRecette(param) {
 
     var options = {
         method: 'GET',
-        uri: `http://wsmcommerce.intermarche.com/api/v1/recette`,
+        uri: `http://wsmcommerce.intermarche.com/api/v1/recette?mot=${resultat}`,
         headers: {
             'TokenAuthentification': '1deaaf3c-0850-47c6-bbcf-c817da686dff'
         }
