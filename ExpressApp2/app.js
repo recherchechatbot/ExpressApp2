@@ -506,7 +506,7 @@ const app = express();
 
 app.use(bodyParser.text({ type: 'application/json' }));
 
-app.get('/recherche/recette?mot=:m', (req, res) => {
+app.get('/recherche/recette/:m', (req, res) => {
     let mot = req.param('m');
 
     switch (mot) {
