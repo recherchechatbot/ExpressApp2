@@ -582,7 +582,7 @@ app.post('/ai', (req, res) => {
     console.log("result : " + test.result);
     console.log("action : " + test.result.action);
 
-    if (req.body.result.action === 'recherche_libre_recette') {
+    if (test.result.action === 'recherche_libre_recette') {
    
         getRecette(req.body.result.parameters)
             .then((r) => {
