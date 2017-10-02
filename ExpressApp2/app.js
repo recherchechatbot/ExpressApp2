@@ -316,7 +316,8 @@ class FacebookBot {
 
     doApiAiRequest(apiaiRequest, sender) {
         apiaiRequest.on('response', (response) => {
-            console.log("api ai response : " + JSON.stringify(response.result));
+            console.log("api ai response : " + JSON.stringify(response));
+            console.log("api ai response.result : " + JSON.stringify(response.result));
 
             if (this.isDefined(response.result) && this.isDefined(response.result.fulfillment)) {
                 let responseText = response.result.fulfillment.speech;
@@ -580,10 +581,14 @@ app.post('/ai', (req, res) => {
     var body = JSONbig.parse(req.body);
 
     if (body.result.action === 'recherche_libre_recette') {
-   
+
+        console.log("ACTION RECONNUE : recherche_libre_recette")
+        console.log("DEBUT appel WS recettes");
         getRecette(body.result.parameters)
             .then((r) => {
                 var listeRecette = JSONbig.parse(r);
+
+                console.log("retour WS recettes OK : " + listeRecette);
 
                 let messagedata = JSON.stringify({
                     "attachment": {
@@ -680,10 +685,11 @@ function getRecette(param) {
         method: 'GET',
         uri: `http://wsmcommerce.intermarche.com/api/v1/recette`,
         headers: {
-            'TokenAuthentification': '53c054d2-eb10-4890-a963-59de901a43ae'
+            'TokenAuthentification': '1deaaf3c-0850-47c6-bbcf-c817da686dff'
         }
     };
 
+    
     return new Promise((resolve, reject) => {
         request(options, (error, response) => {
             if (!error && response.statusCode == 200) {
