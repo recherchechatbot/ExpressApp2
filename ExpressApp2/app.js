@@ -577,13 +577,10 @@ app.post('/webhook/', (req, res) => {
 
 app.post('/ai', (req, res) => {
 
-    console.log('body :');
-    console.log(JSONbig.parse(req.body));
-    console.log('result :');
-    console.log(JSONbig.parse(req.body.result));
-    console.log('action :');
-    console.log(JSONbig.parse(req.body.result.action));
-
+    var test = JSONbig.parse(req.body);
+    console.log("test : " + test);
+    console.log("result : " + test.result);
+    console.log("action : " + test.result.action);
 
     if (req.body.result.action === 'recherche_libre_recette') {
    
