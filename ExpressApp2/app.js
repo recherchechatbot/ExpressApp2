@@ -589,7 +589,7 @@ app.post('/ai', (req, res) => {
                 var listeRecette = JSONbig.parse(r);
 
                 console.log("retour WS recettes OK : " + JSON.stringify(listeRecette));
-                console.lof("première recette : " + JSON.stringify(listeRecette.Recettes[0]));
+                console.log("première recette : " + JSON.stringify(listeRecette.Recettes[0]));
 
                 let messagedata = {
                     "attachment": {
@@ -633,7 +633,7 @@ app.post('/ai', (req, res) => {
                 };
 
                 return res.json({
-                    speech: "Titre première recette : " + listeRecette[0].Titre,
+                    speech: "Titre première recette : " + listeRecette.Recettes[0].Titre,
                     data: { "facebook" : messagedata },
                     source: 'recherche_libre_recette'
                 });
