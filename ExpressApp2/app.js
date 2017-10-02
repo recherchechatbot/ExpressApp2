@@ -857,7 +857,7 @@ app.post('/ai', (req, res) => {
         console.log("body.result = " + JSON.stringify(body.result));
 
         let context = getContextByName(body.result.contexts, "facebook_location");
-        console.log('contexttttttttttttttt' + context);
+        console.log('contexttttttttttttttt' + JSON.stringify(context));
 
         if (context) {
             console.log('le contexte est defini');
