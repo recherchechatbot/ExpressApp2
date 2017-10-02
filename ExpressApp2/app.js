@@ -677,7 +677,7 @@ function getRecette(param) {
             resultat += (estPremier ? '' : ' ') + my_array[i];
             estPremier = false;
         }
-    } recette: poulet
+    }
 
     resultat = encodeURIComponent(resultat);
 
