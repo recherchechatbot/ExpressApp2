@@ -854,14 +854,11 @@ app.post('/ai', (req, res) => {
 
     }
     else if (body.result.action === 'input.unknown') {
+        console.log(JSON.stringify(body.result));
 
-        let messagedata = JSON.stringify({
-            "text": "Je suis désolé mais je ne comprends pas encore votre requête. Souhaitez vous que je vous redirige vers un interlocuteur humain?"
-        });
 
         return res.json({
-            speech: messagedata,
-            message: messagedata,
+            speech: "Je suis désolé mais je ne comprends pas encore votre requête. Souhaitez vous que je vous redirige vers un interlocuteur humain?",
             source: 'input.unknown'
         });
     }
