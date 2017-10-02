@@ -400,6 +400,23 @@ class FacebookBot {
         });
     }
 
+    getFBUserInfo(sender) {
+        return new Promise((resolve, reject) => {
+            request({
+                uri: "https://graph.facebook.com/v2.10/" + sender.id + "?fields=first_name,last_name,profile_pic,locale,user_birthday,timezone,gender&access_token=" + PAGE_ACCESS_TOKEN,
+                method: 'GET'
+            }, (error, response) => {
+                if (error) {
+                    console.log('Error while getting FB user info: ', error);
+                    reject(error);
+                } else {
+                    console.log('FB user info result : ', response.body);
+                    resolve(response.body);
+                }
+            });
+        })
+    }
+
     sendFBSenderAction(sender, action) {
         return new Promise((resolve, reject) => {
             request({
@@ -557,6 +574,124 @@ app.post('/webhook/', (req, res) => {
     }
 
 });
+
+app.post('/ai', (req, res) => {
+    if (req.body.result.action === 'recherche_libre_recette') {
+   
+        getRecette(req.body.result.parameters)
+            .then((r) => {
+                var listeRecette = JSONbig.parse(r);
+
+                let messagedata = JSON.stringify({
+                    "attachment": {
+                        "type": "template",
+                        "payload": {
+                            "template_type": "generic",
+                            "elements": [
+                                {
+                                    "title": listeRecette[0].Titre,
+                                    "image_url": listeRecette[0].ImageUrl,
+                                    "subtitle": "Vous serez redirigé vers notre site web",
+                                    "default_action": {
+                                        "type": "web_url",
+                                        "url": "http://google.fr",
+                                        "webview_height_ratio": "tall"
+                                    },
+                                    "buttons": [
+                                        {
+                                            "title": "Cliquez ici",
+                                            "type": "web_url",
+                                            "url": "http://google.fr",
+                                            "webview_height_ratio": "tall"
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    },
+                    "quick_replies": [
+                        {
+                            "content_type": "text",
+                            "title": "Autres recettes",
+                            "payload": "Autres recettes"
+                        },
+                        {
+                            "content_type": "text",
+                            "title": "Menu Principal",
+                            "payload": "Menu Principal"
+                        }
+                    ]
+                });
+
+                return res.json({
+                    speech: messagedata,
+                    message: messagedata,
+                    source: 'recherche_libre_recette'
+                });
+            })
+            .catch(err => {
+                return res.status(400).json({
+                    speech: "ERREUR : " + err,
+                    message: "ERREUR : " + err,
+                    source: 'recherche_libre_recette'
+                });
+            });
+
+    }
+    else if (req.body.result.action === 'input.unknown') {
+        console.log(req.body.result.action);
+
+        let messagedata = JSON.stringify({
+            "text": "Je suis désolé mais je ne comprends pas encore votre requête. Souhaitez vous que je vous redirige vers un interlocuteur humain?"
+        });
+
+        return res.json({
+            speech: messagedata,
+            message: messagedata,
+            source: 'input.unknown'
+        });
+    }
+});
+
+function getRecette(param) {
+    let nourriture1 = param['Nourriture'];
+    let nourriture2 = param['Nourriture1'];
+    let nourriture3 = param['Nourriture2'];
+    let nourriture4 = param['Nourriture21'];
+
+    let my_array = [nourriture1, nourriture2, nourriture3, nourriture4];
+
+    let resultat = '';
+    let estPremier = true;
+
+    for (var i = 0; i < my_array.length; i++) {
+        if (my_array[i] != null && my_array != '') {
+            resultat += (estPremier ? '' : ' ') + my_array[i];
+            estPremier = false;
+        }
+    }
+
+    resultat = encodeURIComponent(resultat);
+
+    var options = {
+        method: 'GET',
+        uri: `http://wsmcommerce.intermarche.com/api/v1/recette`,
+        headers: {
+            'TokenAuthentification': '53c054d2-eb10-4890-a963-59de901a43ae'
+        }
+    };
+
+    return new Promise((resolve, reject) => {
+        request(options, (error, response) => {
+            if (!error && response.statusCode == 200) {
+                resolve(response.body);
+            }
+            else {
+                reject(error);
+            }
+        })
+    })
+}
 
 app.listen(REST_PORT, () => {
     console.log('Rest service ready on port ' + REST_PORT);
