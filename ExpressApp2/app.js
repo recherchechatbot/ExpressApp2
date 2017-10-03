@@ -997,7 +997,8 @@ function getRecette(param) {
     }
 
     resultat = encodeURIComponent(resultat);
-    let url = `https://converseauto3.herokuapp.com/recherche/recette/${nourriture1}`;
+    //let url = `https://converseauto3.herokuapp.com/recherche/recette/${nourriture1}`;
+    let url = `http://ecorct2-fr-wsmcommerce.mousquetaires.com/api/v1/recherche/recette?mot=${resultat}`;
 
     console.log("URRRRRRRRRRRRRRRRRRRRRRLLLLL : " + url);
 
