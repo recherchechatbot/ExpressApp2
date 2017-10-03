@@ -316,8 +316,6 @@ class FacebookBot {
 
     doApiAiRequest(apiaiRequest, sender) {
         apiaiRequest.on('response', (response) => {
-            console.log("api ai response : " + JSON.stringify(response));
-            console.log("api ai response.result : " + JSON.stringify(response.result));
 
             if (this.isDefined(response.result) && this.isDefined(response.result.fulfillment)) {
                 let responseText = response.result.fulfillment.speech;
@@ -505,27 +503,6 @@ let facebookBot = new FacebookBot();
 const app = express();
 
 app.use(bodyParser.text({ type: 'application/json' }));
-
-app.get('/test', (req, res) => {
-
-    return res.status(200).json(
-        [
-            {
-                "IdPdv": 931,
-                "Distance": "3,0 km"
-            },
-            {
-                "IdPdv": 369,
-                "Distance": "3,4 km"
-            },
-            {
-                "IdPdv": 2,
-                "Distance": "4,0 km"
-            }
-        ]
-    )
-})
-
 
 app.get('/recherche/recette/:m', (req, res) => {
     let mot = req.param('m');
@@ -797,9 +774,6 @@ app.post('/ai', (req, res) => {
             .then((r) => {
                 var listeRecette = JSONbig.parse(r);
 
-                console.log("retour WS recettes OK : " + JSON.stringify(listeRecette));
-                console.log("première recette : " + JSON.stringify(listeRecette.Recettes[0]));
-
                 let messagedata = {
                     "attachment": {
                         "type": "template",
@@ -860,7 +834,7 @@ app.post('/ai', (req, res) => {
                 };
 
                 return res.json({
-                    speech: "Titre première recette : " + listeRecette.Recettes[0].Titre,
+                    speech: "Recettes",
                     data: { "facebook" : messagedata },
                     source: 'recherche_libre_recette'
                 });
@@ -878,39 +852,31 @@ app.post('/ai', (req, res) => {
         console.log("body.result = " + JSON.stringify(body.result));
 
         let context = getContextByName(body.result.contexts, "facebook_location");
-        console.log('contexttttttttttttttt' + JSON.stringify(context));
 
         if (context) {
-            console.log('le contexte est defini');
             let long = context.parameters.long;
             let lat = context.parameters.lat;
-            console.log("coordonnées : long =" + long + " lat = " + lat);
-
-            console.log("DEBUT RECUP MAGASIN");
+            
             getMagasin(lat, long)
                 .then((m) => {
-
-                    console.log("REPONSE RECUP MAGASIN OK");
                     var listeMagasins = JSONbig.parse(m);
-
-                    console.log("retour WS magasins OK : " + JSON.stringify(listeMagasins));
 
                     if (listeMagasins[0])
                     {
                         console.log("ID premier Magasin : " + JSON.stringify(listeMagasins[0].IdPdv));
 
+                        return res.json({
+                            speech: "Id premier magasin: " + listeMagasins[0].IdPdv,
+                            source: 'Localisation.Recue'
+                        });
                     }
-                    if (listeMagasins[1]) {
-                        console.log("ID deuxième Magasin : " + JSON.stringify(listeMagasins[1].IdPdv));
 
-                    }
                     return res.json({
-                        speech: "Id premier magasin: ", //+ listeMagasins[0].IdPdv,
+                        speech: "Aucun magasin",
                         source: 'Localisation.Recue'
                     });
                 })
                 .catch(err => {
-                    console.log("REPONSE RECUP MAGASIN NOK");
                     return res.status(400).json({
                         speech: "ERREUR : " + err,
                         message: "ERREUR : " + err,
@@ -939,17 +905,11 @@ app.post('/ai', (req, res) => {
 function getMagasin(lat, long) {
 
     return new Promise((resolve, reject) => {
-        console.log("ON LAAAAAAAAAAAAAAAAAAAAAAAAAAAANCE REQUEST");
-
-        //http://ecorct2-fr-wsmcommerce.mousquetaires.com/api/v1/pdv/distance?latitude=${lat}&longitude=${long}
-        //`http://wsmcommerce.intermarche.com/api/v1/pdv/distance?latitude=${lat}&longitude=${long}`
 
         request({
             uri: `http://ecorct2-fr-wsmcommerce.mousquetaires.com/api/v1/pdv/distance?latitude=${lat}&longitude=${long}`,
             method: 'GET'
         }, (error, response) => {
-            console.log("on a le retour de request");
-
             if (error) {
                 console.log('Error while getting shop list: ', error);
                 reject(error);
@@ -967,7 +927,7 @@ function getContextByName(contexts, name) {
     )[0];
 }
 
-app.get('/recette/', (req, res) => {
+app.get('/webhook/', (req, res) => {
     if (req.query['hub.verify_token'] === FB_VERIFY_TOKEN) {
         res.send(req.query['hub.challenge']);
 
@@ -998,8 +958,8 @@ function getRecette(param) {
     }
 
     resultat = encodeURIComponent(resultat);
-    //let url = `https://converseauto3.herokuapp.com/recherche/recette/${nourriture1}`;
-    let url = `http://ecorct2-fr-wsmcommerce.mousquetaires.com/api/v1/recherche/recette?mot=${resultat}`;
+    let url = `https://converseauto3.herokuapp.com/recherche/recette/${nourriture1}`;
+    //let url = `http://ecorct2-fr-wsmcommerce.mousquetaires.com/api/v1/recherche/recette?mot=${resultat}`;
     //let url = `http://wsmcommerce.intermarche.com/api/v1/recherche/recette?mot=${resultat}`;
     console.log("URRRRRRRRRRRRRRRRRRRRRRLLLLL : " + url);
 
@@ -1011,7 +971,6 @@ function getRecette(param) {
         }
     };
 
-    
     return new Promise((resolve, reject) => {
         request(options, (error, response) => {
             if (!error && response.statusCode == 200) {
