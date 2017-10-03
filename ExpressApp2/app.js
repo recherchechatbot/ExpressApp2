@@ -917,6 +917,7 @@ app.post('/ai', (req, res) => {
 
 
 function getMagasin(lat, long) {
+
     return new Promise((resolve, reject) => {
         console.log("ON LAAAAAAAAAAAAAAAAAAAAAAAAAAAANCE REQUEST");
 
@@ -999,8 +1000,10 @@ function getRecette(param) {
     })
 }
 
-app.listen(REST_PORT, () => {
+var server = app.listen(REST_PORT, () => {
     console.log('Rest service ready on port ' + REST_PORT);
 });
+
+server.timeout = 10000;
 
 facebookBot.doSubscribeRequest();
