@@ -523,8 +523,8 @@ app.get('/test', (req, res) => {
                 "Distance": "4,0 km"
             }
         ]
-    );
-}
+    )
+})
 
 
 app.get('/recherche/recette/:m', (req, res) => {
