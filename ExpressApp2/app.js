@@ -945,7 +945,7 @@ function getMagasin(lat, long) {
         //`http://wsmcommerce.intermarche.com/api/v1/pdv/distance?latitude=${lat}&longitude=${long}`
 
         request({
-            uri: `http://wsmcommerce.intermarche.com/api/v1/pdv/distance?latitude=${lat}&longitude=${long}`,
+            uri: `http://ecorct2-fr-wsmcommerce.mousquetaires.com/api/v1/pdv/distance?latitude=${lat}&longitude=${long}`,
             method: 'GET'
         }, (error, response) => {
             console.log("on a le retour de request");
@@ -999,15 +999,15 @@ function getRecette(param) {
 
     resultat = encodeURIComponent(resultat);
     //let url = `https://converseauto3.herokuapp.com/recherche/recette/${nourriture1}`;
-    //let url = `http://ecorct2-fr-wsmcommerce.mousquetaires.com/api/v1/recherche/recette?mot=${resultat}`;
-    let url = `http://wsmcommerce.intermarche.com/api/v1/recherche/recette?mot=${resultat}`;
+    let url = `http://ecorct2-fr-wsmcommerce.mousquetaires.com/api/v1/recherche/recette?mot=${resultat}`;
+    //let url = `http://wsmcommerce.intermarche.com/api/v1/recherche/recette?mot=${resultat}`;
     console.log("URRRRRRRRRRRRRRRRRRRRRRLLLLL : " + url);
 
     var options = {
         method: 'GET',
         uri: url,
         headers: {
-            'TokenAuthentification': '1deaaf3c-0850-47c6-bbcf-c817da686dff'
+            'TokenAuthentification': '3399a7d5-c015-441d-a509-afe582b0c51d'
         }
     };
 
