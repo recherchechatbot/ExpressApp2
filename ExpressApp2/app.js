@@ -508,7 +508,7 @@ app.use(bodyParser.text({ type: 'application/json' }));
 
 app.get('/test', (req, res) => {
 
-    return res.status(200).json({
+    return res.status(200).json(
         [
             {
                 "IdPdv": 931,
@@ -523,7 +523,7 @@ app.get('/test', (req, res) => {
                 "Distance": "4,0 km"
             }
         ]
-    });
+    );
 }
 
 
