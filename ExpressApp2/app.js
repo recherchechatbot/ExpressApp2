@@ -945,7 +945,7 @@ function getMagasin(lat, long) {
         //`http://wsmcommerce.intermarche.com/api/v1/pdv/distance?latitude=${lat}&longitude=${long}`
 
         request({
-            uri: `http://wsmcommerce.intermarche.com/api/v1/pdv/distance?latitude=${lat}&longitude=${long}`,
+            uri: `http://ecorct2-fr-wsmcommerce.mousquetaires.com/api/v1/pdv/distance?latitude=${lat}&longitude=${long}`,
             method: 'GET'
         }, (error, response) => {
             console.log("on a le retour de request");
