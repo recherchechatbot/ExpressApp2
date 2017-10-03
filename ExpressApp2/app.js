@@ -506,6 +506,7 @@ const app = express();
 
 app.use(bodyParser.text({ type: 'application/json' }));
 
+
 app.get('/recherche/recette/:m', (req, res) => {
     let mot = req.param('m');
 
@@ -865,8 +866,11 @@ app.post('/ai', (req, res) => {
             let lat = context.parameters.lat;
             console.log("coordonnées : long =" + long + " lat = " + lat);
 
+            console.log("DEBUT RECUP MAGASIN");
             getMagasin(lat, long)
                 .then((m) => {
+
+                    console.log("REPONSE RECUP MAGASIN OK");
                     var listeMagasins = JSONbig.parse(m);
 
                     console.log("retour WS magasins OK : " + JSON.stringify(listeMagasins));
@@ -886,6 +890,7 @@ app.post('/ai', (req, res) => {
                     });
                 })
                 .catch(err => {
+                    console.log("REPONSE RECUP MAGASIN NOK");
                     return res.status(400).json({
                         speech: "ERREUR : " + err,
                         message: "ERREUR : " + err,
@@ -913,10 +918,14 @@ app.post('/ai', (req, res) => {
 
 function getMagasin(lat, long) {
     return new Promise((resolve, reject) => {
+        console.log("ON LAAAAAAAAAAAAAAAAAAAAAAAAAAAANCE REQUEST");
+
         request({
             uri: `http://wsmcommerce.intermarche.com/api/v1/pdv/distance?latitude=${lat}&longitude=${long}`,
             method: 'GET'
         }, (error, response) => {
+            console.log("on a le retour de request");
+
             if (error) {
                 console.log('Error while getting shop list: ', error);
                 reject(error);
