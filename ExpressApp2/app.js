@@ -506,6 +506,26 @@ const app = express();
 
 app.use(bodyParser.text({ type: 'application/json' }));
 
+app.get('/test', (req, res) => {
+
+    return res.status(200).json({
+        [
+            {
+                "IdPdv": 931,
+                "Distance": "3,0 km"
+            },
+            {
+                "IdPdv": 369,
+                "Distance": "3,4 km"
+            },
+            {
+                "IdPdv": 2,
+                "Distance": "4,0 km"
+            }
+        ]
+    });
+}
+
 
 app.get('/recherche/recette/:m', (req, res) => {
     let mot = req.param('m');
@@ -921,8 +941,10 @@ function getMagasin(lat, long) {
     return new Promise((resolve, reject) => {
         console.log("ON LAAAAAAAAAAAAAAAAAAAAAAAAAAAANCE REQUEST");
 
+        //`http://wsmcommerce.intermarche.com/api/v1/pdv/distance?latitude=${lat}&longitude=${long}`
+
         request({
-            uri: `http://wsmcommerce.intermarche.com/api/v1/pdv/distance?latitude=${lat}&longitude=${long}`,
+            uri: "https://converseauto3.herokuapp.com/test",
             method: 'GET'
         }, (error, response) => {
             console.log("on a le retour de request");
