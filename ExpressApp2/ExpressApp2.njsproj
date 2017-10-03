@@ -29,6 +29,7 @@
     <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="app - Copy %282%29.js" />
     <Compile Include="app - Copy.js" />
     <Compile Include="app.js" />
     <Compile Include="app_backup.js" />
