@@ -867,19 +867,19 @@ app.post('/ai', (req, res) => {
 
             getMagasin(lat, long)
                 .then((m) => {
-                    //var listeMagasins = JSONbig.parse(m);
+                    var listeMagasins = JSONbig.parse(m);
 
-                    //console.log("retour WS magasins OK : " + JSON.stringify(listeMagasins));
+                    console.log("retour WS magasins OK : " + JSON.stringify(listeMagasins));
 
-                    //if (listeMagasins[0])
-                    //{
-                    //    console.log("ID premier Magasin : " + JSON.stringify(listeMagasins[0].IdPdv));
+                    if (listeMagasins[0])
+                    {
+                        console.log("ID premier Magasin : " + JSON.stringify(listeMagasins[0].IdPdv));
 
-                    //}
-                    //if (listeMagasins[1]) {
-                    //    console.log("ID deuxième Magasin : " + JSON.stringify(listeMagasins[1].IdPdv));
+                    }
+                    if (listeMagasins[1]) {
+                        console.log("ID deuxième Magasin : " + JSON.stringify(listeMagasins[1].IdPdv));
 
-                    //}
+                    }
                     return res.json({
                         speech: "Id premier magasin: ", //+ listeMagasins[0].IdPdv,
                         source: 'Localisation.Recue'
@@ -910,27 +910,22 @@ app.post('/ai', (req, res) => {
     }
 });
 
+
 function getMagasin(lat, long) {
-    let url = `http://wsmcommerce.intermarche.com/api/v1/pdv/distance?latitude=${lat}&longitude=${long}`;
-
-    var options = {
-        method: 'GET',
-        uri: url
-    };
-
     return new Promise((resolve, reject) => {
-        request(options, (error, response) => {
-            console.log('REQUEEST');
-            if (!error && response.statusCode == 200) {
-                console.log('IFFFFFFFFFFFFF');
+        request({
+            uri: `http://wsmcommerce.intermarche.com/api/v1/pdv/distance?latitude=${lat}&longitude=${long}`,
+            method: 'GET'
+        }, (error, response) => {
+            if (error) {
+                console.log('Error while getting shop list: ', error);
+                reject(error);
+            } else {
+                console.log('shop list result : ', response.body);
                 resolve(response.body);
             }
-            else {
-                console.log('ELSEEEEEEEEEEEEE');
-                reject(error);
-            }
-        })
-    });
+        });
+    })
 }
 
 function getContextByName(contexts, name) {
