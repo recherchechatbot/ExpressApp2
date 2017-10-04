@@ -12,7 +12,7 @@ const REST_PORT = (process.env.PORT || 5000);
 const APIAI_ACCESS_TOKEN = "30dfeddc13344176b6cefa6c09056e73";
 const APIAI_LANG = 'fr';
 const FB_VERIFY_TOKEN = "tuxedo_cat";
-const FB_PAGE_ACCESS_TOKEN = "EAAMkZAtH8lc4BADZBikUDtmMPVjJUE2Ybf601hzdI3TboCoEfg9EKPUYjUa56XRcSaZCZA1UbFyS4CdAk7ntspT3Nhw3WGLv5AxJSf24biLXreuSaR8YIDFcZArVK7HQ8bTtRZA6SlNLoMMZCLZBNjOJDHqfK47oJKTl60rnZAgnpwQZDZD";
+const FB_PAGE_ACCESS_TOKEN = "EAAMkZAtH8lc4BALcZA67pXakE9uARTExjuGiJOZBk1YV4I9cZB0zUKpoZA0SkQklfOddiMP2Xpeh0jpc2WScQQLGTxbLqbgo9ovGK4PTpipqs85JOi3hsAYpxg944kiDXYF380mY1ZCYoRuMVobckQJjsJxfM3LdIZAGa8mmbA5VQZDZD";
 const FB_TEXT_LIMIT = 640;
 
 const FACEBOOK_LOCATION = "FACEBOOK_LOCATION";
@@ -292,6 +292,7 @@ class FacebookBot {
     processMessageEvent(event) {
         const sender = event.sender.id.toString();
         const text = this.getEventText(event);
+        console.log('BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB');
 
         if (text) {
 
@@ -761,6 +762,7 @@ app.get('/recherche/recette/:m', (req, res) => {
 app.post('/webhook/', (req, res) => {
     try {
         const data = JSONbig.parse(req.body);
+        console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
 
         if (data.entry) {
             let entries = data.entry;
@@ -801,6 +803,7 @@ app.post('/webhook/', (req, res) => {
                         }
                         else if (event.account_linking)
                         {
+                            console.log('ON RENNNNNNNTRE DANS ACCCOUUUUUNT LINKIIIIIIIIIIIIIIIIIIIING')
                             facebookBot.receivedAccountLink(event);
                         }
                         else if (event.optin)
