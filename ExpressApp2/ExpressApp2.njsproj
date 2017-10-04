@@ -36,6 +36,9 @@
     <Compile Include="routes\index.js" />
     <Compile Include="routes\users.js" />
     <Content Include="package.json" />
+    <Content Include="public\index.html">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="public\stylesheets\main.css" />
     <Content Include="README.md" />
     <Content Include="views\authorize.ejs" />
