@@ -6,20 +6,20 @@
 		/* attach a submit handler to the form */
 		$("#identification").submit(function(event) {
 
-		  /* stop form from submitting normally */
-		  event.preventDefault();
+			/* stop form from submitting normally */
+			event.preventDefault();
 
-		  /* get the action attribute from the <form action=""> element */
-		  var $form = $( this ),
-			  url = $form.attr( 'action' );
-
-		  /* Send the data using post with element id name and name2*/
-		  var posting = $.post( url, { username: $('#username').val(), password: $('#password').val(), accountLinkingToken: $('#accountLinkingToken').val(), redirectURI: $('#redirectURI').val() } );
-
-		  /* Alerts the results 
-		  posting.done(function( data ) {
-			alert('success');
-		  });*/
+			/* get the action attribute from the <form action=""> element */
+			var $form = $( this ),
+				url = $form.attr( 'action' );
+			  
+			$.ajax({
+				type: "POST",
+				url: url,
+				data: JSON.stringify({ username: $('#username').val(), password: $('#password').val(), accountLinkingToken: $('#accountLinkingToken').val(), redirectURI: $('#redirectURI').val() }),
+				contentType: "application/json; charset=utf-8",
+				dataType: "json"
+			});
 		});
 	</script>
 
