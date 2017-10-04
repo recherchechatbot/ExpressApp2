@@ -1,4 +1,8 @@
-﻿<form action="/login" method="post">
+﻿<head>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+</head>
+
+<form action="/login" method="post">
 	Nom : <input type="text" name="username"><br>
 	Mdp : <input type="password" name="password"><br>
 	<input type="hidden" name="accountLinkingToken" value="<%= accountLinkingToken %>">
