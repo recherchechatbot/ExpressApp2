@@ -882,7 +882,7 @@ function loginMCommerce(email, mdp) {
                 reject(new Error(response.body.error));
             }
 
-            resolve();
+            resolve(response.body);
         });
     });
 }
