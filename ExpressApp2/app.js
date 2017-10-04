@@ -767,6 +767,34 @@ app.get('/recherche/recette/:m', (req, res) => {
     }
 });
 
+
+
+/**
+ * User login route is used to authorize account_link actions
+ */
+router.post('/login', function (req, res) {
+    const { username, password, redirectURI } = req.body;
+    const userLogin = UserStore.get(username);
+    if (!userLogin || userLogin.password !== password) {
+        res.render('login', {
+            redirectURI,
+            username,
+            password,
+            errorMessage: !userLogin
+                ? 'Uh oh. That username doesn’t exist. Please use the demo account or try again.' // eslint-disable-line max-len
+                : 'Oops. Incorrect password',
+            errorInput: !userLogin ? 'username' : 'password',
+        });
+    } else {
+        linkAccountToMessenger(res, userLogin.username, redirectURI);
+    }
+});
+
+
+app.post('/login', (req, res) => {
+    console.log("AUTHENTIFICATION OK");
+})
+
 app.post('/webhook/', (req, res) => {
     try {
         const data = JSONbig.parse(req.body);
@@ -844,13 +872,57 @@ app.get('/authorize', function (req, res) {
     var authCode = "1234567890";
 
     // Redirect users to this URI on successful login
-    var redirectURISuccess = redirectURI + "&authorization_code=" + authCode;
 
     res.render('authorize', {
         accountLinkingToken: accountLinkingToken,
-        redirectURI: redirectURI,
-        redirectURISuccess: redirectURISuccess
+        redirectURI: redirectURI
     });
+});
+
+const linkAccountToMessenger = (res, username, redirectURI) => {
+    /*
+      The auth code can be any thing you can use to uniquely identify a user.
+      Once the redirect below happens, this bot will receive an account link
+      message containing this auth code allowing us to identify the user.
+      NOTE: It is considered best practice to use a unique id instead of
+      something guessable like a users username so that malicious
+      users cannot spoof a link.
+     */
+    const authCode = uuid();
+
+    // set the messenger id of the user to the authCode.
+    // this will be replaced on successful account link
+    // with the users id.
+
+    //UserStore.linkMessengerAccount(username, authCode);
+
+    // Redirect users to this URI on successful login
+    const redirectURISuccess = `${redirectURI}&authorization_code=${authCode}`;
+
+    res.redirect(redirectURISuccess);
+};
+
+/**
+ * User login route is used to authorize account_link actions
+ */
+app.post('/login', function (req, res) {
+    const { username, password, redirectURI  } = req.body;
+    //const userLogin = UserStore.get(username);
+    //if (!userLogin || userLogin.password !== password) {
+    //    res.render('authorize', {
+    //        redirectURI,
+    //        username,
+    //        password,
+    //        errorMessage: !userLogin
+    //            ? 'Uh oh. That username doesn’t exist. Please use the demo account or try again.' // eslint-disable-line max-len
+    //            : 'Oops. Incorrect password',
+    //        errorInput: !userLogin ? 'username' : 'password',
+    //    });
+    //} else {
+    //    linkAccountToMessenger(res, userLogin.username, redirectURI);
+    //}
+
+    linkAccountToMessenger(res, username, redirectURI);
 });
 
 app.post('/ai', (req, res) => {
