@@ -918,7 +918,7 @@ app.post('/login', function (req, res) {
             }
         })
         .catch(err => {
-            console.log("ERREUR recup token : " + err);
+            console.log("ERREUR recup token : " + JSON.stringify(err));
             console.log("le token n'a pas été récupéré à cause d'une erreur");
         });
 
