@@ -19,7 +19,16 @@
 					url: url,
 					data: JSON.stringify({ username: $('#username').val(), password: $('#password').val(), accountLinkingToken: $('#accountLinkingToken').val(), redirectURI: $('#redirectURI').val() }),
 					contentType: "application/json; charset=utf-8",
-					dataType: "json"
+					dataType: "json",
+					success: function(data, textStatus) {
+						if (data.redirect) {
+							// data.redirect contains the string URL to redirect to
+							window.location.href = data.redirect;
+						}
+						else {
+							alert("Erreur");
+						}
+					}
 				});
 			});
 		});
