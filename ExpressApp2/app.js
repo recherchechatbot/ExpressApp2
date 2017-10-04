@@ -939,6 +939,7 @@ app.post('/login', function (req, res) {
 
     // Redirect users to this URI on successful login
     const redirectURISuccess = `${resultat.redirectURI}&authorization_code=${authCode}`;
+    console.log("URL DE REDIRECTION: " + redirectURISuccess);
 
     return res.json({
         EstEnErreur: authCode == null,
