@@ -296,6 +296,8 @@ class FacebookBot {
 
         if (text) {
 
+            console.log("ON VIENT DE TAPER LE MOT : " + text);
+
             if (text == "account linking")
             {
                 sendAccountLinking(sender);
@@ -325,21 +327,23 @@ class FacebookBot {
     }
 
     sendAccountLinking(recipientId) {
-        var messageData = {
-            attachment: {
-                type: "template",
-                payload: {
-                    template_type: "button",
-                    text: "Welcome. Link your account.",
-                    buttons: [{
-                        type: "account_link",
-                        url: SERVER_URL + "/authorize"
-                    }]
-                }
-            }
-        };
 
-        this.sendFBMessage(recipientId, messageData);
+        console.log("c'est trop cool");
+        //var messageData = {
+        //    attachment: {
+        //        type: "template",
+        //        payload: {
+        //            template_type: "button",
+        //            text: "Welcome. Link your account.",
+        //            buttons: [{
+        //                type: "account_link",
+        //                url: SERVER_URL + "/authorize"
+        //            }]
+        //        }
+        //    }
+        //};
+
+        //this.sendFBMessage(recipientId, messageData);
     }
 
     receivedAccountLink(event) {
