@@ -767,34 +767,6 @@ app.get('/recherche/recette/:m', (req, res) => {
     }
 });
 
-
-
-/**
- * User login route is used to authorize account_link actions
- */
-router.post('/login', function (req, res) {
-    const { username, password, redirectURI } = req.body;
-    const userLogin = UserStore.get(username);
-    if (!userLogin || userLogin.password !== password) {
-        res.render('login', {
-            redirectURI,
-            username,
-            password,
-            errorMessage: !userLogin
-                ? 'Uh oh. That username doesn’t exist. Please use the demo account or try again.' // eslint-disable-line max-len
-                : 'Oops. Incorrect password',
-            errorInput: !userLogin ? 'username' : 'password',
-        });
-    } else {
-        linkAccountToMessenger(res, userLogin.username, redirectURI);
-    }
-});
-
-
-app.post('/login', (req, res) => {
-    console.log("AUTHENTIFICATION OK");
-})
-
 app.post('/webhook/', (req, res) => {
     try {
         const data = JSONbig.parse(req.body);
