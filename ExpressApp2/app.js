@@ -862,12 +862,7 @@ function loginMCommerce(email, mdp) {
     console.log("Email : " + email);
     console.log("Mdp : " + mdp);
 
-    var data = JSON.stringify({
-        email: "s.ruelle@netfective.com",
-        motdepasse: "Cobol2010",
-        idrc: "E6D86BF5-FAE6-4F41-8978-07B04AC6DF63",
-        veutcartefid: false
-    });
+    var data = JSON.stringify();
 
     console.log("DATA :" + data);
 
@@ -875,10 +870,13 @@ function loginMCommerce(email, mdp) {
         request({
             url: 'http://wsmcommerce.intermarche.com/api/v1/loginRc',
             method: 'POST',
-            headers: {
-                "content-type": "application/json",
+            body: {
+                email: email,
+                motdepasse: mdp,
+                idrc: "E6D86BF5-FAE6-4F41-8978-07B04AC6DF63",
+                veutcartefid: false
             },
-            body: data
+            json: true
         }, (error, response) => {
             if (error) {
                 console.log('Erreur login mcommerce: ', error);
@@ -926,11 +924,8 @@ app.post('/login', function (req, res) {
         .then((r) => {
             console.log("ICIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII");
 
-
-            var retour = JSONbig.parse(r);
-
-            if (retour.TokenAuthentification) {
-                authCode = retour.TokenAuthentification
+            if (r.TokenAuthentification) {
+                authCode = r.TokenAuthentification
                 console.log("le token a bien été récupéré");
                 const redirectURISuccess = `${resultat.redirectURI}&authorization_code=${authCode}`;
                 console.log("URL DE REDIRECTION: " + redirectURISuccess);
