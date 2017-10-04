@@ -7,6 +7,7 @@ const uuid = require('uuid');
 const request = require('request');
 const JSONbig = require('json-bigint');
 const async = require('async');
+const https = require('https');
 
 const REST_PORT = (process.env.PORT || 5000);
 const APIAI_ACCESS_TOKEN = "30dfeddc13344176b6cefa6c09056e73";
@@ -561,6 +562,8 @@ let facebookBot = new FacebookBot();
 const app = express();
 
 app.use(bodyParser.text({ type: 'application/json' }));
+app.set('view engine', 'ejs');
+app.use(express.static('public'));
 
 app.get('/recherche/recette/:m', (req, res) => {
     let mot = req.param('m');
