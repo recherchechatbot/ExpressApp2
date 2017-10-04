@@ -17,6 +17,7 @@ const FB_TEXT_LIMIT = 640;
 
 const FACEBOOK_LOCATION = "FACEBOOK_LOCATION";
 const FACEBOOK_WELCOME = "FACEBOOK_WELCOME";
+const SERVER_URL = "https://converseauto3.herokuapp.com/";
 
 class FacebookBot {
     constructor() {
@@ -294,24 +295,77 @@ class FacebookBot {
 
         if (text) {
 
-            // Handle a text message from this sender
-            if (!this.sessionIds.has(sender)) {
-                this.sessionIds.set(sender, uuid.v4());
+            if (text == "account linking")
+            {
+                sendAccountLinking(sender);
             }
+            else
+            {
+                // Handle a text message from this sender
+                if (!this.sessionIds.has(sender)) {
+                    this.sessionIds.set(sender, uuid.v4());
+                }
 
-            console.log("Text", text);
-            //send user's text to api.ai service
-            let apiaiRequest = this.apiAiService.textRequest(text,
-                {
-                    sessionId: this.sessionIds.get(sender),
-                    originalRequest: {
-                        data: event,
-                        source: "facebook"
-                    }
-                });
+                console.log("Text", text);
+                //send user's text to api.ai service
+                let apiaiRequest = this.apiAiService.textRequest(text,
+                    {
+                        sessionId: this.sessionIds.get(sender),
+                        originalRequest: {
+                            data: event,
+                            source: "facebook"
+                        }
+                    });
 
-            this.doApiAiRequest(apiaiRequest, sender);
+                this.doApiAiRequest(apiaiRequest, sender);
+            }
+            
         }
+    }
+
+    sendAccountLinking(recipientId) {
+        var messageData = {
+            attachment: {
+                type: "template",
+                payload: {
+                    template_type: "button",
+                    text: "Welcome. Link your account.",
+                    buttons: [{
+                        type: "account_link",
+                        url: SERVER_URL + "/authorize"
+                    }]
+                }
+            }
+        };
+
+        this.sendFBMessage(recipientId, facebookResponseData);
+    }
+
+    receivedAccountLink(event) {
+        var senderID = event.sender.id;
+        var recipientID = event.recipient.id;
+
+        var status = event.account_linking.status;
+        var authCode = event.account_linking.authorization_code;
+
+        console.log("Received account link event with for user %d with status %s " +
+            "and auth code %s ", senderID, status, authCode);
+    }
+
+    receivedAuthentication(event) {
+        var senderID = event.sender.id;
+        var recipientID = event.recipient.id;
+        var timeOfAuth = event.timestamp;
+
+
+        var passThroughParam = event.optin.ref;
+
+        console.log("Received authentication for user %d and page %d with pass " +
+            "through param '%s' at %d", senderID, recipientID, passThroughParam,
+            timeOfAuth);
+
+
+        this.doTextResponse(senderID, "Authentication successful");
     }
 
     doApiAiRequest(apiaiRequest, sender) {
@@ -745,6 +799,14 @@ app.post('/webhook/', (req, res) => {
                                 facebookBot.processMessageEvent(event);
                             }
                         }
+                        else if (event.account_linking)
+                        {
+                            facebookBot.receivedAccountLink(event);
+                        }
+                        else if (event.optin)
+                        {
+                            facebookBot.receivedAuthentication(event);
+                        }
                     });
                 }
             });
@@ -760,6 +822,24 @@ app.post('/webhook/', (req, res) => {
         });
     }
 
+});
+
+app.get('/authorize', function (req, res) {
+    var accountLinkingToken = req.query.account_linking_token;
+    var redirectURI = req.query.redirect_uri;
+
+    // Authorization Code should be generated per user by the developer. This will 
+    // be passed to the Account Linking callback.
+    var authCode = "1234567890";
+
+    // Redirect users to this URI on successful login
+    var redirectURISuccess = redirectURI + "&authorization_code=" + authCode;
+
+    res.render('authorize', {
+        accountLinkingToken: accountLinkingToken,
+        redirectURI: redirectURI,
+        redirectURISuccess: redirectURISuccess
+    });
 });
 
 app.post('/ai', (req, res) => {
