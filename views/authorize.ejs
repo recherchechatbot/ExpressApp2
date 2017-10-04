@@ -3,22 +3,24 @@
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 	</head>
 	<script type="text/javascript">
-		/* attach a submit handler to the form */
-		$("#identification").submit(function(event) {
+		$( document ).ready(function() {
+			/* attach a submit handler to the form */
+			$("#identification").submit(function(event) {
 
-			/* stop form from submitting normally */
-			event.preventDefault();
+				/* stop form from submitting normally */
+				event.preventDefault();
 
-			/* get the action attribute from the <form action=""> element */
-			var $form = $( this ),
-				url = $form.attr( 'action' );
-			  
-			$.ajax({
-				type: "POST",
-				url: url,
-				data: JSON.stringify({ username: $('#username').val(), password: $('#password').val(), accountLinkingToken: $('#accountLinkingToken').val(), redirectURI: $('#redirectURI').val() }),
-				contentType: "application/json; charset=utf-8",
-				dataType: "json"
+				/* get the action attribute from the <form action=""> element */
+				var $form = $( this ),
+					url = $form.attr( 'action' );
+				  
+				$.ajax({
+					type: "POST",
+					url: url,
+					data: JSON.stringify({ username: $('#username').val(), password: $('#password').val(), accountLinkingToken: $('#accountLinkingToken').val(), redirectURI: $('#redirectURI').val() }),
+					contentType: "application/json; charset=utf-8",
+					dataType: "json"
+				});
 			});
 		});
 	</script>
