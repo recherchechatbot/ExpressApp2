@@ -1077,3 +1077,5 @@ var server = app.listen(REST_PORT, () => {
 server.timeout = 10000;
 
 facebookBot.doSubscribeRequest();
+
+module.exports = app;
