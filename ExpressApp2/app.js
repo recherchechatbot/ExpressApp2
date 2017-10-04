@@ -854,6 +854,9 @@ app.get('/authorize', function (req, res) {
 });
 
 function loginMCommerce(email, mdp) {
+    console.log("Email : " + email);
+    console.log("Mdp : " + mdp);
+
     return new Promise((resolve, reject) => {
         request({
             url: 'http://wsmcommerce.intermarche.com/api/v1/loginRc',
@@ -866,8 +869,7 @@ function loginMCommerce(email, mdp) {
                 motdepasse: mdp,
                 veutcartefid: false,
                 idrc: "E6D86BF5-FAE6-4F41-8978-07B04AC6DF63"
-            },
-            json: true
+            }
         }, (error, response) => {
             if (error) {
                 console.log('Erreur login mcommerce: ', error);
@@ -908,6 +910,8 @@ app.post('/login', function (req, res) {
     //}
 
     var authCode = null;
+
+    
 
     loginMCommerce(resultat.email, resultat.mdp)
         .then((r) => {
