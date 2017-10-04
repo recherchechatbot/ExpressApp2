@@ -862,20 +862,20 @@ function loginMCommerce(email, mdp) {
     console.log("Email : " + email);
     console.log("Mdp : " + mdp);
 
+    var data = JSON.stringify({
+        email: "s.ruelle@netfective.com",
+        motdepasse: "Cobol2010",
+        idrc: "E6D86BF5-FAE6-4F41-8978-07B04AC6DF63",
+        veutcartefid: false
+    });
+
+    console.log("DATA :" + data);
+
     return new Promise((resolve, reject) => {
         request({
             url: 'http://wsmcommerce.intermarche.com/api/v1/loginRc',
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: {
-                email: "s.ruelle@netfective.com",
-                motdepasse: "Cobol2010",
-                idrc: "E6D86BF5-FAE6-4F41-8978-07B04AC6DF63",
-                veutcartefid: false
-            },
-            json: true
+            json: data
         }, (error, response) => {
             if (error) {
                 console.log('Erreur login mcommerce: ', error);
