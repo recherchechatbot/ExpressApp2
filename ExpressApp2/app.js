@@ -858,12 +858,12 @@ function loginMCommerce(email, mdp) {
         request({
             url: 'http://wsmcommerce.intermarche.com/api/v1/loginRc',
             method: 'POST',
-            json: {
+            json: JSON.stringify({
                 "email": email,
                 "motdepasse": mdp,
                 "veutcartefid": false,
                 "idrc": "E6D86BF5-FAE6-4F41-8978-07B04AC6DF63"
-            }
+            })
         }, (error, response) => {
             if (error) {
                 console.log('Erreur login mcommerce: ', error);
@@ -912,14 +912,29 @@ app.post('/login', function (req, res) {
             if (retour.TokenAuthentification) {
                 authCode = retour.TokenAuthentification
                 console.log("le token a bien été récupéré");
+                const redirectURISuccess = `${resultat.redirectURI}&authorization_code=${authCode}`;
+                console.log("URL DE REDIRECTION: " + redirectURISuccess);
+
+                return res.json({
+                    EstEnErreur: false,
+                    urlRedirection: redirectURISuccess
+                });
             }
             else {
                 console.log("le token n'a pas été récupéré mais la réponse est ok");
+                return res.json({
+                    EstEnErreur: true,
+                    urlRedirection: ""
+                });
             }
         })
         .catch(err => {
             console.log("ERREUR recup token : " + JSON.stringify(err));
             console.log("le token n'a pas été récupéré à cause d'une erreur");
+            return res.json({
+                EstEnErreur: true,
+                urlRedirection: ""
+            });
         });
 
     /*
@@ -939,13 +954,7 @@ app.post('/login', function (req, res) {
     //UserStore.linkMessengerAccount(username, authCode);
 
     // Redirect users to this URI on successful login
-    const redirectURISuccess = `${resultat.redirectURI}&authorization_code=${authCode}`;
-    console.log("URL DE REDIRECTION: " + redirectURISuccess);
 
-    return res.json({
-        EstEnErreur: authCode == null,
-        urlRedirection: redirectURISuccess
-    });
 });
 
 app.post('/ai', (req, res) => {
