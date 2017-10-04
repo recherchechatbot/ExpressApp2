@@ -328,22 +328,21 @@ class FacebookBot {
 
     sendAccountLinking(recipientId) {
 
-        console.log("c'est trop cool");
-        //var messageData = {
-        //    attachment: {
-        //        type: "template",
-        //        payload: {
-        //            template_type: "button",
-        //            text: "Welcome. Link your account.",
-        //            buttons: [{
-        //                type: "account_link",
-        //                url: SERVER_URL + "/authorize"
-        //            }]
-        //        }
-        //    }
-        //};
+        var messageData = {
+            attachment: {
+                type: "template",
+                payload: {
+                    template_type: "button",
+                    text: "Welcome. Link your account.",
+                    buttons: [{
+                        type: "account_link",
+                        url: SERVER_URL + "/authorize"
+                    }]
+                }
+            }
+        };
 
-        //this.sendFBMessage(recipientId, messageData);
+        this.sendFBMessage(recipientId, messageData);
     }
 
     receivedAccountLink(event) {
