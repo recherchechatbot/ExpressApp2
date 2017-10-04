@@ -880,7 +880,7 @@ const linkAccountToMessenger = (res, username, redirectURI) => {
 app.post('/login', function (req, res) {
     const { username, password, redirectURI } = req.body;
 
-    console.log("VALEUR DE BODY : " + json.stringify(req.body));
+    console.log("VALEUR DE BODY : " + JSON.stringify(req.body));
 
     //const userLogin = UserStore.get(username);
     //if (!userLogin || userLogin.password !== password) {
