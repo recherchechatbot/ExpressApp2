@@ -878,7 +878,10 @@ const linkAccountToMessenger = (res, username, redirectURI) => {
  * User login route is used to authorize account_link actions
  */
 app.post('/login', function (req, res) {
-    const { username, password, redirectURI  } = req.body;
+    const { username, password, redirectURI } = req.body;
+
+    console.log("VALEUR DE BODY : " + json.stringify(req.body));
+
     //const userLogin = UserStore.get(username);
     //if (!userLogin || userLogin.password !== password) {
     //    res.render('authorize', {
@@ -893,6 +896,8 @@ app.post('/login', function (req, res) {
     //} else {
     //    linkAccountToMessenger(res, userLogin.username, redirectURI);
     //}
+
+    console.log("REDIRECTURI = " + redirectURI);
 
     linkAccountToMessenger(res, username, redirectURI);
 });
