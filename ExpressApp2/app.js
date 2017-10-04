@@ -835,6 +835,8 @@ app.post('/webhook/', (req, res) => {
 
 });
 
+
+
 app.get('/authorize', function (req, res) {
     var accountLinkingToken = req.query.account_linking_token;
     var redirectURI = req.query.redirect_uri;
@@ -850,6 +852,31 @@ app.get('/authorize', function (req, res) {
         redirectURI: redirectURI
     });
 });
+
+function loginMCommerce(email, mdp) {
+    return new Promise((resolve, reject) => {
+        request({
+            url: 'http://wsmcommerce.intermarche.com/api/v1/loginRc',
+            method: 'POST',
+            json: {
+                email: email,
+                motdepasse: mdp,
+                veutcartefid: false,
+                idrc: "E6D86BF5-FAE6-4F41-8978-07B04AC6DF63"
+            }
+        }, (error, response) => {
+            if (error) {
+                console.log('Erreur login mcommerce: ', error);
+                reject(error);
+            } else if (response.body.error) {
+                console.log('Error: ', response.body.error);
+                reject(new Error(response.body.error));
+            }
+
+            resolve();
+        });
+    });
+}
 
 /**
  * User login route is used to authorize account_link actions
@@ -876,7 +903,23 @@ app.post('/login', function (req, res) {
     //    linkAccountToMessenger(res, userLogin.username, redirectURI);
     //}
 
-    console.log("REDIRECTURI = " + resultat.redirectURI);
+    var authCode = null;
+
+    loginMCommerce(resultat.email, resultat.mdp)
+        .then((r) => {
+            var retour = JSONbig.parse(r);
+
+            if (retour.TokenAuthentification) {
+                authCode = retour.TokenAuthentification
+                console.log("le token a bien été récupéré");
+            }
+            else {
+                console.log("le token n'a pas été récupéré mais la réponse est ok");
+            }
+        })
+        .catch(err => {
+            console.log("le token n'a pas été récupéré à cause d'une erreur");
+        });
 
     /*
       The auth code can be any thing you can use to uniquely identify a user.
@@ -886,7 +929,7 @@ app.post('/login', function (req, res) {
       something guessable like a users username so that malicious
       users cannot spoof a link.
      */
-    const authCode = uuid();
+    //const authCode = uuid();
 
     // set the messenger id of the user to the authCode.
     // this will be replaced on successful account link
@@ -898,7 +941,7 @@ app.post('/login', function (req, res) {
     const redirectURISuccess = `${resultat.redirectURI}&authorization_code=${authCode}`;
 
     return res.json({
-        EstEnErreur: false,
+        EstEnErreur: authCode == null,
         urlRedirection: redirectURISuccess
     });
 });
