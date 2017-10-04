@@ -851,29 +851,6 @@ app.get('/authorize', function (req, res) {
     });
 });
 
-const linkAccountToMessenger = (res, username, redirectURI) => {
-    /*
-      The auth code can be any thing you can use to uniquely identify a user.
-      Once the redirect below happens, this bot will receive an account link
-      message containing this auth code allowing us to identify the user.
-      NOTE: It is considered best practice to use a unique id instead of
-      something guessable like a users username so that malicious
-      users cannot spoof a link.
-     */
-    const authCode = uuid();
-
-    // set the messenger id of the user to the authCode.
-    // this will be replaced on successful account link
-    // with the users id.
-
-    //UserStore.linkMessengerAccount(username, authCode);
-
-    // Redirect users to this URI on successful login
-    const redirectURISuccess = `${redirectURI}&authorization_code=${authCode}`;
-
-    res.redirect(redirectURISuccess);
-};
-
 /**
  * User login route is used to authorize account_link actions
  */
@@ -901,7 +878,29 @@ app.post('/login', function (req, res) {
 
     console.log("REDIRECTURI = " + resultat.redirectURI);
 
-    linkAccountToMessenger(res, resultat.username, resultat.redirectURI);
+    /*
+      The auth code can be any thing you can use to uniquely identify a user.
+      Once the redirect below happens, this bot will receive an account link
+      message containing this auth code allowing us to identify the user.
+      NOTE: It is considered best practice to use a unique id instead of
+      something guessable like a users username so that malicious
+      users cannot spoof a link.
+     */
+    const authCode = uuid();
+
+    // set the messenger id of the user to the authCode.
+    // this will be replaced on successful account link
+    // with the users id.
+
+    //UserStore.linkMessengerAccount(username, authCode);
+
+    // Redirect users to this URI on successful login
+    const redirectURISuccess = `${resultat.redirectURI}&authorization_code=${authCode}`;
+
+    return res.json({
+        EstEnErreur: false,
+        urlRedirection: redirectURISuccess
+    });
 });
 
 app.post('/ai', (req, res) => {
