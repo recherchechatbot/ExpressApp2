@@ -20,6 +20,12 @@ const FACEBOOK_LOCATION = "FACEBOOK_LOCATION";
 const FACEBOOK_WELCOME = "FACEBOOK_WELCOME";
 const SERVER_URL = "https://converseauto3.herokuapp.com/";
 
+const app = express();
+
+app.use(bodyParser.text({ type: 'application/json' }));
+app.set('view engine', 'ejs');
+app.use(express.static('public'));
+
 class FacebookBot {
     constructor() {
         this.apiAiService = apiai(APIAI_ACCESS_TOKEN, { language: APIAI_LANG, requestSource: "fb" });
@@ -559,11 +565,7 @@ class FacebookBot {
 
 let facebookBot = new FacebookBot();
 
-const app = express();
 
-app.use(bodyParser.text({ type: 'application/json' }));
-app.set('view engine', 'ejs');
-app.use(express.static('public'));
 
 app.get('/recherche/recette/:m', (req, res) => {
     let mot = req.param('m');
@@ -1070,11 +1072,9 @@ function getRecette(param) {
     })
 }
 
-var server = app.listen(REST_PORT, () => {
+app.listen(REST_PORT, () => {
     console.log('Rest service ready on port ' + REST_PORT);
 });
-
-server.timeout = 10000;
 
 facebookBot.doSubscribeRequest();
 

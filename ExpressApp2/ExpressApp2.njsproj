@@ -38,20 +38,13 @@
     <Content Include="public\index.html">
       <SubType>Code</SubType>
     </Content>
-    <Content Include="public\stylesheets\main.css" />
     <Content Include="README.md" />
     <Content Include="views\authorize.ejs" />
-    <Content Include="views\index.pug" />
-    <Content Include="views\layout.pug" />
-    <Content Include="views\error.pug" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="app\" />
     <Folder Include="app\views\" />
     <Folder Include="public\" />
-    <Folder Include="public\images\" />
-    <Folder Include="public\javascripts\" />
-    <Folder Include="public\stylesheets\" />
     <Folder Include="views\" />
   </ItemGroup>
   <ItemGroup>
