@@ -875,7 +875,10 @@ function loginMCommerce(email, mdp) {
         request({
             url: 'http://wsmcommerce.intermarche.com/api/v1/loginRc',
             method: 'POST',
-            json: data
+            headers: {
+                "content-type": "application/json",
+            },
+            body: data
         }, (error, response) => {
             if (error) {
                 console.log('Erreur login mcommerce: ', error);
