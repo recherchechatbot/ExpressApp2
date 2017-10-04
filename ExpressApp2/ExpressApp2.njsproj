@@ -33,7 +33,7 @@
     <Compile Include="app.js">
       <SubType>Code</SubType>
     </Compile>
-    <Content Include="app\authorize.ejs" />
+    <Content Include="app\views\authorize.ejs" />
     <Content Include="package.json" />
     <Content Include="public\index.html">
       <SubType>Code</SubType>
@@ -47,6 +47,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="app\" />
+    <Folder Include="app\views\" />
     <Folder Include="public\" />
     <Folder Include="public\images\" />
     <Folder Include="public\javascripts\" />
