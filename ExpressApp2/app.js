@@ -858,6 +858,9 @@ function loginMCommerce(email, mdp) {
         request({
             url: 'http://wsmcommerce.intermarche.com/api/v1/loginRc',
             method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
             body: {
                 email: email,
                 motdepasse: mdp,
