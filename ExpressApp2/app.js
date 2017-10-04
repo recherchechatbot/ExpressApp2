@@ -858,11 +858,11 @@ function loginMCommerce(email, mdp) {
         request({
             url: 'http://wsmcommerce.intermarche.com/api/v1/loginRc',
             method: 'POST',
-            json: JSON.stringify({
-                "email": email,
-                "motdepasse": mdp,
-                "veutcartefid": false,
-                "idrc": "E6D86BF5-FAE6-4F41-8978-07B04AC6DF63"
+            body : JSON.stringify({
+                email: email,
+                motdepasse: mdp,
+                veutcartefid: false,
+                idrc: "E6D86BF5-FAE6-4F41-8978-07B04AC6DF63"
             })
         }, (error, response) => {
             if (error) {
