@@ -18,12 +18,11 @@
 					type: "POST",
 					url: url,
 					data: JSON.stringify({ username: $('#username').val(), password: $('#password').val(), accountLinkingToken: $('#accountLinkingToken').val(), redirectURI: $('#redirectURI').val() }),
-					contentType: "application/json; charset=utf-8",
 					dataType: "json",
-					success: function(data, textStatus) {
-						if (data.redirect) {
-							// data.redirect contains the string URL to redirect to
-							window.location.href = data.redirect;
+					success: function(reponse) {
+						if (reponse.redirect) {
+							// reponse.redirect contains the string URL to redirect to
+							window.location.href = reponse.redirect;
 						}
 						else {
 							alert("Erreur");
