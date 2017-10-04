@@ -862,10 +862,6 @@ function loginMCommerce(email, mdp) {
     console.log("Email : " + email);
     console.log("Mdp : " + mdp);
 
-    var data = JSON.stringify();
-
-    console.log("DATA :" + data);
-
     return new Promise((resolve, reject) => {
         request({
             url: 'http://wsmcommerce.intermarche.com/api/v1/loginRc',
@@ -923,6 +919,7 @@ app.post('/login', function (req, res) {
     loginMCommerce(resultat.email, resultat.mdp)
         .then((r) => {
             console.log("ICIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII");
+            console.log("rrrrrrrrrrrrrrrrrrr" + JSON.stringify(r));
 
             if (r.TokenAuthentification) {
                 authCode = r.TokenAuthentification
