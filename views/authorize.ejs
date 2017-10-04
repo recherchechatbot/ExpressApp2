@@ -1,18 +1,17 @@
-﻿<form action="https://converseauto3.herokuapp.com/login" method="post" class="column">
-   <div class="formFields">
-      <fieldset id="usernameField">
-         <div class="input"><label for="username">Username</label><input id="username" type="text" placeholder="Enter your username" name="username" class="required"></div>
-         <div class="inputStatus"></div>
-      </fieldset>
-      <fieldset id="passwordField">
-         <div class="input"><label for="password">Password</label><input id="password" type="password" placeholder="Enter password" name="password" class="required"></div>
-         <div class="inputStatus"></div>
-      </fieldset>
-      <input type="hidden" name="accountLinkingToken" value="<%= accountLinkingToken %>">
-	  <input type="hidden" name="redirectURI" value="<%= redirectURI %>">
+﻿<form action="/login" method="post" >
+	<div>
+
+		<div>
+			<label for="username">Username</label>
+			<input id="username" type="text" placeholder="Enter your username" name="username" class="required">
+		</div>
+		 <div>
+			<label for="password">Password</label>
+			<input id="password" type="password" placeholder="Enter password" name="password" class="required">
+		</div>
+		<input type="hidden" name="accountLinkingToken" value="<%= accountLinkingToken %>">
+		<input type="hidden" name="redirectURI" value="<%= redirectURI %>">
    </div>
    <div id="error"></div>
-   <button id="submit" type="submit" class="submitButton">
-      <div id="submitInternal" class="row"> <img id="spinner" src="/images/loading.svg" style="display:none" class="icon"><span class="buttonText">Log In</span></div>
-   </button>
+   <button type="submit" value="Log in" />
 </form>
