@@ -300,7 +300,7 @@ class FacebookBot {
 
             if (text == "account linking")
             {
-                sendAccountLinking(sender);
+                this.sendAccountLinking(sender);
             }
             else
             {
