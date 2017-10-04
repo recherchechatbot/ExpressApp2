@@ -33,8 +33,6 @@
     <Compile Include="app.js">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="routes\index.js" />
-    <Compile Include="routes\users.js" />
     <Content Include="package.json" />
     <Content Include="public\index.html">
       <SubType>Code</SubType>
@@ -51,7 +49,6 @@
     <Folder Include="public\images\" />
     <Folder Include="public\javascripts\" />
     <Folder Include="public\stylesheets\" />
-    <Folder Include="routes\" />
     <Folder Include="views\" />
   </ItemGroup>
   <ItemGroup>
