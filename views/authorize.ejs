@@ -1,17 +1,7 @@
 ﻿<form action="/login" method="post" >
-	<div>
-
-		<div>
-			<label for="username">Username</label>
-			<input id="username" type="text" placeholder="Enter your username" name="username" class="required">
-		</div>
-		 <div>
-			<label for="password">Password</label>
-			<input id="password" type="password" placeholder="Enter password" name="password" class="required">
-		</div>
-		<input type="hidden" name="accountLinkingToken" value="<%= accountLinkingToken %>">
-		<input type="hidden" name="redirectURI" value="<%= redirectURI %>">
-   </div>
-   <div id="error"></div>
-   <button type="submit" value="Log in" />
+	Nom : <input type="text" name="username"><br>
+	Mdp : <input type="password" name="password"><br>
+	<input type="hidden" name="accountLinkingToken" value="<%= accountLinkingToken %>">
+	<input type="hidden" name="redirectURI" value="<%= redirectURI %>">
+   <button type="submit" value="Connexion">
 </form>
