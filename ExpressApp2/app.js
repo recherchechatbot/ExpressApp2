@@ -924,6 +924,9 @@ app.post('/login', function (req, res) {
 
     loginMCommerce(resultat.email, resultat.mdp)
         .then((r) => {
+            console.log("ICIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII");
+
+
             var retour = JSONbig.parse(r);
 
             if (retour.TokenAuthentification) {
