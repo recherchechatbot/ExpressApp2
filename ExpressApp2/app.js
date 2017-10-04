@@ -853,6 +853,11 @@ app.get('/authorize', function (req, res) {
     });
 });
 
+//email: email,
+//    motdepasse: mdp,
+//        veutcartefid: false,
+//            idrc: "E6D86BF5-FAE6-4F41-8978-07B04AC6DF63"
+
 function loginMCommerce(email, mdp) {
     console.log("Email : " + email);
     console.log("Mdp : " + mdp);
@@ -865,11 +870,12 @@ function loginMCommerce(email, mdp) {
                 'Content-Type': 'application/json'
             },
             body: {
-                "email": email,
-                "motdepasse": mdp,
-                "veutcartefid": false,
-                "idrc": "E6D86BF5-FAE6-4F41-8978-07B04AC6DF63"
-            }
+                email: "s.ruelle@netfective.com",
+                motdepasse: "Cobol2010",
+                idrc: "E6D86BF5-FAE6-4F41-8978-07B04AC6DF63",
+                veutcartefid: false
+            },
+            json: true
         }, (error, response) => {
             if (error) {
                 console.log('Erreur login mcommerce: ', error);
