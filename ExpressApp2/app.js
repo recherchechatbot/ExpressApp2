@@ -339,7 +339,7 @@ class FacebookBot {
             }
         };
 
-        this.sendFBMessage(recipientId, facebookResponseData);
+        this.sendFBMessage(recipientId, messageData);
     }
 
     receivedAccountLink(event) {
