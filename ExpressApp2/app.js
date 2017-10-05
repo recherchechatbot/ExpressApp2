@@ -343,7 +343,7 @@ class FacebookBot {
     }
 
     sendAccountLinking(recipientId) {
-
+        console.log("sendAccountLinking DEBUT");
         var messageData = {
             attachment: {
                 type: "template",
@@ -358,11 +358,12 @@ class FacebookBot {
                 }
             }
         };
-
+        console.log("sendAccountLinking FIN");
         this.sendFBMessage(recipientId, messageData);
     }
 
     sendAccountUnlinking(recipientId) {
+        console.log("sendAccountUnlinking DEBUT");
 
         var messageData = {
             attachment: {
@@ -379,6 +380,7 @@ class FacebookBot {
             }
         };
 
+        console.log("sendAccountUnlinking FIN");
         this.sendFBMessage(recipientId, messageData);
     }
 
