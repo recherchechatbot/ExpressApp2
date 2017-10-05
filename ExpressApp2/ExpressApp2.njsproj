@@ -38,6 +38,9 @@
     <Content Include="public\index.html">
       <SubType>Code</SubType>
     </Content>
+    <Content Include="public\stylesheet\style.css">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="README.md" />
     <Content Include="views\authorize.ejs" />
   </ItemGroup>
@@ -45,6 +48,7 @@
     <Folder Include="app\" />
     <Folder Include="app\views\" />
     <Folder Include="public\" />
+    <Folder Include="public\stylesheet\" />
     <Folder Include="views\" />
   </ItemGroup>
   <ItemGroup>
