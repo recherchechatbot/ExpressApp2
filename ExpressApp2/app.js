@@ -1,7 +1,6 @@
 ﻿'use strict';
 
-// ===== STORES ================================================================
-import UserStore from './stores/user_store';
+import UserStore from 'stores/user_store';
 
 
 const apiai = require('apiai');
