@@ -33,6 +33,15 @@
     <Compile Include="app.js">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="models\user.js">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="stores\store.js">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="stores\user_store.js">
+      <SubType>Code</SubType>
+    </Compile>
     <Content Include="app\views\authorize.ejs" />
     <Content Include="package.json" />
     <Content Include="public\index.html">
@@ -47,6 +56,8 @@
   <ItemGroup>
     <Folder Include="app\" />
     <Folder Include="app\views\" />
+    <Folder Include="models\" />
+    <Folder Include="stores\" />
     <Folder Include="public\" />
     <Folder Include="public\stylesheet\" />
     <Folder Include="views\" />

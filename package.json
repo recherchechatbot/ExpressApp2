@@ -29,7 +29,9 @@
     "uuid": "^3.1.0",
     "restify": "^6.0.1",
     "botbuilder": "^3.10.2",
-    "ejs": "^2.4.2"
+    "ejs": "^2.4.2",
+    "userstore": "^1.0.3",
+    "lodash": "^4.17.4"
   },
   "engines": {
     "node": "~6.10.x"

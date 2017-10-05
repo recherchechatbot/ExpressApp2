@@ -1,5 +1,9 @@
 ﻿'use strict';
 
+// ===== STORES ================================================================
+import UserStore from './stores/user_store';
+
+
 const apiai = require('apiai');
 const express = require('express');
 const bodyParser = require('body-parser');
@@ -274,7 +278,7 @@ class FacebookBot {
     }
 
     processFacebookEvent(event) {
-        const sender = event.sender.id.toString();
+        const sender = event.sender.id; //.toString();
         const eventObject = this.getFacebookEvent(event);
 
         if (eventObject) {
@@ -299,38 +303,44 @@ class FacebookBot {
     processMessageEvent(event) {
         console.log("VOILI VOILOUUUUUUUUUUUU : " + JSON.stringify(event));
 
-        const sender = event.sender.id.toString();
+        const sender = event.sender.id;
         const text = this.getEventText(event);
         console.log('BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB');
 
         if (text) {
-
-            console.log("ON VIENT DE TAPER LE MOT : " + text);
-
-            if (text == "account linking")
-            {
-                this.sendAccountLinking(sender);
+            const userProfile = UserStore.getByFbId(sender);
+            if (!isEmpty(userProfile)) {
+                this.sendAccountUnlinking(sender);
             }
             else
             {
-                // Handle a text message from this sender
-                if (!this.sessionIds.has(sender)) {
-                    this.sessionIds.set(sender, uuid.v4());
-                }
-
-                console.log("Text", text);
-                //send user's text to api.ai service
-                let apiaiRequest = this.apiAiService.textRequest(text,
-                    {
-                        sessionId: this.sessionIds.get(sender),
-                        originalRequest: {
-                            data: event,
-                            source: "facebook"
-                        }
-                    });
-
-                this.doApiAiRequest(apiaiRequest, sender);
+                this.sendAccountLinking(sender);
             }
+
+            //if (text == "account linking")
+            //{
+            //    this.sendAccountLinking(sender);
+            //}
+            //else
+            //{
+            //    // Handle a text message from this sender
+            //    if (!this.sessionIds.has(sender)) {
+            //        this.sessionIds.set(sender, uuid.v4());
+            //    }
+
+            //    console.log("Text", text);
+            //    //send user's text to api.ai service
+            //    let apiaiRequest = this.apiAiService.textRequest(text,
+            //        {
+            //            sessionId: this.sessionIds.get(sender),
+            //            originalRequest: {
+            //                data: event,
+            //                source: "facebook"
+            //            }
+            //        });
+
+            //    this.doApiAiRequest(apiaiRequest, sender);
+            //}
             
         }
     }
@@ -342,10 +352,31 @@ class FacebookBot {
                 type: "template",
                 payload: {
                     template_type: "button",
-                    text: "Welcome. Link your account.",
+                    text: "Bonjour, veuillez vous connecter en cliquant sur le bouton ci-dessous",
                     buttons: [{
                         type: "account_link",
-                        url: SERVER_URL + "/authorize"
+                        url: SERVER_URL + "/authorize",
+                        title:"Se connecter"
+                    }]
+                }
+            }
+        };
+
+        this.sendFBMessage(recipientId, messageData);
+    }
+
+    sendAccountUnlinking(recipientId) {
+
+        var messageData = {
+            attachment: {
+                type: "template",
+                payload: {
+                    template_type: "button",
+                    text:"Vous pouvez vous deconnecter en cliquant sur le bouton ci-dessous",
+                    buttons: [{
+                        type: "account_unlink",
+                        title:"Se déconnecter"
+                        
                     }]
                 }
             }
@@ -364,7 +395,18 @@ class FacebookBot {
         console.log("Received account link event with for user %d with status %s " +
             "and auth code %s ", senderID, status, authCode);
 
-        console.log("receivedAccountLink event = " + JSON.stringify(event));
+        switch (status) {
+            case 'linked':
+                const linkedUser = UserStore.linkFbAccount(authCode, senderId);
+                //sendApi.sendSignInSuccessMessage(senderId, linkedUser.username);
+                break;
+            case 'unlinked':
+                UserStore.unlinkWithFbId(senderId);
+                //sendApi.sendSignOutSuccessMessage(senderId);
+                break;
+            default:
+                break;
+        }
     }
 
     receivedAuthentication(event) {
@@ -852,9 +894,6 @@ app.get('/authorize', function (req, res) {
     var accountLinkingToken = req.query.account_linking_token;
     var redirectURI = req.query.redirect_uri;
 
-    // Authorization Code should be generated per user by the developer. This will 
-    // be passed to the Account Linking callback.
-    var authCode = "1234567890";
 
     // Redirect users to this URI on successful login
 
@@ -933,10 +972,19 @@ app.post('/login', function (req, res) {
             console.log("rrrrrrrrrrrrrrrrrrr" + JSON.stringify(r));
 
             if (r.TokenAuthentification) {
+                
+                if (!UserStore.has(resultat.email))
+                {
+                    UserStore.insert(resultat.email);
+                }
+
                 authCode = r.TokenAuthentification
                 console.log("le token a bien été récupéré");
                 const redirectURISuccess = `${resultat.redirectURI}&authorization_code=${authCode}`;
                 console.log("URL DE REDIRECTION: " + redirectURISuccess);
+
+                UserStore.linkMcoAccount(resultat.email, authCode);
+
 
                 return res.json({
                     EstEnErreur: false,
@@ -973,8 +1021,6 @@ app.post('/login', function (req, res) {
     // set the messenger id of the user to the authCode.
     // this will be replaced on successful account link
     // with the users id.
-
-    //UserStore.linkMessengerAccount(username, authCode);
 
     // Redirect users to this URI on successful login
 
