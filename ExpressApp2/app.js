@@ -774,7 +774,10 @@ app.get('/recherche/recette/:m', (req, res) => {
 app.post('/webhook/', (req, res) => {
     try {
         const data = JSONbig.parse(req.body);
-        console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA " + JSON.stringify(data));
+
+        var token = req.body.token || req.query.token || req.headers['x-access-token'];
+
+        console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA " + token);
         //const test = JSONbig.parse(req.originalRequest);
 
         //console.log("c'est bon c'est gooooooooooooooooooood " + JSON.stringify(test));
