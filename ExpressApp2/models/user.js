@@ -1,4 +1,4 @@
-﻿export default class User {
+﻿module.exports = class User {
     constructor(email, mcoId, fbId) {
         this.email = email;
         this.mcoId = mcoId;

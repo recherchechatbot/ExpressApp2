@@ -63,4 +63,4 @@ class UserStore extends Store {
 
 const USER_STORE = new UserStore();
 
-export default USER_STORE;
+module.exports = USER_STORE;
