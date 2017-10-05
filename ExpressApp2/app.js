@@ -303,9 +303,11 @@ class FacebookBot {
         const sender = event.sender.id;
         const text = this.getEventText(event);
         console.log('BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB');
-
+        console.log("le texte saisi est : " + text);
         if (text) {
+            console.log("avant userProfile");
             const userProfile = UserStore.getByFbId(sender);
+            console.log("après userProfile");
             if (!isEmpty(userProfile)) {
                 this.sendAccountUnlinking(sender);
             }
@@ -816,9 +818,7 @@ app.post('/webhook/', (req, res) => {
     try {
         const data = JSONbig.parse(req.body);
 
-        var token = req.body.token || req.query.token || req.headers['x-access-token'];
-
-        console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA " + token);
+        console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA ");
         //const test = JSONbig.parse(req.originalRequest);
 
         //console.log("c'est bon c'est gooooooooooooooooooood " + JSON.stringify(test));
