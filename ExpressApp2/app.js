@@ -306,9 +306,8 @@ class FacebookBot {
         console.log('BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB');
         console.log("le texte saisi est : " + text);
         if (text) {
-            console.log("avant userProfile");
             const userProfile = UserStore.getByFbId(sender);
-            console.log("après userProfile");
+
             if (!isEmpty(userProfile)) {
                 this.sendAccountUnlinking(sender);
             }
@@ -396,11 +395,12 @@ class FacebookBot {
 
         switch (status) {
             case 'linked':
-                const linkedUser = UserStore.linkFbAccount(authCode, senderId);
+                console.log("on link fb " + senderID + " avec le mco " + authCode);
+                const linkedUser = UserStore.linkFbAccount(authCode, senderID);
                 //sendApi.sendSignInSuccessMessage(senderId, linkedUser.username);
                 break;
             case 'unlinked':
-                UserStore.unlinkWithFbId(senderId);
+                UserStore.unlinkWithFbId(senderID);
                 //sendApi.sendSignOutSuccessMessage(senderId);
                 break;
             default:
@@ -969,10 +969,15 @@ app.post('/login', function (req, res) {
             console.log("rrrrrrrrrrrrrrrrrrr" + JSON.stringify(r));
 
             if (r.TokenAuthentification) {
-                
+
                 if (!UserStore.has(resultat.email))
                 {
                     UserStore.insert(resultat.email);
+                    console.log("Le user n'existe pas, on l'insert");
+                }
+                else
+                {
+                    console.log("Le user existe déjà");
                 }
 
                 authCode = r.TokenAuthentification
@@ -980,6 +985,7 @@ app.post('/login', function (req, res) {
                 const redirectURISuccess = `${resultat.redirectURI}&authorization_code=${authCode}`;
                 console.log("URL DE REDIRECTION: " + redirectURISuccess);
 
+                console.log("on link le mco " + authCode + " avec l'email " + resultat.email);
                 UserStore.linkMcoAccount(resultat.email, authCode);
 
 
