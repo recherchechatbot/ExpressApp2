@@ -297,6 +297,8 @@ class FacebookBot {
     }
 
     processMessageEvent(event) {
+        console.log("VOILI VOILOUUUUUUUUUUUU : " + JSON.stringify(event));
+
         const sender = event.sender.id.toString();
         const text = this.getEventText(event);
         console.log('BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB');
