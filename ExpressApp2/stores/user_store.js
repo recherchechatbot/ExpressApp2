@@ -39,6 +39,7 @@ class UserStore extends Store {
         console.log("DEBUT getByFbId fbId = " + fbId);
         let currentUser = {};
         this.data.forEach((userData) => {
+            console.log("userData = " + JSON.stringify(userData));
             console.log("on compare " + userData.fbId + " avec " + fbId);
             if (userData.fbId === fbId) {
                 console.log("TROUVEEEEEEEEEEEEEEEEEEEEEEE");
