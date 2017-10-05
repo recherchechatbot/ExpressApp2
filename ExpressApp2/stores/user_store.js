@@ -1,6 +1,6 @@
-﻿import isEmpty from 'lodash/isEmpty';
-import Store from './store';
-import User from '../models/user';
+﻿const isEmpty = require("lodash/isEmpty");
+const Store = require("./store");
+const User = require("../models/user");
 
 class UserStore extends Store {
     insert(email, mcoId, fbId) {
