@@ -774,7 +774,9 @@ app.post('/webhook/', (req, res) => {
         const data = JSONbig.parse(req.body);
         console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
         const test = JSONbig.parse(req);
-        console.log("webhooooooooooooooooooooooooooook reeqqqqqqqqqqqqqqqqqq = " + JSON.stringify(test));
+
+        console.log("c'est bon c'est gooooooooooooooooooood");
+        //console.log("webhooooooooooooooooooooooooooook reeqqqqqqqqqqqqqqqqqq = " + JSON.stringify(test));
 
         if (data.entry) {
             let entries = data.entry;
