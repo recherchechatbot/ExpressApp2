@@ -355,8 +355,7 @@ class FacebookBot {
                     text: "Bonjour, veuillez vous connecter en cliquant sur le bouton ci-dessous",
                     buttons: [{
                         type: "account_link",
-                        url: SERVER_URL + "/authorize",
-                        title:"Se connecter"
+                        url: SERVER_URL + "/authorize"
                     }]
                 }
             }
@@ -375,9 +374,7 @@ class FacebookBot {
                     template_type: "button",
                     text:"Vous pouvez vous deconnecter en cliquant sur le bouton ci-dessous",
                     buttons: [{
-                        type: "account_unlink",
-                        title:"Se déconnecter"
-                        
+                        type: "account_unlink"
                     }]
                 }
             }
