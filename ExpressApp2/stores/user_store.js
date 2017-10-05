@@ -64,7 +64,7 @@ class UserStore extends Store {
         }
 
         console.log("FIN linkFbAccount");
-        return this.update(email, { fbId });
+        return this.update(currentUser.email, { fbId });
     }
 
     unlinkWithFbId(fbId) {
