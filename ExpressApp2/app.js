@@ -361,6 +361,8 @@ class FacebookBot {
 
         console.log("Received account link event with for user %d with status %s " +
             "and auth code %s ", senderID, status, authCode);
+
+        console.log("receivedAccountLink event = " + JSON.stringify(event));
     }
 
     receivedAuthentication(event) {
@@ -769,6 +771,7 @@ app.get('/recherche/recette/:m', (req, res) => {
 
 app.post('/webhook/', (req, res) => {
     try {
+        console.log("webhooooooooooooooooooooooooooook reeqqqqqqqqqqqqqqqqqq = " + JSON.stringify(req));
         const data = JSONbig.parse(req.body);
         console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
 
