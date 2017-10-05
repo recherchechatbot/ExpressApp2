@@ -771,7 +771,7 @@ app.get('/recherche/recette/:m', (req, res) => {
 
 app.post('/webhook/', (req, res) => {
     try {
-        console.log("webhooooooooooooooooooooooooooook reeqqqqqqqqqqqqqqqqqq = " + JSONbig.stringify(req));
+        console.log("webhooooooooooooooooooooooooooook reeqqqqqqqqqqqqqqqqqq = " + JSON.stringify(req.body));
         const data = JSONbig.parse(req.body);
         console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
 
