@@ -306,15 +306,19 @@ class FacebookBot {
         console.log('BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB');
         console.log("le texte saisi est : " + text);
         if (text) {
+            console.log("DEB PROCEEEEEEEEEEEEEEEEEEEEEEEEEEES");
             const userProfile = UserStore.getByFbId(sender);
 
             if (!isEmpty(userProfile)) {
+                console.log("LE USER EXISTE ON LUI ENVOIE UN BOUTON DE DECO");
                 this.sendAccountUnlinking(sender);
             }
             else
             {
+                console.log("LE USER N'EXISTE PAS ON LUI ENVOIE UN BOUTON DE CO");
                 this.sendAccountLinking(sender);
             }
+            console.log("DEB PROCEEEEEEEEEEEEEEEEEEEEEEEEEEES");
 
             //if (text == "account linking")
             //{
