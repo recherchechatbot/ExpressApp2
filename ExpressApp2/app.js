@@ -1,8 +1,6 @@
 ﻿'use strict';
 
-import UserStore from 'stores/user_store';
-
-
+const UserStore = require('./stores/user_store');
 const apiai = require('apiai');
 const express = require('express');
 const bodyParser = require('body-parser');
