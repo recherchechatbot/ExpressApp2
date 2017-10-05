@@ -11,16 +11,18 @@ const JSONbig = require('json-bigint');
 const async = require('async');
 const https = require('https');
 
-const REST_PORT = (process.env.PORT || 5000);
-const APIAI_ACCESS_TOKEN = "30dfeddc13344176b6cefa6c09056e73";
+const REST_PORT = (process.env.REST_PORT || 5000);
+const APIAI_ACCESS_TOKEN = process.env.APIAI_ACCESS_TOKEN;
 const APIAI_LANG = 'fr';
-const FB_VERIFY_TOKEN = "tuxedo_cat";
-const FB_PAGE_ACCESS_TOKEN = "EAACCYV5YLVEBACNZC62bmnLHJLK6HlZCTSHnGYsbXsjCZA76bReVFQQ2jNnHgWuk4wFWjr3DOxhpvOMso2c1bySZAiDSENV7LfYNVvmUPEXzSaUbrc8n7hG1UCCVsSgqwPCduHbxDpqg5EtqhitzQTHvnkcsBn0wZCYfTTYF37QZDZD";
+const FB_VERIFY_TOKEN = process.env.FB_VERIFY_TOKEN;
+const FB_PAGE_ACCESS_TOKEN = process.env.FB_PAGE_ACCESS_TOKEN ;
 const FB_TEXT_LIMIT = 640;
 
 const FACEBOOK_LOCATION = "FACEBOOK_LOCATION";
 const FACEBOOK_WELCOME = "FACEBOOK_WELCOME";
-const SERVER_URL = "https://converseauto3.herokuapp.com/";
+const SERVER_URL = process.env.SERVER_URL;
+
+const MCO_URL = process.env.MCO_URL;
 
 const app = express();
 
@@ -915,7 +917,7 @@ function loginMCommerce(email, mdp) {
 
     return new Promise((resolve, reject) => {
         request({
-            url: 'http://wsmcommerce.intermarche.com/api/v1/loginRc',
+            url: MCO_URL + 'api/v1/loginRc',
             method: 'POST',
             body: {
                 email: email,
@@ -1178,7 +1180,7 @@ function getMagasin(lat, long) {
     return new Promise((resolve, reject) => {
 
         request({
-            uri: `http://ecorct2-fr-wsmcommerce.mousquetaires.com/api/v1/pdv/distance?latitude=${lat}&longitude=${long}`,
+            uri: `${MCO_URL}api/v1/pdv/distance?latitude=${lat}&longitude=${long}`,
             method: 'GET'
         }, (error, response) => {
             if (error) {
@@ -1229,11 +1231,12 @@ function getRecette(param) {
     }
 
     resultat = encodeURIComponent(resultat);
-    let url = `https://converseauto3.herokuapp.com/recherche/recette/${nourriture1}`;
+    let url = `${SERVER_URL}recherche/recette/${nourriture1}`;
     //let url = `http://ecorct2-fr-wsmcommerce.mousquetaires.com/api/v1/recherche/recette?mot=${resultat}`;
     //let url = `http://wsmcommerce.intermarche.com/api/v1/recherche/recette?mot=${resultat}`;
     console.log("URRRRRRRRRRRRRRRRRRRRRRLLLLL : " + url);
 
+    // TODO : REndre le TokenAuthentification dynamic
     var options = {
         method: 'GET',
         uri: url,
