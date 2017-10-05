@@ -23,22 +23,28 @@ class UserStore extends Store {
     }
 
     getByMcoId(mcoId) {
+        console.log("DEBUT getByMcoId mcoId = " + mcoId);
         let currentUser = {};
         this.data.forEach((userData) => {
             if (userData.mcoId === mcoId) {
                 currentUser = userData;
+                console.log("TROUVEEEEEEEEEEEEEEEEEEEEEEE");
             }
         });
+        console.log("FIN getByMcoId");
         return currentUser;
     }
 
     getByFbId(fbId) {
+        console.log("DEBUT getByFbId fbId = " + fbId);
         let currentUser = {};
         this.data.forEach((userData) => {
             if (userData.fbId === fbId) {
+                console.log("TROUVEEEEEEEEEEEEEEEEEEEEEEE");
                 currentUser = userData;
             }
         });
+        console.log("FIN getByFbId");
         return currentUser;
     }
 
@@ -47,9 +53,15 @@ class UserStore extends Store {
     }
 
     linkFbAccount(mcoId, fbId) {
+        console.log("DEBUT linkFbAccount fbId = " + fbId + " mcoId = " + mcoId);
         const currentUser = this.getByMcoId(mcoId);
-        if (isEmpty(currentUser)) { return currentUser; }
+        if (isEmpty(currentUser))
+        {
+            console.log("TROUVEEEEEEEEEEEEEEEEEEEEEEE");
+            return currentUser;
+        }
 
+        console.log("FIN linkFbAccount");
         return this.update(email, { fbId });
     }
 
