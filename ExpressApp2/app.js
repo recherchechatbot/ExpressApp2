@@ -1,5 +1,6 @@
 ﻿'use strict';
 
+const isEmpty = require("lodash/isEmpty");
 const UserStore = require('./stores/user_store');
 const apiai = require('apiai');
 const express = require('express');
