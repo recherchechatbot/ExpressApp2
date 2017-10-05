@@ -981,6 +981,8 @@ app.post('/ai', (req, res) => {
 
     var body = JSONbig.parse(req.body);
 
+    console.log("BODY /AI " + JSON.stringify(body));
+
     if (body.result.action === 'recherche_libre_recette') {
 
         console.log("ACTION RECONNUE : recherche_libre_recette")
