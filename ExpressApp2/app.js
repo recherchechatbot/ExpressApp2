@@ -1326,80 +1326,25 @@ app.post('/ai', (req, res) => {
             console.log("DEBUT appel FO");
             const token_auth = user_profile.mcoId;
 
-            getRecette(body.result.parameters, token_auth)
+            getProduit(body.result.parameters, user_profile.idPdv)
                 .then((r) => {
-                    var listeRecette = JSONbig.parse(r);
+                    console.log("Nous sommes à la recherche d'un produit");
 
-                    let messagedata = {
-                        "attachment": {
-                            "type": "template",
-                            "payload": {
-                                "template_type": "generic",
-                                "elements": [
-                                    {
-                                        "title": listeRecette.Recettes[0].Titre,
-                                        "image_url": listeRecette.Recettes[0].ImageUrl,
-                                        "subtitle": "Vous serez redirigé vers notre site web",
-                                        "default_action": {
-                                            "type": "web_url",
-                                            "url": "http://google.fr",
-                                            "webview_height_ratio": "tall"
-                                        },
-                                        "buttons": [
-                                            {
-                                                "title": "Cliquez ici",
-                                                "type": "web_url",
-                                                "url": "http://google.fr",
-                                                "webview_height_ratio": "tall"
-                                            }
-                                        ]
-                                    },
-                                    {
-                                        "title": listeRecette.Recettes[1].Titre,
-                                        "image_url": listeRecette.Recettes[1].ImageUrl,
-                                        "subtitle": "Vous serez redirigé vers notre site web",
-                                        "default_action": {
-                                            "type": "web_url",
-                                            "url": "http://google.fr",
-                                            "webview_height_ratio": "tall"
-                                        },
-                                        "buttons": [
-                                            {
-                                                "title": "Cliquez ici",
-                                                "type": "web_url",
-                                                "url": "http://google.fr",
-                                                "webview_height_ratio": "tall"
-                                            }
-                                        ]
-                                    }
-                                ]
-                            }
-                        },
-                        "quick_replies": [
-                            {
-                                "content_type": "text",
-                                "title": "Autres recettes",
-                                "payload": "Autres recettes"
-                            },
-                            {
-                                "content_type": "text",
-                                "title": "Menu Principal",
-                                "payload": "Menu Principal"
-                            }
-                        ]
-                    };
+                    var listeProduit = JSONbig.parse(r);
+
+                    console.log("Voici la liste de produits : " + JSON.stringify(listeProduit));
 
                     return res.json({
                         speech: "Recettes",
-                        data: { "facebook": messagedata },
-                        source: 'recherche_libre_recette'
+                        data: { "facebook": "OKKKKKKKK" },
+                        source: 'recherche_libre_courses'
                     });
                 })
                 .catch(err => {
                     return res.status(400).json({
                         speech: "ERREUR : " + err,
                         message: "ERREUR : " + err,
-                        source: 'recherche_libre_recette'
+                        source: 'recherche_libre_courses'
                     });
                 });
         }
