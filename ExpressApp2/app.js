@@ -1052,53 +1052,6 @@ app.post('/login', function (req, res) {
             });
         });
 
-    loginMCommerce(resultat.email, resultat.mdp,)
-        .then((r) => {
-            console.log("ICIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII");
-            console.log("rrrrrrrrrrrrrrrrrrr" + JSON.stringify(r));
-
-            if (r.TokenAuthentification) {
-
-                if (!UserStore.has(resultat.email))
-                {
-                    UserStore.insert(resultat.email);
-                    console.log("Le user n'existe pas, on l'insert");
-                }
-                else
-                {
-                    console.log("Le user existe déjà");
-                }
-
-                authCode = r.TokenAuthentification
-                console.log("le token a bien été récupéré");
-                const redirectURISuccess = `${resultat.redirectURI}&authorization_code=${authCode}`;
-                console.log("URL DE REDIRECTION: " + redirectURISuccess);
-
-                console.log("on link le mco " + authCode + " avec l'email " + resultat.email);
-                UserStore.linkMcoAccount(resultat.email, authCode);
-
-
-                return res.json({
-                    EstEnErreur: false,
-                    urlRedirection: redirectURISuccess
-                });
-            }
-            else {
-                console.log("le token n'a pas été récupéré mais la réponse est ok");
-                return res.json({
-                    EstEnErreur: true,
-                    urlRedirection: ""
-                });
-            }
-        })
-        .catch(err => {
-            console.log("ERREUR recup token : " + JSON.stringify(err));
-            console.log("le token n'a pas été récupéré à cause d'une erreur");
-            return res.json({
-                EstEnErreur: true,
-                urlRedirection: ""
-            });
-        });
 
     /*
       The auth code can be any thing you can use to uniquely identify a user.
