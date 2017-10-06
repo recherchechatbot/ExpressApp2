@@ -613,7 +613,7 @@ class FacebookBot {
         });
     }
 
-    setupPersistentMenu(res) {
+    setupPersistentMenu() {
         var messageData =
             {
                 "persistent_menu": [
@@ -641,18 +641,20 @@ class FacebookBot {
             function (error, response, body) {
                 if (!error && response.statusCode == 200) {
                     // Print out the response body
-                    res.send(body);
+                    //res.send(body);
+                    console.log("setupPersistentMenu OK");
 
                 } else {
                     // TODO: Handle errors
-                    res.send(body);
+                    //res.send(body);
+                    console.log("setupPersistentMenu NOK");
                 }
             });
 
     }
 
 
-    setupGetStartedButton(res) {
+    setupGetStartedButton() {
         var messageData = {
             "get_started": {
                 "payload": "getstarted"
@@ -668,13 +670,43 @@ class FacebookBot {
             function (error, response, body) {
                 if (!error && response.statusCode == 200) {
                     // Print out the response body
-                    res.send(body);
+                    //res.send(body);
+                    console.log("setupGetStartedButton OK");
 
                 } else {
                     // TODO: Handle errors
                     res.send(body);
+                    console.log("setupGetStartedButton NOK");
                 }
             });
+    }
+
+    setupGreetingText() {
+        var messageData = {
+            "greeting": [
+                {
+                    "locale": "default",
+                    "text": "Bonjour"
+                }
+            ]
+        };
+        request({
+            url: 'https://graph.facebook.com/v2.6/me/messenger_profile?access_token=' + FB_PAGE_ACCESS_TOKEN,
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            form: messageData
+        },
+            function (error, response, body) {
+                if (!error && response.statusCode == 200) {
+                    // Print out the response body
+                    //res.send(body);
+
+                } else {
+                    // TODO: Handle errors
+                    //res.send(body);
+                }
+            });
+
     }
 
 }
@@ -682,8 +714,9 @@ class FacebookBot {
 
 let facebookBot = new FacebookBot();
 
-facebookBot.setupPersistentMenu(res);
-facebookBot.setupGetStartedButton(res);
+facebookBot.setupGetStartedButton();
+facebookBot.setupPersistentMenu();
+facebookBot.setupGreetingText();
 
 
 
