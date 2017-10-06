@@ -624,7 +624,7 @@ class FacebookBot {
                             {
                                 "title": "Se déconnecter",
                                 "type": "postback",
-                                "payload": "account_unlink"
+                                "payload": "deconnecter"
                             }
                         ]
                     }
