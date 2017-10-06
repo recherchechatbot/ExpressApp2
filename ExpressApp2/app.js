@@ -24,6 +24,8 @@ const SERVER_URL = process.env.SERVER_URL;
 
 const MCO_URL = process.env.MCO_URL;
 const RC_URL = process.env.RC_URL;
+const MSQ_APP_RC = process.env.MSQ_APP_RC;
+const MSQ_JETON_APP_RC = process.env.MSQ_JETON_APP_RC;
 
 const app = express();
 
@@ -951,6 +953,10 @@ function loginRC(email, mdp) {
             body: {
                 email: email,
                 mdp: mdp
+            },
+            headers: {
+                "Msq-Jeton-App": MSQ_JETON_APP_RC,
+                "Msq-App": MSQ_APP_RC 
             },
             json: true
         }, (error, response) => {
