@@ -1343,6 +1343,9 @@ app.post('/ai', (req, res) => {
                     });
                 })
                 .catch(err => {
+
+                    console.log("on est dans le catch et oui !!!!! " + err);
+
                     return res.status(400).json({
                         speech: "ERREUR : " + err,
                         message: "ERREUR : " + err,
