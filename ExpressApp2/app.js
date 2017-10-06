@@ -349,7 +349,7 @@ class FacebookBot {
     }
 
     getButtonLogin() {
-        return {
+        var m = {
             attachment: {
                 type: "template",
                 payload: {
@@ -362,6 +362,8 @@ class FacebookBot {
                 }
             }
         };
+
+        return m;
     }
     
     sendAccountLinking(recipientId) {
