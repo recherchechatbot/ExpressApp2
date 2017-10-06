@@ -23,6 +23,7 @@ const FACEBOOK_WELCOME = "FACEBOOK_WELCOME";
 const SERVER_URL = process.env.SERVER_URL;
 
 const MCO_URL = process.env.MCO_URL;
+const RC_URL = process.env.RC_URL;
 
 const app = express();
 
@@ -911,7 +912,7 @@ app.get('/authorize', function (req, res) {
 //        veutcartefid: false,
 //            idrc: "E6D86BF5-FAE6-4F41-8978-07B04AC6DF63"
 
-function loginMCommerce(email, mdp) {
+function loginMCommerce(email, mdp, idrc) {
     console.log("Email : " + email);
     console.log("Mdp : " + mdp);
 
@@ -922,13 +923,39 @@ function loginMCommerce(email, mdp) {
             body: {
                 email: email,
                 motdepasse: mdp,
-                idrc: "E6D86BF5-FAE6-4F41-8978-07B04AC6DF63",
+                idrc: idrc,
                 veutcartefid: false
             },
             json: true
         }, (error, response) => {
             if (error) {
                 console.log('Erreur login mcommerce: ', error);
+                reject(error);
+            } else if (response.body.error) {
+                console.log('Error: ', response.body.error);
+                reject(new Error(response.body.error));
+            }
+
+            resolve(response.body);
+        });
+    });
+}
+function loginRC(email, mdp) {
+    console.log("Email : " + email);
+    console.log("Mdp : " + mdp);
+
+    return new Promise((resolve, reject) => {
+        request({
+            url: RC_URL + 'ReferentielClient/v1/login',
+            method: 'POST',
+            body: {
+                email: email,
+                mdp: mdp
+            },
+            json: true
+        }, (error, response) => {
+            if (error) {
+                console.log('Erreur login Referentiel Client: ', error);
                 reject(error);
             } else if (response.body.error) {
                 console.log('Error: ', response.body.error);
@@ -967,9 +994,65 @@ app.post('/login', function (req, res) {
 
     var authCode = null;
 
-    
+    loginRC(resultat.email, resultat.mdp)
+        .then((res) => {
+            console.log("REPONSE du RCCCCCCCCCCCCCC");
 
-    loginMCommerce(resultat.email, resultat.mdp)
+            if (res.id){
+                loginMCommerce(resultat.email, resultat.mdp, res.id)
+                    .then((r) => {
+                        console.log("ICIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII");
+                        console.log("rrrrrrrrrrrrrrrrrrr" + JSON.stringify(r));
+
+                        if (r.TokenAuthentification) {
+
+                            if (!UserStore.has(resultat.email)) {
+                                UserStore.insert(resultat.email);
+                                console.log("Le user n'existe pas, on l'insert");
+                            }
+                            else {
+                                console.log("Le user existe déjà");
+                            }
+
+                            authCode = r.TokenAuthentification
+                            console.log("le token a bien été récupéré");
+                            const redirectURISuccess = `${resultat.redirectURI}&authorization_code=${authCode}`;
+                            console.log("URL DE REDIRECTION: " + redirectURISuccess);
+
+                            console.log("on link le mco " + authCode + " avec l'email " + resultat.email);
+                            UserStore.linkMcoAccount(resultat.email, authCode);
+
+
+                            return res.json({
+                                EstEnErreur: false,
+                                urlRedirection: redirectURISuccess
+                            });
+                        }
+                        else {
+                            console.log("le token n'a pas été récupéré mais la réponse est ok");
+                            return res.json({
+                                EstEnErreur: true,
+                                urlRedirection: ""
+                            });
+                        }
+                    })
+            }
+            else {
+                console.log("Impossible de récuperer l'idRC");
+                return res.json({
+                    EstEnErreur: true,
+                    urlRedirection: ""
+                });
+            }
+        })
+        .catch(err => {
+            return res.json({
+                EstEnErreur: true,
+                urlRedirection: ""
+            });
+        });
+
+    loginMCommerce(resultat.email, resultat.mdp,)
         .then((r) => {
             console.log("ICIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII");
             console.log("rrrrrrrrrrrrrrrrrrr" + JSON.stringify(r));
