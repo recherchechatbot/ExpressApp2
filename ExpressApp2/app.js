@@ -1324,7 +1324,9 @@ app.post('/ai', (req, res) => {
         if (existeUser) {
             console.log("ACTION RECONNUE : recherche_libre_courses")
             console.log("DEBUT appel FO");
+
             const token_auth = user_profile.mcoId;
+            console.log("recherche_libre_courses token_auth = " + token_auth);
 
             getProduit(body.result.parameters, user_profile.idPdv)
                 .then((r) => {
@@ -1445,7 +1447,10 @@ app.get('/webhook/', (req, res) => {
     }
 });
 function getProduit(param, idPdv) {
+    console.log("DEBUT getProduit");
     let produit1 = param['Nourriture'];
+
+    console.log("produit1 = " + produit1);
 
     var options ={
         method: 'POST',
@@ -1457,6 +1462,8 @@ function getProduit(param, idPdv) {
             mot: produit1
         }
     };
+
+    console.log("FIN getProduit");
 
     return new Promise((resolve, reject) => {
         request(options, (error, response) => {
