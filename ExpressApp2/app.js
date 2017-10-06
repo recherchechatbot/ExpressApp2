@@ -623,14 +623,7 @@ class FacebookBot {
                         "call_to_actions": [
                             {
                                 "title": "Se déconnecter",
-                                "type": "postback",
-                                "payload": {
-                                    "template_type": "button",
-                                    "text": "Vous pouvez vous deconnecter en cliquant sur le bouton ci-dessous",
-                                    "buttons": [{
-                                        "type": "account_unlink"
-                                    }]
-                                }
+                                "type": "account_unlink"
                             }
                         ]
                     }
