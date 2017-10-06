@@ -624,7 +624,13 @@ class FacebookBot {
                             {
                                 "title": "Se déconnecter",
                                 "type": "postback",
-                                "payload": "deconnecter"
+                                "payload": {
+                                    template_type: "button",
+                                    text: "Vous pouvez vous deconnecter en cliquant sur le bouton ci-dessous",
+                                    buttons: [{
+                                        type: "account_unlink"
+                                    }]
+                                }
                             }
                         ]
                     }
