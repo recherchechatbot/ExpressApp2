@@ -320,13 +320,11 @@ class FacebookBot {
                 console.log("LE USER EXISTE ON LUI ENVOIE UN BOUTON DE DECO");
                 this.sendAccountUnlinking(sender);
             }
-            else if (!existeUser && text == "connecter")
-            {
+            else if (!existeUser && text == "connecter") {
                 console.log("LE USER N'EXISTE PAS ON LUI ENVOIE UN BOUTON DE CO");
                 this.sendAccountLinking(sender);
             }
-            else
-            {
+            else {
                 // Handle a text message from this sender
                 if (!this.sessionIds.has(sender)) {
                     this.sessionIds.set(sender, uuid.v4());
@@ -365,7 +363,7 @@ class FacebookBot {
 
         return m;
     }
-    
+
     sendAccountLinking(recipientId) {
         console.log("sendAccountLinking DEBUT");
         var messageData = this.getButtonLogin();
@@ -381,7 +379,7 @@ class FacebookBot {
                 type: "template",
                 payload: {
                     template_type: "button",
-                    text:"Vous pouvez vous deconnecter en cliquant sur le bouton ci-dessous",
+                    text: "Vous pouvez vous deconnecter en cliquant sur le bouton ci-dessous",
                     buttons: [{
                         type: "account_unlink"
                     }]
@@ -614,51 +612,79 @@ class FacebookBot {
             setTimeout(() => resolve(), delay);
         });
     }
+
     setupPersistentMenu(res) {
-    var messageData =
-        {
-            "persistent_menu": [
-                {
-                    "locale": "default",
-                    "composer_input_disabled": false,
-                    "call_to_actions": [
-                        {
-                            "title": "Se déconnecter",
-                            "type": "postback",
-                            "payload":"se deconnecter"
-                        }
-                    ]
+        var messageData =
+            {
+                "persistent_menu": [
+                    {
+                        "locale": "default",
+                        "composer_input_disabled": false,
+                        "call_to_actions": [
+                            {
+                                "title": "Se déconnecter",
+                                "type": "postback",
+                                "payload": "se deconnecter"
+                            }
+                        ]
+                    }
+                ]
+            };
+
+        // Start the request
+        request({
+            url: "https://graph.facebook.com/v2.6/me/messenger_profile?access_token=" + FB_PAGE_ACCESS_TOKEN,
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            form: messageData
+        },
+            function (error, response, body) {
+                if (!error && response.statusCode == 200) {
+                    // Print out the response body
+                    res.send(body);
+
+                } else {
+                    // TODO: Handle errors
+                    res.send(body);
                 }
-            ]
-        };
-    // Start the request
-    request({
-        url: "https://graph.facebook.com/v2.6/me/messenger_profile?access_token=" + FB_PAGE_ACCESS_TOKEN,
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        form: messageData
-    },
-        function (error, response, body) {
-            if (!error && response.statusCode == 200) {
-                // Print out the response body
-                res.send(body);
+            });
 
-            } else {
-                // TODO: Handle errors
-                res.send(body);
+    }
+
+
+    setupGetStartedButton(res) {
+        var messageData = {
+            "get_started": {
+                "payload": "getstarted"
             }
-        });
+        };
+        // Start the request
+        request({
+            url: "https://graph.facebook.com/v2.6/me/messenger_profile?access_token=" + FB_PAGE_ACCESS_TOKEN,
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            form: messageData
+        },
+            function (error, response, body) {
+                if (!error && response.statusCode == 200) {
+                    // Print out the response body
+                    res.send(body);
 
-}
+                } else {
+                    // TODO: Handle errors
+                    res.send(body);
+                }
+            });
+    }
+
 }
 
 
 let facebookBot = new FacebookBot();
 
+facebookBot.setupPersistentMenu(res);
+facebookBot.setupGetStartedButton(res);
 
-app.get('/setup', (req, res) => {
-    facebookBot.setupPersistentMenu(res);
-});
 
 
 
