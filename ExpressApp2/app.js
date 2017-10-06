@@ -657,7 +657,7 @@ let facebookBot = new FacebookBot();
 
 
 app.get('/setup', (req, res) => {
-    setupPersistentMenu(res);
+    facebookBot.setupPersistentMenu(res);
 });
 
 
