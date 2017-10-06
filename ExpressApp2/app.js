@@ -368,7 +368,7 @@ class FacebookBot {
     
     sendAccountLinking(recipientId) {
         console.log("sendAccountLinking DEBUT");
-        var messageData = getButtonLogin();
+        var messageData = this.getButtonLogin();
         console.log("sendAccountLinking FIN");
         this.sendFBMessage(recipientId, messageData);
     }
