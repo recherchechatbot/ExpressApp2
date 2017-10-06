@@ -348,9 +348,8 @@ class FacebookBot {
         }
     }
 
-    sendAccountLinking(recipientId) {
-        console.log("sendAccountLinking DEBUT");
-        var messageData = {
+    getButtonLogin() {
+        return {
             attachment: {
                 type: "template",
                 payload: {
@@ -363,6 +362,11 @@ class FacebookBot {
                 }
             }
         };
+    }
+    
+    sendAccountLinking(recipientId) {
+        console.log("sendAccountLinking DEBUT");
+        var messageData = getButtonLogin();
         console.log("sendAccountLinking FIN");
         this.sendFBMessage(recipientId, messageData);
     }
@@ -1081,86 +1085,100 @@ app.post('/ai', (req, res) => {
     console.log("BODY /AI " + JSON.stringify(body));
 
     if (body.result.action === 'recherche_libre_recette') {
+        const sender_id = body.originalRequest.data.sender.id;
+        const user_profile = UserStore.getByFbId(sender_id);
 
-        console.log("ACTION RECONNUE : recherche_libre_recette")
-        console.log("DEBUT appel WS recettes");
-        getRecette(body.result.parameters)
-            .then((r) => {
-                var listeRecette = JSONbig.parse(r);
+        var existeUser = !isEmpty(user_profile);
 
-                let messagedata = {
-                    "attachment": {
-                        "type": "template",
-                        "payload": {
-                            "template_type": "generic",
-                            "elements": [
-                                {
-                                    "title": listeRecette.Recettes[0].Titre,
-                                    "image_url": listeRecette.Recettes[0].ImageUrl,
-                                    "subtitle": "Vous serez redirigé vers notre site web",
-                                    "default_action": {
-                                        "type": "web_url",
-                                        "url": "http://google.fr",
-                                        "webview_height_ratio": "tall"
-                                    },
-                                    "buttons": [
-                                        {
-                                            "title": "Cliquez ici",
+        if (existeUser) {
+            console.log("ACTION RECONNUE : recherche_libre_recette")
+            console.log("DEBUT appel WS recettes");
+            const token_auth = user_profile.mcoId;
+
+            getRecette(body.result.parameters, token_auth)
+                .then((r) => {
+                    var listeRecette = JSONbig.parse(r);
+
+                    let messagedata = {
+                        "attachment": {
+                            "type": "template",
+                            "payload": {
+                                "template_type": "generic",
+                                "elements": [
+                                    {
+                                        "title": listeRecette.Recettes[0].Titre,
+                                        "image_url": listeRecette.Recettes[0].ImageUrl,
+                                        "subtitle": "Vous serez redirigé vers notre site web",
+                                        "default_action": {
                                             "type": "web_url",
                                             "url": "http://google.fr",
                                             "webview_height_ratio": "tall"
-                                        }
-                                    ]
-                                },
-                                {
-                                    "title": listeRecette.Recettes[1].Titre,
-                                    "image_url": listeRecette.Recettes[1].ImageUrl,
-                                    "subtitle": "Vous serez redirigé vers notre site web",
-                                    "default_action": {
-                                        "type": "web_url",
-                                        "url": "http://google.fr",
-                                        "webview_height_ratio": "tall"
+                                        },
+                                        "buttons": [
+                                            {
+                                                "title": "Cliquez ici",
+                                                "type": "web_url",
+                                                "url": "http://google.fr",
+                                                "webview_height_ratio": "tall"
+                                            }
+                                        ]
                                     },
-                                    "buttons": [
-                                        {
-                                            "title": "Cliquez ici",
+                                    {
+                                        "title": listeRecette.Recettes[1].Titre,
+                                        "image_url": listeRecette.Recettes[1].ImageUrl,
+                                        "subtitle": "Vous serez redirigé vers notre site web",
+                                        "default_action": {
                                             "type": "web_url",
                                             "url": "http://google.fr",
                                             "webview_height_ratio": "tall"
-                                        }
-                                    ]
-                                }
-                            ]
-                        }
-                    },
-                    "quick_replies": [
-                        {
-                            "content_type": "text",
-                            "title": "Autres recettes",
-                            "payload": "Autres recettes"
+                                        },
+                                        "buttons": [
+                                            {
+                                                "title": "Cliquez ici",
+                                                "type": "web_url",
+                                                "url": "http://google.fr",
+                                                "webview_height_ratio": "tall"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
                         },
-                        {
-                            "content_type": "text",
-                            "title": "Menu Principal",
-                            "payload": "Menu Principal"
-                        }
-                    ]
-                };
+                        "quick_replies": [
+                            {
+                                "content_type": "text",
+                                "title": "Autres recettes",
+                                "payload": "Autres recettes"
+                            },
+                            {
+                                "content_type": "text",
+                                "title": "Menu Principal",
+                                "payload": "Menu Principal"
+                            }
+                        ]
+                    };
 
-                return res.json({
-                    speech: "Recettes",
-                    data: { "facebook": messagedata },
-                    source: 'recherche_libre_recette'
+                    return res.json({
+                        speech: "Recettes",
+                        data: { "facebook": messagedata },
+                        source: 'recherche_libre_recette'
+                    });
+                })
+                .catch(err => {
+                    return res.status(400).json({
+                        speech: "ERREUR : " + err,
+                        message: "ERREUR : " + err,
+                        source: 'recherche_libre_recette'
+                    });
                 });
-            })
-            .catch(err => {
-                return res.status(400).json({
-                    speech: "ERREUR : " + err,
-                    message: "ERREUR : " + err,
-                    source: 'recherche_libre_recette'
-                });
+        }
+        else {
+            return res.json({
+                speech: "Recettes",
+                data: { "facebook": facebookBot.getButtonLogin() },
+                source: 'recherche_libre_recette'
             });
-
+        }
     }
     else if (body.result.action === 'Localisation.Recue') {
         console.log("body.result = " + JSON.stringify(body.result));
@@ -1251,7 +1269,7 @@ app.get('/webhook/', (req, res) => {
     }
 });
 
-function getRecette(param) {
+function getRecette(param, mcoId) {
     let nourriture1 = param['Nourriture'];
     let nourriture2 = param['Nourriture1'];
     let nourriture3 = param['Nourriture2'];
@@ -1280,9 +1298,11 @@ function getRecette(param) {
         method: 'GET',
         uri: url,
         headers: {
-            'TokenAuthentification': '3399a7d5-c015-441d-a509-afe582b0c51d'
+            'TokenAuthentification': mcoId
         }
     };
+
+    console.log("DANS GETRECETTES TokenAuthentification = " + mcoId);
 
     return new Promise((resolve, reject) => {
         request(options, (error, response) => {
