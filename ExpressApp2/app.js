@@ -997,6 +997,8 @@ app.post('/login', function (req, res) {
     loginRC(resultat.email, resultat.mdp)
         .then((res) => {
             console.log("REPONSE du RCCCCCCCCCCCCCC");
+            console.log("Res: " + JSON.stringify(res));
+            console.log("Res.id :" + res.id);
 
             if (res.id){
                 loginMCommerce(resultat.email, resultat.mdp, res.id)
