@@ -1344,7 +1344,8 @@ app.post('/ai', (req, res) => {
                 })
                 .catch(err => {
 
-                    console.log("on est dans le catch et oui !!!!! " + err);
+                    console.log("on est dans le catch et oui !!!!! ");
+                    console.log("L'erreur c'est : " + err);
 
                     return res.status(400).json({
                         speech: "ERREUR : " + err,
@@ -1471,9 +1472,12 @@ function getProduit(param, idPdv) {
     return new Promise((resolve, reject) => {
         request(options, (error, response) => {
             if (!error && response.statusCode == 200) {
+                console.log("ON A UN RETOUR 200 !!!!!!!");
+                console.log("voila le body = " + response.body);
                 resolve(response.body);
             }
             else {
+                console.log("ON FAIT UN REJECT");
                 reject(error);
             }
         })
