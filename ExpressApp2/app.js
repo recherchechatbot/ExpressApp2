@@ -1001,13 +1001,13 @@ app.post('/login', function (req, res) {
     var authCode = null;
 
     loginRC(resultat.email, resultat.mdp)
-        .then((res) => {
+        .then((rep) => {
             console.log("REPONSE du RCCCCCCCCCCCCCC");
-            console.log("Res: " + JSON.stringify(res));
-            console.log("Res.id :" + res.id);
+            console.log("Res: " + JSON.stringify(rep));
+            console.log("Res.id :" + rep.id);
 
-            if (res.id){
-                loginMCommerce(resultat.email, resultat.mdp, res.id)
+            if (rep.id){
+                loginMCommerce(resultat.email, resultat.mdp, rep.id)
                     .then((r) => {
                         console.log("ICIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII");
                         console.log("rrrrrrrrrrrrrrrrrrr" + JSON.stringify(r));
