@@ -675,7 +675,7 @@ class FacebookBot {
 
                 } else {
                     // TODO: Handle errors
-                    res.send(body);
+                    //res.send(body);
                     console.log("setupGetStartedButton NOK");
                 }
             });
@@ -700,10 +700,12 @@ class FacebookBot {
                 if (!error && response.statusCode == 200) {
                     // Print out the response body
                     //res.send(body);
+                    console.log("setupGreetingText OK");
 
                 } else {
                     // TODO: Handle errors
                     //res.send(body);
+                    console.log("setupGreetingText NOK");
                 }
             });
 
