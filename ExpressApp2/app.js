@@ -310,46 +310,41 @@ class FacebookBot {
         const text = this.getEventText(event);
         console.log('BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB');
         console.log("le texte saisi est : " + text);
+
         if (text) {
-            console.log("DEB PROCEEEEEEEEEEEEEEEEEEEEEEEEEEES");
             const userProfile = UserStore.getByFbId(sender);
 
-            if (!isEmpty(userProfile)) {
+            var existeUser = !isEmpty(userProfile);
+
+            if (existeUser && text == "deconnecter") {
                 console.log("LE USER EXISTE ON LUI ENVOIE UN BOUTON DE DECO");
                 this.sendAccountUnlinking(sender);
             }
-            else
+            else if (!existeUser && text == "connecter")
             {
                 console.log("LE USER N'EXISTE PAS ON LUI ENVOIE UN BOUTON DE CO");
                 this.sendAccountLinking(sender);
             }
-            console.log("DEB PROCEEEEEEEEEEEEEEEEEEEEEEEEEEES");
+            else
+            {
+                // Handle a text message from this sender
+                if (!this.sessionIds.has(sender)) {
+                    this.sessionIds.set(sender, uuid.v4());
+                }
 
-            //if (text == "account linking")
-            //{
-            //    this.sendAccountLinking(sender);
-            //}
-            //else
-            //{
-            //    // Handle a text message from this sender
-            //    if (!this.sessionIds.has(sender)) {
-            //        this.sessionIds.set(sender, uuid.v4());
-            //    }
+                console.log("Text", text);
+                //send user's text to api.ai service
+                let apiaiRequest = this.apiAiService.textRequest(text,
+                    {
+                        sessionId: this.sessionIds.get(sender),
+                        originalRequest: {
+                            data: event,
+                            source: "facebook"
+                        }
+                    });
 
-            //    console.log("Text", text);
-            //    //send user's text to api.ai service
-            //    let apiaiRequest = this.apiAiService.textRequest(text,
-            //        {
-            //            sessionId: this.sessionIds.get(sender),
-            //            originalRequest: {
-            //                data: event,
-            //                source: "facebook"
-            //            }
-            //        });
-
-            //    this.doApiAiRequest(apiaiRequest, sender);
-            //}
-            
+                this.doApiAiRequest(apiaiRequest, sender);
+            }
         }
     }
 
