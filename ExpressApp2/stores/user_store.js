@@ -3,11 +3,12 @@ const Store = require("./store");
 const User = require("../models/user");
 
 class UserStore extends Store {
-    insert(email, mcoId, fbId) {
+    insert(email, mcoId, fbId, idPdv) {
         const user = new User(
             email,
             mcoId,
-            fbId
+            fbId,
+            idPdv
         );
         this.set(email, user);
         return user;
@@ -65,6 +66,15 @@ class UserStore extends Store {
 
         console.log("FIN linkFbAccount");
         return this.update(currentUser.email, { fbId });
+    }
+
+    linkPdv(mcoId, idPdv) {
+        const currentUser = this.getByMcoId(mcoId);
+        if (isEmpty(currentUser)) {
+            return currentUser;
+        }
+
+        return this.update(currentUser.email, { idPdv });
     }
 
     unlinkWithFbId(fbId) {

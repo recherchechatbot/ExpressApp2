@@ -26,6 +26,7 @@ const MCO_URL = process.env.MCO_URL;
 const RC_URL = process.env.RC_URL;
 const MSQ_APP_RC = process.env.MSQ_APP_RC;
 const MSQ_JETON_APP_RC = process.env.MSQ_JETON_APP_RC;
+const FO_URL = process.env.FO_URL;
 
 const app = express();
 
@@ -404,7 +405,20 @@ class FacebookBot {
         switch (status) {
             case 'linked':
                 console.log("on link fb " + senderID + " avec le mco " + authCode);
-                const linkedUser = UserStore.linkFbAccount(authCode, senderID);
+                
+                this.getMcoUserInfo(authCode)
+                    .then((u) => {
+                        var userInfos = JSONbig.parse(u);
+
+                        if (userInfos.IdPdv) {
+                            console.log("IDPDV RECUPERE !!!!!!");
+                            UserStore.linkPdv(authCode, userInfos.IdPdv)
+                            UserStore.linkFbAccount(authCode, senderID);
+                        }
+                    })
+                    .catch(err => {
+                        console.log("La récup des infos client a échoué !");
+                    });
                 //sendApi.sendSignInSuccessMessage(senderId, linkedUser.username);
                 break;
             case 'unlinked':
@@ -534,6 +548,25 @@ class FacebookBot {
         })
     }
 
+    getMcoUserInfo(token) {
+        return new Promise((resolve, reject) => {
+            request({
+                uri: MCO_URL + "api/v1/clientRc",
+                method: 'GET',
+                headers: {
+                    'TokenAuthentification': token
+                }
+            }, (error, response) => {
+                if (error) {
+                    console.log('Error while getting Mco user info: ', error);
+                    reject(error);
+                } else {
+                    console.log('Mco user info result : ', response.body);
+                    resolve(response.body);
+                }
+            });
+        })
+    }
     sendFBSenderAction(sender, action) {
         return new Promise((resolve, reject) => {
             request({
@@ -1281,6 +1314,103 @@ app.post('/ai', (req, res) => {
             });
         }
     }
+    else if (body.result.action === 'recherche_libre_courses')
+    {
+        const sender_id = body.originalRequest.data.sender.id;
+        const user_profile = UserStore.getByFbId(sender_id);
+
+        var existeUser = !isEmpty(user_profile);
+
+        if (existeUser) {
+            console.log("ACTION RECONNUE : recherche_libre_courses")
+            console.log("DEBUT appel FO");
+            const token_auth = user_profile.mcoId;
+
+            getRecette(body.result.parameters, token_auth)
+                .then((r) => {
+                    var listeRecette = JSONbig.parse(r);
+
+                    let messagedata = {
+                        "attachment": {
+                            "type": "template",
+                            "payload": {
+                                "template_type": "generic",
+                                "elements": [
+                                    {
+                                        "title": listeRecette.Recettes[0].Titre,
+                                        "image_url": listeRecette.Recettes[0].ImageUrl,
+                                        "subtitle": "Vous serez redirigé vers notre site web",
+                                        "default_action": {
+                                            "type": "web_url",
+                                            "url": "http://google.fr",
+                                            "webview_height_ratio": "tall"
+                                        },
+                                        "buttons": [
+                                            {
+                                                "title": "Cliquez ici",
+                                                "type": "web_url",
+                                                "url": "http://google.fr",
+                                                "webview_height_ratio": "tall"
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "title": listeRecette.Recettes[1].Titre,
+                                        "image_url": listeRecette.Recettes[1].ImageUrl,
+                                        "subtitle": "Vous serez redirigé vers notre site web",
+                                        "default_action": {
+                                            "type": "web_url",
+                                            "url": "http://google.fr",
+                                            "webview_height_ratio": "tall"
+                                        },
+                                        "buttons": [
+                                            {
+                                                "title": "Cliquez ici",
+                                                "type": "web_url",
+                                                "url": "http://google.fr",
+                                                "webview_height_ratio": "tall"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        },
+                        "quick_replies": [
+                            {
+                                "content_type": "text",
+                                "title": "Autres recettes",
+                                "payload": "Autres recettes"
+                            },
+                            {
+                                "content_type": "text",
+                                "title": "Menu Principal",
+                                "payload": "Menu Principal"
+                            }
+                        ]
+                    };
+
+                    return res.json({
+                        speech: "Recettes",
+                        data: { "facebook": messagedata },
+                        source: 'recherche_libre_recette'
+                    });
+                })
+                .catch(err => {
+                    return res.status(400).json({
+                        speech: "ERREUR : " + err,
+                        message: "ERREUR : " + err,
+                        source: 'recherche_libre_recette'
+                    });
+                });
+        }
+        else {
+            return res.json({
+                speech: "Recettes",
+                data: { "facebook": facebookBot.getButtonLogin() },
+                source: 'recherche_libre_recette'
+            });
+        }
+    }
     else if (body.result.action === 'Localisation.Recue') {
         console.log("body.result = " + JSON.stringify(body.result));
 
@@ -1369,7 +1499,31 @@ app.get('/webhook/', (req, res) => {
         res.send('Error, wrong validation token');
     }
 });
+function getProduit(param, idPdv) {
+    let produit1 = param['Nourriture'];
 
+    var options ={
+        method: 'POST',
+        uri: FO_URL +"RechercheJs",
+        headers: {
+            'Cookie': "IdPdv=" + idPdv 
+        },
+        json: {
+            mot: produit1
+        }
+    };
+
+    return new Promise((resolve, reject) => {
+        request(options, (error, response) => {
+            if (!error && response.statusCode == 200) {
+                resolve(response.body);
+            }
+            else {
+                reject(error);
+            }
+        })
+    })
+}
 function getRecette(param, mcoId) {
     let nourriture1 = param['Nourriture'];
     let nourriture2 = param['Nourriture1'];
