@@ -1465,8 +1465,19 @@ app.get('/webhook/', (req, res) => {
 function getAspNetSessionId()
 {
     var options = {
-        method: 'GET',
-        uri: FO_URL
+        method: 'POST',
+        uri: FO_URL + "Connexion",
+        body: {
+            txtEmail: "s.ruelle@netfective.com",
+            txtMotDePasse: "Cobol2010",
+            largeur: "800",
+            hauteur: "300",
+            resteConnecte: true,
+        },
+        json: true,
+        headers: {
+            referer: 'http://google.fr'
+        }
     };
 
     return new Promise((resolve, reject) => {
@@ -1507,7 +1518,7 @@ function getProduit(param, idPdv, c) {
         method: 'POST',
         uri: FO_URL +"RechercheJs",
         headers: {
-            cookie: "ASP.NET_SessionId=fnfkmk4tm2wesoc3wwvfdyuf", //"" //;ASP.NET_SessionId=1gxnbgqhog5p3kds3zjkc3ig TODO : "IdPdv=" + idPdv  //
+            cookie: c, //"" //;ASP.NET_SessionId=1gxnbgqhog5p3kds3zjkc3ig TODO : "IdPdv=" + idPdv  //
         },
         body : {
             mot: produit1
