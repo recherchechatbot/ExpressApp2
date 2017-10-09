@@ -1460,7 +1460,7 @@ function getProduit(param, idPdv) {
         method: 'POST',
         uri: FO_URL +"RechercheJs",
         headers: {
-            cookie: "IdPdv=1;IdentifiantPdv=04149;ASP.NET_SessionId=1gxnbgqhog5p3kds3zjkc3ig" // TODO : "IdPdv=" + idPdv  //
+            cookie: "IdPdv=1;IdentifiantPdv=04149" //;ASP.NET_SessionId=1gxnbgqhog5p3kds3zjkc3ig TODO : "IdPdv=" + idPdv  //
         },
         body : {
             mot: produit1
