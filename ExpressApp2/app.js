@@ -1187,7 +1187,7 @@ function loginRC(email, mdp) {
     });
 }
 
-getAspNetSessionId(email, mdp) {
+function getAspNetSessionId(email, mdp) {
     var options = {
         method: 'POST',
         uri: FO_URL + "Connexion",
