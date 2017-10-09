@@ -1502,7 +1502,7 @@ function getProduit(param, idPdv, cookie) {
         method: 'POST',
         uri: FO_URL +"RechercheJs",
         headers: {
-            cookie: "ASP.NET_SessionId=spxaoj2oxhmxdb5uyu13ptj4" //"IdPdv=1;IdentifiantPdv=04149" //;ASP.NET_SessionId=1gxnbgqhog5p3kds3zjkc3ig TODO : "IdPdv=" + idPdv  //
+            cookie: "ASP.NET_SessionId=spxaoj2oxhmxdb5uyu13ptj4;IdPdv=1;IdentifiantPdv=04149" //"" //;ASP.NET_SessionId=1gxnbgqhog5p3kds3zjkc3ig TODO : "IdPdv=" + idPdv  //
         },
         body : {
             mot: produit1
