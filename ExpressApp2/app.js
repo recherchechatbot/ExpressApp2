@@ -1471,7 +1471,11 @@ function getAspNetSessionId()
             if (!error && response.statusCode == 200) {
                 console.log("getAspNetSessionId retourne : " + response.headers['set-cookie']);
 
-                resolve(response.headers['set-cookie']);
+                var t = parseCookies(response.headers['set-cookie']);
+                console.log("parse = " + t);
+                console.log("ASP.NET_SessionId = " + t["ASP.NET_SessionId"])
+
+                resolve(t["ASP.NET_SessionId"]);
             }
             else {
                 console.log("getAspNetSessionId ERREUR" + error);
@@ -1479,6 +1483,17 @@ function getAspNetSessionId()
             }
         })
     });
+}
+
+function parseCookies(cookiesString) {
+    var list = {};
+
+    cookiesString && cookiesString.split(';').forEach(function (cookie) {
+        var parts = cookie.split('=');
+        list[parts.shift().trim()] = decodeURI(parts.join('='));
+    });
+
+    return list;
 }
 
 function getProduit(param, idPdv) {
