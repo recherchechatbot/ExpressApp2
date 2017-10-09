@@ -1330,7 +1330,9 @@ app.post('/ai', (req, res) => {
 
             getAspNetSessionId()
                 .then((c) => {
-                    getProduit(body.result.parameters, user_profile.idPdv)
+                    console.log("Voila la valeur qu'on passe : " + c["ASP.NET_SessionId"])
+
+                    getProduit(body.result.parameters, user_profile.idPdv, c["ASP.NET_SessionId"])
                         .then((r) => {
                             console.log("Nous sommes à la recherche d'un produit");
 
@@ -1462,19 +1464,8 @@ app.get('/webhook/', (req, res) => {
 function getAspNetSessionId()
 {
     var options = {
-        method: 'POST',
-        uri: FO_URL + "Connexion",
-        body: {
-            txtEmail: "s.ruelle@netfective.com",
-            txtMotDePasse: "Cobol2010",
-            largeur: "800",
-            hauteur: "300",
-            resteConnecte: true,
-        },
-        json: true,
-        headers: {
-            referer: 'http://google.fr'
-        }
+        method: 'GET',
+        uri: FO_URL
     };
 
     return new Promise((resolve, reject) => {
@@ -1482,7 +1473,7 @@ function getAspNetSessionId()
             if (!error && response.statusCode == 200) {
                 console.log("getAspNetSessionId retourne : " + response.headers['set-cookie']);
 
-                resolve(response.headers['set-cookie']);
+                resolve(parseCookies(response.headers['set-cookie']));
             }
             else {
                 console.log("getAspNetSessionId ERREUR" + error);
@@ -1492,19 +1483,20 @@ function getAspNetSessionId()
     });
 }
 
-//function parseCookies(f) {
-//    var cookiesString = "ASP.NET_SessionId=efd4f5dxpcrvjyxkv2eihoqf; path=/; HttpOnly,NTF_ic=; expires=Sun, 08-Oct-2017 08:31:04 GMT";
-//    var list = {};
+function parseCookies(f) {
+    var list = {};
 
-//    cookiesString && cookiesString.split(';').forEach(function (cookie) {
-//        var parts = cookie.split('=');
-//        list[parts.shift().trim()] = decodeURI(parts.join('='));
-//    });
+    cookiesString && cookiesString.split(';').forEach(function (c1) {
+        c1 && c1.split(',').forEach(function (cookie) {
+            var parts = cookie.split('=');
+            list[parts.shift().trim()] = decodeURI(parts.join('='));
+        });
+    });
 
-//    return list;
-//}
+    return list;
+}
 
-function getProduit(param, idPdv, cookie) {
+function getProduit(param, idPdv, c) {
     console.log("DEBUT getProduit");
     let produit1 = param['Nourriture'];
 
@@ -1514,7 +1506,7 @@ function getProduit(param, idPdv, cookie) {
         method: 'POST',
         uri: FO_URL +"RechercheJs",
         headers: {
-            cookie: "ASP.NET_SessionId=1rd3ky51vxqqw30er2ad1qgu;", //"" //;ASP.NET_SessionId=1gxnbgqhog5p3kds3zjkc3ig TODO : "IdPdv=" + idPdv  //
+            cookie: c, //"" //;ASP.NET_SessionId=1gxnbgqhog5p3kds3zjkc3ig TODO : "IdPdv=" + idPdv  //
             referer: 'http://google.fr'
         },
         body : {
