@@ -329,6 +329,19 @@ class FacebookBot {
                 var id = parseInt(text.replace('idP=', ''));
                 console.log("id du produit à ajouter" + id)
                 this.addProductBasket(userProfile.mcoId, id);
+                this.getAspNetSessionId()
+                    .then((c) => {
+                        this.getRecapPanier(c)
+                        .then((r) => {
+                            console.log("Le montant total du panier est de :" + r.Total);
+                        })
+                        .catch(err => {
+                            console.log("getRecapPanier err :" + err);
+                        });
+                    })
+                    .catch(err => {
+                        console.log("getAspNetSessionId err :" + err);
+                    });
             }
             else {
                 // Handle a text message from this sender
@@ -571,6 +584,60 @@ class FacebookBot {
                 }
             });
         })
+    }
+
+    getAspNetSessionId() {
+        var options = {
+            method: 'POST',
+            uri: FO_URL + "Connexion",
+            body: {
+                txtEmail: "s.ruelle@netfective.com",//TODO 
+                txtMotDePasse: "Cobol2010",
+                largeur: "800",
+                hauteur: "300",
+                resteConnecte: true,
+            },
+            json: true,
+            headers: {
+                referer: 'http://google.fr'
+            }
+        };
+
+        return new Promise((resolve, reject) => {
+            request(options, (error, response) => {
+                if (!error && response.statusCode == 200) {
+                    console.log("getAspNetSessionId retourne : " + response.headers['set-cookie']);
+
+                    resolve(parseCookies(response.headers['set-cookie'].toString()));
+                }
+                else {
+                    console.log("getAspNetSessionId ERREUR" + error);
+                    reject(error);
+                }
+            })
+        });
+    }
+
+    getRecapPanier(c) {
+        var options = {
+            method: 'GET',
+            uri: FO_URL + "AfficherPanier",
+            headers: {
+                cookie: c
+            }
+        };
+
+        return new Promise((resolve, reject) => {
+            request(options, (error, response) => {
+                if (!error && response.statusCode == 200) {
+
+                    resolve(response.body);
+                }
+                else {
+                    reject(error);
+                }
+            })
+        });
     }
 
     addProductBasket(mcoId, idProduit) {
@@ -1375,7 +1442,7 @@ app.post('/ai', (req, res) => {
             const token_auth = user_profile.mcoId;
             console.log("recherche_libre_courses token_auth = " + token_auth);
 
-            getAspNetSessionId()
+            facebookBot.getAspNetSessionId()
                 .then((c) => {
                     var cookieSession = 'ASP.NET_SessionId=' + c["ASP.NET_SessionId"] + ';&IdPdv=' + user_profile.idPdv;
                     console.log("Voila la valeur qu'on passe : " + cookieSession);
@@ -1572,38 +1639,7 @@ app.get('/webhook/', (req, res) => {
     }
 });
 
-function getAspNetSessionId()
-{
-    var options = {
-        method: 'POST',
-        uri: FO_URL + "Connexion",
-        body: {
-            txtEmail: "s.ruelle@netfective.com",
-            txtMotDePasse: "Cobol2010",
-            largeur: "800",
-            hauteur: "300",
-            resteConnecte: true,
-        },
-        json: true,
-        headers: {
-            referer: 'http://google.fr'
-        }
-    };
 
-    return new Promise((resolve, reject) => {
-        request(options, (error, response) => {
-            if (!error && response.statusCode == 200) {
-                console.log("getAspNetSessionId retourne : " + response.headers['set-cookie']);
-
-                resolve(parseCookies(response.headers['set-cookie'].toString()));
-            }
-            else {
-                console.log("getAspNetSessionId ERREUR" + error);
-                reject(error);
-            }
-        })
-    });
-}
 
 function parseCookies(cookiesString) {
     var list = {};
