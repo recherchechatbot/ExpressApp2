@@ -1328,6 +1328,14 @@ app.post('/ai', (req, res) => {
             const token_auth = user_profile.mcoId;
             console.log("recherche_libre_courses token_auth = " + token_auth);
 
+            getAspNetSessionId()
+                .then((r) => {
+                    console.log("On a le retour de getAspNetSessionId et on essaie d'afficher ce putain de token :" + r.ASP.NET_SessionId);
+                })
+                .catch(err => {
+                    console.log("Si ce message s'affiche c'est qu'on est nuls !");
+                });
+
             getProduit(body.result.parameters, user_profile.idPdv)
                 .then((r) => {
                     console.log("Nous sommes à la recherche d'un produit");
@@ -1450,6 +1458,29 @@ app.get('/webhook/', (req, res) => {
         res.send('Error, wrong validation token');
     }
 });
+
+function getAspNetSessionId()
+{
+    var options = {
+        method: 'GET',
+        uri: FO_URL
+    };
+
+    return new Promise((resolve, reject) => {
+        request(options, (error, response) => {
+            if (!error && response.statusCode == 200) {
+                console.log("getAspNetSessionId retourne : " + response.headers['set-cookie']);
+
+                resolve(response.headers['set-cookie']);
+            }
+            else {
+                console.log("getAspNetSessionId ERREUR" + error);
+                reject(error);
+            }
+        })
+    });
+}
+
 function getProduit(param, idPdv) {
     console.log("DEBUT getProduit");
     let produit1 = param['Nourriture'];
