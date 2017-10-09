@@ -1462,7 +1462,10 @@ function getAspNetSessionId()
 {
     var options = {
         method: 'GET',
-        uri: FO_URL
+        uri: FO_URL,
+        headers: {
+            referer: 'http://google.fr'
+        }
     };
 
     return new Promise((resolve, reject) => {
@@ -1502,7 +1505,8 @@ function getProduit(param, idPdv, cookie) {
         method: 'POST',
         uri: FO_URL +"RechercheJs",
         headers: {
-            cookie: "ASP.NET_SessionId=spxaoj2oxhmxdb5uyu13ptj4;IdPdv=1;IdentifiantPdv=04149" //"" //;ASP.NET_SessionId=1gxnbgqhog5p3kds3zjkc3ig TODO : "IdPdv=" + idPdv  //
+            cookie: cookie, //"" //;ASP.NET_SessionId=1gxnbgqhog5p3kds3zjkc3ig TODO : "IdPdv=" + idPdv  //
+            referer: 'http://google.fr'
         },
         body : {
             mot: produit1
