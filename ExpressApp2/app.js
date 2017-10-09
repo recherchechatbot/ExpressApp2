@@ -1461,8 +1461,16 @@ app.get('/webhook/', (req, res) => {
 function getAspNetSessionId()
 {
     var options = {
-        method: 'GET',
-        uri: FO_URL,
+        method: 'POST',
+        uri: FO_URL + "Connexion",
+        body: {
+            txtEmail: "s.ruelle@netfective.com",
+            txtMotDePasse: "Cobol2010",
+            largeur: "800",
+            hauteur: "300",
+            resteConnecte: true,
+        },
+        json: true,
         headers: {
             referer: 'http://google.fr'
         }
