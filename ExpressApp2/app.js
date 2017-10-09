@@ -1485,7 +1485,8 @@ function getAspNetSessionId()
     });
 }
 
-function parseCookies(cookiesString) {
+function parseCookies(f) {
+    var d = "ASP.NET_SessionId=efd4f5dxpcrvjyxkv2eihoqf; path=/; HttpOnly,NTF_ic=; expires=Sun, 08-Oct-2017 08:31:04 GMT";
     var list = {};
 
     cookiesString && cookiesString.split(';').forEach(function (cookie) {
