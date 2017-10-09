@@ -1473,7 +1473,7 @@ function getAspNetSessionId()
             if (!error && response.statusCode == 200) {
                 console.log("getAspNetSessionId retourne : " + response.headers['set-cookie']);
 
-                resolve(parseCookies(response.headers['set-cookie']));
+                resolve(parseCookies(response.headers['set-cookie'].toString()));
             }
             else {
                 console.log("getAspNetSessionId ERREUR" + error);
