@@ -1483,7 +1483,7 @@ function getAspNetSessionId()
     });
 }
 
-function parseCookies(f) {
+function parseCookies(cookiesString) {
     var list = {};
 
     cookiesString && cookiesString.split(';').forEach(function (c1) {
