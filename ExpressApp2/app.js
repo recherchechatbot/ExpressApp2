@@ -335,8 +335,9 @@ class FacebookBot {
                         console.log("Le getAspNetSessionId est : " + cookieSession);
                         this.getRecapPanier(cookieSession)
                             .then((r) => {
+                                let panier = JSONbig.parse(r);
                                 console.log("Retour recap panier = " + JSON.stringify(r));
-                                console.log("Le montant total du panier est de :" + r.Total);
+                                console.log("Le montant total du panier est de :" + panier.Total);
                             })
                             .catch(err => {
                                 console.log("getRecapPanier err :" + err);
