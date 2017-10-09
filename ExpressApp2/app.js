@@ -1337,9 +1337,7 @@ app.post('/ai', (req, res) => {
                         .then((r) => {
                             console.log("Nous sommes à la recherche d'un produit");
 
-                            var listeProduit = JSONbig.parse(r);
-
-                            console.log("Voici la liste de produits : " + JSON.stringify(listeProduit));
+                            console.log("Voici la liste de produits : " + JSON.stringify(r));
 
                             return res.json({
                                 speech: "Recettes",
@@ -1518,7 +1516,7 @@ function getProduit(param, idPdv, c) {
         method: 'POST',
         uri: FO_URL +"RechercheJs",
         headers: {
-            cookie: c, //"" //;ASP.NET_SessionId=1gxnbgqhog5p3kds3zjkc3ig TODO : "IdPdv=" + idPdv  //
+            cookie: c,
         },
         body : {
             mot: produit1
