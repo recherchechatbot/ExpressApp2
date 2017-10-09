@@ -1329,37 +1329,36 @@ app.post('/ai', (req, res) => {
             console.log("recherche_libre_courses token_auth = " + token_auth);
 
             getAspNetSessionId()
-                .then((r) => {
-                    console.log("On a le retour de getAspNetSessionId et on essaie d'afficher ce putain de token :" + r.ASP.NET_SessionId);
+                .then((c) => {
+                    getProduit(body.result.parameters, user_profile.idPdv, c)
+                        .then((r) => {
+                            console.log("Nous sommes à la recherche d'un produit");
+
+                            var listeProduit = JSONbig.parse(r);
+
+                            console.log("Voici la liste de produits : " + JSON.stringify(listeProduit));
+
+                            return res.json({
+                                speech: "Recettes",
+                                data: { "facebook": "OKKKKKKKK" },
+                                source: 'recherche_libre_courses'
+                            });
+                        })
+                        .catch(err => {
+
+                            console.log("on est dans le catch et oui !!!!! ");
+                            console.log("L'erreur c'est : " + err);
+
+                            return res.status(400).json({
+                                speech: "ERREUR : " + err,
+                                message: "ERREUR : " + err,
+                                source: 'recherche_libre_courses'
+                            });
+                        });
+
                 })
                 .catch(err => {
                     console.log("Si ce message s'affiche c'est qu'on est nuls !");
-                });
-
-            getProduit(body.result.parameters, user_profile.idPdv)
-                .then((r) => {
-                    console.log("Nous sommes à la recherche d'un produit");
-
-                    var listeProduit = JSONbig.parse(r);
-
-                    console.log("Voici la liste de produits : " + JSON.stringify(listeProduit));
-
-                    return res.json({
-                        speech: "Recettes",
-                        data: { "facebook": "OKKKKKKKK" },
-                        source: 'recherche_libre_courses'
-                    });
-                })
-                .catch(err => {
-
-                    console.log("on est dans le catch et oui !!!!! ");
-                    console.log("L'erreur c'est : " + err);
-
-                    return res.status(400).json({
-                        speech: "ERREUR : " + err,
-                        message: "ERREUR : " + err,
-                        source: 'recherche_libre_courses'
-                    });
                 });
         }
         else {
@@ -1471,11 +1470,7 @@ function getAspNetSessionId()
             if (!error && response.statusCode == 200) {
                 console.log("getAspNetSessionId retourne : " + response.headers['set-cookie']);
 
-                var t = parseCookies(response.headers['set-cookie']);
-                console.log("parse = " + t);
-                console.log("ASP.NET_SessionId = " + t["ASP.NET_SessionId"])
-
-                resolve(t["ASP.NET_SessionId"]);
+                resolve(response.headers['set-cookie']);
             }
             else {
                 console.log("getAspNetSessionId ERREUR" + error);
@@ -1485,19 +1480,19 @@ function getAspNetSessionId()
     });
 }
 
-function parseCookies(f) {
-    var cookiesString = "ASP.NET_SessionId=efd4f5dxpcrvjyxkv2eihoqf; path=/; HttpOnly,NTF_ic=; expires=Sun, 08-Oct-2017 08:31:04 GMT";
-    var list = {};
+//function parseCookies(f) {
+//    var cookiesString = "ASP.NET_SessionId=efd4f5dxpcrvjyxkv2eihoqf; path=/; HttpOnly,NTF_ic=; expires=Sun, 08-Oct-2017 08:31:04 GMT";
+//    var list = {};
 
-    cookiesString && cookiesString.split(';').forEach(function (cookie) {
-        var parts = cookie.split('=');
-        list[parts.shift().trim()] = decodeURI(parts.join('='));
-    });
+//    cookiesString && cookiesString.split(';').forEach(function (cookie) {
+//        var parts = cookie.split('=');
+//        list[parts.shift().trim()] = decodeURI(parts.join('='));
+//    });
 
-    return list;
-}
+//    return list;
+//}
 
-function getProduit(param, idPdv) {
+function getProduit(param, idPdv, cookie) {
     console.log("DEBUT getProduit");
     let produit1 = param['Nourriture'];
 
@@ -1507,7 +1502,7 @@ function getProduit(param, idPdv) {
         method: 'POST',
         uri: FO_URL +"RechercheJs",
         headers: {
-            cookie: "IdPdv=1;IdentifiantPdv=04149" //;ASP.NET_SessionId=1gxnbgqhog5p3kds3zjkc3ig TODO : "IdPdv=" + idPdv  //
+            cookie: cookie //"IdPdv=1;IdentifiantPdv=04149" //;ASP.NET_SessionId=1gxnbgqhog5p3kds3zjkc3ig TODO : "IdPdv=" + idPdv  //
         },
         body : {
             mot: produit1
