@@ -1328,40 +1328,39 @@ app.post('/ai', (req, res) => {
             const token_auth = user_profile.mcoId;
             console.log("recherche_libre_courses token_auth = " + token_auth);
 
-            //getAspNetSessionId()
-            //    .then((c) => {
-                    
+            getAspNetSessionId()
+                .then((c) => {
+                    getProduit(body.result.parameters, user_profile.idPdv)
+                        .then((r) => {
+                            console.log("Nous sommes à la recherche d'un produit");
 
-            //    })
-            //    .catch(err => {
-            //        console.log("Si ce message s'affiche c'est qu'on est nuls !");
-            //    });
+                            var listeProduit = JSONbig.parse(r);
 
-            getProduit(body.result.parameters, user_profile.idPdv)
-                .then((r) => {
-                    console.log("Nous sommes à la recherche d'un produit");
+                            console.log("Voici la liste de produits : " + JSON.stringify(listeProduit));
 
-                    var listeProduit = JSONbig.parse(r);
+                            return res.json({
+                                speech: "Recettes",
+                                data: { "facebook": "OKKKKKKKK" },
+                                source: 'recherche_libre_courses'
+                            });
+                        })
+                        .catch(err => {
 
-                    console.log("Voici la liste de produits : " + JSON.stringify(listeProduit));
+                            console.log("on est dans le catch et oui !!!!! ");
+                            console.log("L'erreur c'est : " + err);
 
-                    return res.json({
-                        speech: "Recettes",
-                        data: { "facebook": "OKKKKKKKK" },
-                        source: 'recherche_libre_courses'
-                    });
+                            return res.status(400).json({
+                                speech: "ERREUR : " + err,
+                                message: "ERREUR : " + err,
+                                source: 'recherche_libre_courses'
+                            });
+                        });
                 })
                 .catch(err => {
-
-                    console.log("on est dans le catch et oui !!!!! ");
-                    console.log("L'erreur c'est : " + err);
-
-                    return res.status(400).json({
-                        speech: "ERREUR : " + err,
-                        message: "ERREUR : " + err,
-                        source: 'recherche_libre_courses'
-                    });
+                    console.log("Si ce message s'affiche c'est qu'on est nuls !");
                 });
+
+            
         }
         else {
             return res.json({
