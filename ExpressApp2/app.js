@@ -327,7 +327,7 @@ class FacebookBot {
             }
             else if (existeUser && text.startsWith("idP=")) {
                 var id = parseInt(text.replace('idP=', ''));
-
+                console.log("id du produit à ajouter" + id)
                 this.addProductBasket(userProfile.mcoId, id);
             }
             else {
@@ -580,7 +580,7 @@ class FacebookBot {
                 method: 'POST',
                 body: {
 
-                    SynchronisationForte: true,
+                    SynchronisationForte: false,
                     DateDerniereSynchronisation: "2014-03-18T15:19:30.0900000",
                     Articles: [
                         {
@@ -605,7 +605,7 @@ class FacebookBot {
                     console.log('Error: ', response.body.error);
                     reject(new Error(response.body.error));
                 }
-
+                console.log("ceci est le body lorsqu'on essaye d'ajouter un truc au panier:" + response.body);
                 resolve(response.body);
             });
         });
