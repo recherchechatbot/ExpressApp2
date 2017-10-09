@@ -1337,7 +1337,7 @@ app.post('/ai', (req, res) => {
             //        console.log("Si ce message s'affiche c'est qu'on est nuls !");
             //    });
 
-            getProduit(body.result.parameters, user_profile.idPdv, c)
+            getProduit(body.result.parameters, user_profile.idPdv)
                 .then((r) => {
                     console.log("Nous sommes à la recherche d'un produit");
 
