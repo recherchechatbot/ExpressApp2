@@ -1330,7 +1330,7 @@ app.post('/ai', (req, res) => {
 
             getAspNetSessionId()
                 .then((c) => {
-                    var cookieSession = 'ASP.NET_SessionId=' + c["ASP.NET_SessionId"];
+                    var cookieSession = 'ASP.NET_SessionId=' + c["ASP.NET_SessionId"] + ';';
                     console.log("Voila la valeur qu'on passe : " + cookieSession);
 
                     getProduit(body.result.parameters, user_profile.idPdv, cookieSession)
