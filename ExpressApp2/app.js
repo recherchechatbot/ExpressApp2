@@ -331,8 +331,9 @@ class FacebookBot {
                 this.addProductBasket(userProfile.mcoId, id);
                 this.getAspNetSessionId()
                     .then((c) => {
-                        console.log("Le getAspNetSessionId est : " + c);
-                        this.getRecapPanier(c)
+                        var cookieSession = 'ASP.NET_SessionId=' + c["ASP.NET_SessionId"];
+                        console.log("Le getAspNetSessionId est : " + cookieSession);
+                        this.getRecapPanier(cookieSession)
                             .then((r) => {
                                 console.log("Retour recap panier = " + JSON.stringify(r));
                                 console.log("Le montant total du panier est de :" + r.Total);
