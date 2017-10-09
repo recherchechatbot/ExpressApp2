@@ -1328,37 +1328,39 @@ app.post('/ai', (req, res) => {
             const token_auth = user_profile.mcoId;
             console.log("recherche_libre_courses token_auth = " + token_auth);
 
-            getAspNetSessionId()
-                .then((c) => {
-                    getProduit(body.result.parameters, user_profile.idPdv, c)
-                        .then((r) => {
-                            console.log("Nous sommes à la recherche d'un produit");
+            //getAspNetSessionId()
+            //    .then((c) => {
+                    
 
-                            var listeProduit = JSONbig.parse(r);
+            //    })
+            //    .catch(err => {
+            //        console.log("Si ce message s'affiche c'est qu'on est nuls !");
+            //    });
 
-                            console.log("Voici la liste de produits : " + JSON.stringify(listeProduit));
+            getProduit(body.result.parameters, user_profile.idPdv, c)
+                .then((r) => {
+                    console.log("Nous sommes à la recherche d'un produit");
 
-                            return res.json({
-                                speech: "Recettes",
-                                data: { "facebook": "OKKKKKKKK" },
-                                source: 'recherche_libre_courses'
-                            });
-                        })
-                        .catch(err => {
+                    var listeProduit = JSONbig.parse(r);
 
-                            console.log("on est dans le catch et oui !!!!! ");
-                            console.log("L'erreur c'est : " + err);
+                    console.log("Voici la liste de produits : " + JSON.stringify(listeProduit));
 
-                            return res.status(400).json({
-                                speech: "ERREUR : " + err,
-                                message: "ERREUR : " + err,
-                                source: 'recherche_libre_courses'
-                            });
-                        });
-
+                    return res.json({
+                        speech: "Recettes",
+                        data: { "facebook": "OKKKKKKKK" },
+                        source: 'recherche_libre_courses'
+                    });
                 })
                 .catch(err => {
-                    console.log("Si ce message s'affiche c'est qu'on est nuls !");
+
+                    console.log("on est dans le catch et oui !!!!! ");
+                    console.log("L'erreur c'est : " + err);
+
+                    return res.status(400).json({
+                        speech: "ERREUR : " + err,
+                        message: "ERREUR : " + err,
+                        source: 'recherche_libre_courses'
+                    });
                 });
         }
         else {
@@ -1513,7 +1515,7 @@ function getProduit(param, idPdv, cookie) {
         method: 'POST',
         uri: FO_URL +"RechercheJs",
         headers: {
-            cookie: cookie, //"" //;ASP.NET_SessionId=1gxnbgqhog5p3kds3zjkc3ig TODO : "IdPdv=" + idPdv  //
+            cookie: "ASP.NET_SessionId=ymrgfky4r1wt2enahgfhrdvj;", //"" //;ASP.NET_SessionId=1gxnbgqhog5p3kds3zjkc3ig TODO : "IdPdv=" + idPdv  //
             referer: 'http://google.fr'
         },
         body : {
