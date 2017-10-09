@@ -1339,9 +1339,56 @@ app.post('/ai', (req, res) => {
 
                             console.log("Voici la liste de produits : " + JSON.stringify(r));
 
+                            let messagedata = {
+                                "attachment": {
+                                    "type": "template",
+                                    "payload": {
+                                        "template_type": "generic",
+                                        "elements": [
+                                            {
+                                                "title": r[0].Libelle,
+                                                "image_url": r[0].NomImage,
+                                                "subtitle": "Cliquez ci-dessous pour ajouter au panier",
+                                                "default_action": {
+                                                    "type": "web_url",
+                                                    "url": "http://google.fr",
+                                                    "webview_height_ratio": "tall"
+                                                },
+                                                "buttons": [
+                                                    {
+                                                        "title": "Cliquez ici",
+                                                        "type": "web_url",
+                                                        "url": "http://google.fr",
+                                                        "webview_height_ratio": "tall"
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                "title": r[1].Libelle,
+                                                "image_url": r[1].NomImage,
+                                                "subtitle": "Cliquez ci-dessous pour ajouter au panier",
+                                                "default_action": {
+                                                    "type": "web_url",
+                                                    "url": "http://google.fr",
+                                                    "webview_height_ratio": "tall"
+                                                },
+                                                "buttons": [
+                                                    {
+                                                        "title": "Cliquez ici",
+                                                        "type": "web_url",
+                                                        "url": "http://google.fr",
+                                                        "webview_height_ratio": "tall"
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    }
+                                }
+                            };
+
                             return res.json({
-                                speech: "Recettes",
-                                data: { "facebook": "OKKKKKKKK" },
+                                speech: "Voici les résultats de votre recherche:",
+                                data: { "facebook": messagedata },
                                 source: 'recherche_libre_courses'
                             });
                         })
