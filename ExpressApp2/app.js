@@ -329,22 +329,17 @@ class FacebookBot {
                 var id = parseInt(text.replace('idP=', ''));
                 console.log("id du produit à ajouter" + id)
                 this.addProductBasket(userProfile.mcoId, id);
-                this.getAspNetSessionId()
-                    .then((c) => {
-                        var cookieSession = 'ASP.NET_SessionId=' + c["ASP.NET_SessionId"];
-                        console.log("Le getAspNetSessionId est : " + cookieSession);
-                        this.getRecapPanier(cookieSession)
-                            .then((r) => {
-                                let panier = JSONbig.parse(r);
-                                console.log("Retour recap panier = " + JSON.stringify(r));
-                                console.log("Le montant total du panier est de :" + panier.Total);
-                            })
-                            .catch(err => {
-                                console.log("getRecapPanier err :" + err);
-                            });
+
+                var cookieSession = 'ASP.NET_SessionId=' + userProfile.foSession;
+                console.log("Le getAspNetSessionId est : " + cookieSession);
+                this.getRecapPanier(cookieSession)
+                    .then((r) => {
+                        let panier = JSONbig.parse(r);
+                        console.log("Retour recap panier = " + JSON.stringify(r));
+                        console.log("Le montant total du panier est de :" + panier.Total);
                     })
                     .catch(err => {
-                        console.log("getAspNetSessionId err :" + err);
+                        console.log("getRecapPanier err :" + err);
                     });
             }
             else {
@@ -588,38 +583,6 @@ class FacebookBot {
                 }
             });
         })
-    }
-
-    getAspNetSessionId() {
-        var options = {
-            method: 'POST',
-            uri: FO_URL + "Connexion",
-            body: {
-                txtEmail: "s.ruelle@netfective.com",//TODO 
-                txtMotDePasse: "Cobol2010",
-                largeur: "800",
-                hauteur: "300",
-                resteConnecte: true,
-            },
-            json: true,
-            headers: {
-                referer: 'http://google.fr'
-            }
-        };
-
-        return new Promise((resolve, reject) => {
-            request(options, (error, response) => {
-                if (!error && response.statusCode == 200) {
-                    console.log("getAspNetSessionId retourne : " + response.headers['set-cookie']);
-
-                    resolve(parseCookies(response.headers['set-cookie'].toString()));
-                }
-                else {
-                    console.log("getAspNetSessionId ERREUR" + error);
-                    reject(error);
-                }
-            })
-        });
     }
 
     getRecapPanier(c) {
@@ -1224,6 +1187,38 @@ function loginRC(email, mdp) {
     });
 }
 
+getAspNetSessionId(email, mdp) {
+    var options = {
+        method: 'POST',
+        uri: FO_URL + "Connexion",
+        body: {
+            txtEmail: email,
+            txtMotDePasse: mdp,
+            largeur: "800",
+            hauteur: "300",
+            resteConnecte: true,
+        },
+        json: true,
+        headers: {
+            referer: 'http://google.fr'
+        }
+    };
+
+    return new Promise((resolve, reject) => {
+        request(options, (error, response) => {
+            if (!error && response.statusCode == 200) {
+                console.log("getAspNetSessionId retourne : " + response.headers['set-cookie']);
+
+                resolve(parseCookies(response.headers['set-cookie'].toString()));
+            }
+            else {
+                console.log("getAspNetSessionId ERREUR" + error);
+                reject(error);
+            }
+        })
+    });
+}
+
 /**
  * User login route is used to authorize account_link actions
  */
@@ -1281,6 +1276,13 @@ app.post('/login', function (req, res) {
                             console.log("on link le mco " + authCode + " avec l'email " + resultat.email);
                             UserStore.linkMcoAccount(resultat.email, authCode);
 
+                            getAspNetSessionId(resultat.email, resultat.mdp)
+                                .then((c) => {
+                                    UserStore.linkFoSession(resultat.email, c["ASP.NET_SessionId"]);
+                                })
+                                .catch(err => {
+                                    console.log("impossible de UserStore.linkFoSession");
+                                });
 
                             return res.json({
                                 EstEnErreur: false,
@@ -1443,107 +1445,97 @@ app.post('/ai', (req, res) => {
             console.log("ACTION RECONNUE : recherche_libre_courses")
             console.log("DEBUT appel FO");
 
-            const token_auth = user_profile.mcoId;
-            console.log("recherche_libre_courses token_auth = " + token_auth);
+            var cookieSession = 'ASP.NET_SessionId=' + user_profile.foSession + ';&IdPdv=' + user_profile.idPdv;
+            console.log("Voila la valeur qu'on passe : " + cookieSession);
 
-            facebookBot.getAspNetSessionId()
-                .then((c) => {
-                    var cookieSession = 'ASP.NET_SessionId=' + c["ASP.NET_SessionId"] + ';&IdPdv=' + user_profile.idPdv;
-                    console.log("Voila la valeur qu'on passe : " + cookieSession);
+            getProduit(body.result.parameters, user_profile.idPdv, cookieSession)
+                .then((r) => {
+                    console.log("Nous sommes à la recherche d'un produit");
 
-                    getProduit(body.result.parameters, user_profile.idPdv, cookieSession)
-                        .then((r) => {
-                            console.log("Nous sommes à la recherche d'un produit");
+                    console.log("Voici la liste de produits : " + JSON.stringify(r));
 
-                            console.log("Voici la liste de produits : " + JSON.stringify(r));
-
-                            let messagedata = {
-                                "attachment": {
-                                    "type": "template",
-                                    "payload": {
-                                        "template_type": "generic",
-                                        "elements": [
+                    let messagedata = {
+                        "attachment": {
+                            "type": "template",
+                            "payload": {
+                                "template_type": "generic",
+                                "elements": [
+                                    {
+                                        "title": r[0].Libelle,
+                                        "image_url": r[0].NomImage,
+                                        "subtitle": "Cliquez ci-dessous pour ajouter au panier",
+                                        "default_action": {
+                                            "type": "web_url",
+                                            "url": "http://google.fr",
+                                            "webview_height_ratio": "tall"
+                                        },
+                                        "buttons": [
                                             {
-                                                "title": r[0].Libelle,
-                                                "image_url": r[0].NomImage,
-                                                "subtitle": "Cliquez ci-dessous pour ajouter au panier",
-                                                "default_action": {
-                                                    "type": "web_url",
-                                                    "url": "http://google.fr",
-                                                    "webview_height_ratio": "tall"
-                                                },
-                                                "buttons": [
-                                                    {
-                                                        "title": "Cliquez ici",
-                                                        "type": "postback",
-                                                        "webview_height_ratio": "tall",
-                                                        "payload": "idP=" + r[0].IdProduit
-                                                    }
-                                                ]
-                                            },
+                                                "title": "Cliquez ici",
+                                                "type": "postback",
+                                                "webview_height_ratio": "tall",
+                                                "payload": "idP=" + r[0].IdProduit
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "title": r[1].Libelle,
+                                        "image_url": r[1].NomImage,
+                                        "subtitle": "Cliquez ci-dessous pour ajouter au panier",
+                                        "default_action": {
+                                            "type": "web_url",
+                                            "url": "http://google.fr",
+                                            "webview_height_ratio": "tall"
+                                        },
+                                        "buttons": [
                                             {
-                                                "title": r[1].Libelle,
-                                                "image_url": r[1].NomImage,
-                                                "subtitle": "Cliquez ci-dessous pour ajouter au panier",
-                                                "default_action": {
-                                                    "type": "web_url",
-                                                    "url": "http://google.fr",
-                                                    "webview_height_ratio": "tall"
-                                                },
-                                                "buttons": [
-                                                    {
-                                                        "title": "Cliquez ici",
-                                                        "type": "postback",
-                                                        "webview_height_ratio": "tall",
-                                                        "payload": "idP=" + r[1].IdProduit
-                                                    }
-                                                ]
-                                            },
+                                                "title": "Cliquez ici",
+                                                "type": "postback",
+                                                "webview_height_ratio": "tall",
+                                                "payload": "idP=" + r[1].IdProduit
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "title": r[2].Libelle,
+                                        "image_url": r[2].NomImage,
+                                        "subtitle": "Cliquez ci-dessous pour ajouter au panier",
+                                        "default_action": {
+                                            "type": "web_url",
+                                            "url": "http://google.fr",
+                                            "webview_height_ratio": "tall"
+                                        },
+                                        "buttons": [
                                             {
-                                                "title": r[2].Libelle,
-                                                "image_url": r[2].NomImage,
-                                                "subtitle": "Cliquez ci-dessous pour ajouter au panier",
-                                                "default_action": {
-                                                    "type": "web_url",
-                                                    "url": "http://google.fr",
-                                                    "webview_height_ratio": "tall"
-                                                },
-                                                "buttons": [
-                                                    {
-                                                        "title": "Cliquez ici",
-                                                        "type": "postback",
-                                                        "webview_height_ratio": "tall",
-                                                        "payload": "idP=" + r[2].IdProduit
-                                                    }
-                                                ]
+                                                "title": "Cliquez ici",
+                                                "type": "postback",
+                                                "webview_height_ratio": "tall",
+                                                "payload": "idP=" + r[2].IdProduit
                                             }
                                         ]
                                     }
-                                }
-                            };
+                                ]
+                            }
+                        }
+                    };
 
-                            return res.json({
-                                speech: "Voici les résultats de votre recherche:",
-                                data: { "facebook": messagedata },
-                                source: 'recherche_libre_courses'
-                            });
-                        })
-                        .catch(err => {
-
-                            console.log("on est dans le catch et oui !!!!! ");
-                            console.log("L'erreur c'est : " + err);
-
-                            return res.status(400).json({
-                                speech: "ERREUR : " + err,
-                                message: "ERREUR : " + err,
-                                source: 'recherche_libre_courses'
-                            });
-                        });
+                    return res.json({
+                        speech: "Voici les résultats de votre recherche:",
+                        data: { "facebook": messagedata },
+                        source: 'recherche_libre_courses'
+                    });
                 })
                 .catch(err => {
-                    console.log("Si ce message s'affiche c'est qu'on est nuls !");
-                });
 
+                    console.log("on est dans le catch et oui !!!!! ");
+                    console.log("L'erreur c'est : " + err);
+
+                    return res.status(400).json({
+                        speech: "ERREUR : " + err,
+                        message: "ERREUR : " + err,
+                        source: 'recherche_libre_courses'
+                    });
+                });
             
         }
         else {
