@@ -331,13 +331,15 @@ class FacebookBot {
                 this.addProductBasket(userProfile.mcoId, id);
                 this.getAspNetSessionId()
                     .then((c) => {
+                        console.log("Le getAspNetSessionId est : " + c);
                         this.getRecapPanier(c)
-                        .then((r) => {
-                            console.log("Le montant total du panier est de :" + r.Total);
-                        })
-                        .catch(err => {
-                            console.log("getRecapPanier err :" + err);
-                        });
+                            .then((r) => {
+                                console.log("Retour recap panier = " + JSON.stringify(r));
+                                console.log("Le montant total du panier est de :" + r.Total);
+                            })
+                            .catch(err => {
+                                console.log("getRecapPanier err :" + err);
+                            });
                     })
                     .catch(err => {
                         console.log("getAspNetSessionId err :" + err);
