@@ -574,6 +574,7 @@ class FacebookBot {
     }
 
     addProductBasket(mcoId, idProduit) {
+        console.log("Ceci est le MCOIIIIIIIIIIIIIDDDDDDDDD" + mcoId);
         return new Promise((resolve, reject) => {
             request({
                 url: MCO_URL + 'api/v1/client/panier',
@@ -605,7 +606,7 @@ class FacebookBot {
                     console.log('Error: ', response.body.error);
                     reject(new Error(response.body.error));
                 }
-                console.log("ceci est le body lorsqu'on essaye d'ajouter un truc au panier:" + response.body);
+                console.log("ceci est le body lorsqu'on essaye d'ajouter un truc au panier:" + JSON.stringify(response.body));
                 resolve(response.body);
             });
         });
