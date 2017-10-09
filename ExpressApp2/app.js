@@ -1502,7 +1502,7 @@ function getProduit(param, idPdv, cookie) {
         method: 'POST',
         uri: FO_URL +"RechercheJs",
         headers: {
-            cookie: cookie //"IdPdv=1;IdentifiantPdv=04149" //;ASP.NET_SessionId=1gxnbgqhog5p3kds3zjkc3ig TODO : "IdPdv=" + idPdv  //
+            cookie: "CultureName=fr-FR; path=/,MultiCultureName=fr-FR; path=/,popupSwitchLang=; expires=Sun, 08-Oct-2017 09:40:40 GMT; path=/,globalization-debug=; expires=Sun, 08-Oct-2017 09:40:40 GMT; path=/,ASP.NET_SessionId=43zdbsq3mycsby3zzxqorcuk; path=/; HttpOnly,NTF_ic=; expires=Sun, 08-Oct-2017 09:40:40 GMT; path=/,f5_cspm=1234;,TS011d579a=01d55fce390d13e86c8e84355aec10c93ec2122e48131e80f6696e14db40047738e38b26b615d1e520aaa48e62699cadb04f9b9212b60b8f0e790678fe9df81696e7cd174051e0da3285cb92cecaeb0f58813bd3269a5c4af62f46f38f1966418268a0a00c49ec2cc602249c42ae43697c8b892a53fc270be5d87dd0ace5cbfef57334a31e9831c04d97b502ba71e75296ce682c65; Path=/" //"IdPdv=1;IdentifiantPdv=04149" //;ASP.NET_SessionId=1gxnbgqhog5p3kds3zjkc3ig TODO : "IdPdv=" + idPdv  //
         },
         body : {
             mot: produit1
