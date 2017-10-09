@@ -325,6 +325,11 @@ class FacebookBot {
                 console.log("LE USER N'EXISTE PAS ON LUI ENVOIE UN BOUTON DE CO");
                 this.sendAccountLinking(sender);
             }
+            else if (existeUser && text.startsWith("idP=")) {
+                var id = parseInt(text.replace('idP=', ''));
+
+                this.addProductBasket(userProfile.mcoId, id);
+            }
             else {
                 // Handle a text message from this sender
                 if (!this.sessionIds.has(sender)) {
@@ -567,6 +572,45 @@ class FacebookBot {
             });
         })
     }
+
+    addProductBasket(mcoId, idProduit) {
+        return new Promise((resolve, reject) => {
+            request({
+                url: MCO_URL + 'api/v1/client/panier',
+                method: 'POST',
+                body: {
+
+                    SynchronisationForte: true,
+                    DateDerniereSynchronisation: "2014-03-18T15:19:30.0900000",
+                    Articles: [
+                        {
+                            IdPanierDetail: 0,
+                            AccepteSubstitution: true,
+                            Commentaire: "",
+                            DateDerniereMaj: "2017-10-09T15:00:20.000",
+                            IdProduit: idProduit,
+                            Quantite: 1
+                        }
+                    ]
+                },
+                headers: {
+                    'TokenAuthentification': mcoId
+                },
+                json: true
+            }, (error, response) => {
+                if (error) {
+                    console.log('Erreur lors de l\'ajout du panier : ', error);
+                    reject(error);
+                } else if (response.body.error) {
+                    console.log('Error: ', response.body.error);
+                    reject(new Error(response.body.error));
+                }
+
+                resolve(response.body);
+            });
+        });
+    }
+
     sendFBSenderAction(sender, action) {
         return new Promise((resolve, reject) => {
             request({
@@ -1075,6 +1119,8 @@ function loginMCommerce(email, mdp, idrc) {
         });
     });
 }
+
+
 function loginRC(email, mdp) {
     console.log("Email : " + email);
     console.log("Mdp : " + mdp);
@@ -1357,9 +1403,9 @@ app.post('/ai', (req, res) => {
                                                 "buttons": [
                                                     {
                                                         "title": "Cliquez ici",
-                                                        "type": "web_url",
-                                                        "url": "http://google.fr",
-                                                        "webview_height_ratio": "tall"
+                                                        "type": "postback",
+                                                        "webview_height_ratio": "tall",
+                                                        "payload": "idP=" + r[0].IdProduit
                                                     }
                                                 ]
                                             },
@@ -1375,9 +1421,27 @@ app.post('/ai', (req, res) => {
                                                 "buttons": [
                                                     {
                                                         "title": "Cliquez ici",
-                                                        "type": "web_url",
-                                                        "url": "http://google.fr",
-                                                        "webview_height_ratio": "tall"
+                                                        "type": "postback",
+                                                        "webview_height_ratio": "tall",
+                                                        "payload": "idP=" + r[1].IdProduit
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                "title": r[2].Libelle,
+                                                "image_url": r[2].NomImage,
+                                                "subtitle": "Cliquez ci-dessous pour ajouter au panier",
+                                                "default_action": {
+                                                    "type": "web_url",
+                                                    "url": "http://google.fr",
+                                                    "webview_height_ratio": "tall"
+                                                },
+                                                "buttons": [
+                                                    {
+                                                        "title": "Cliquez ici",
+                                                        "type": "postback",
+                                                        "webview_height_ratio": "tall",
+                                                        "payload": "idP=" + r[2].IdProduit
                                                     }
                                                 ]
                                             }
