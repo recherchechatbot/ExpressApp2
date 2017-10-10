@@ -1,6 +1,7 @@
 ﻿<html>
 	<head>
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+		<link rel="stylesheet" href="style.css" />
 	</head>
 	<script type="text/javascript">
 		$( document ).ready(function() {
@@ -36,7 +37,7 @@
 
 	<form action="/login" method="post" id="identification">
 		Email : <input type="text" name="email" id="email"><br>
-		Mdp : <input type="password" name="password" id="password"><br>
+		Mot ddepasse  : <input type="password" name="password" id="password"><br>
 		<input type="hidden" id="accountLinkingToken" name="accountLinkingToken" value="<%= accountLinkingToken %>">
 		<input type="hidden" id="redirectURI" name="redirectURI" value="<%= redirectURI %>">
 	   <button>Connexion</button>

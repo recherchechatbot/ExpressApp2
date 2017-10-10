@@ -1540,9 +1540,9 @@ app.post('/ai', (req, res) => {
         }
         else {
             return res.json({
-                speech: "Recettes",
+                speech: "Courses",
                 data: { "facebook": facebookBot.getButtonLogin() },
-                source: 'recherche_libre_recette'
+                source: 'recherche_libre_courses'
             });
         }
     }
