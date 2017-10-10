@@ -450,19 +450,20 @@ class FacebookBot {
                                     UserStore.linknamePdvFavori(authCode, namePdvFavori);
                                     console.log("SUCCEEEEEEEEEEEEEEEESssssss");
                                 }
+
+                                if (userInfos.IdPdv && nomFamille && prenom) {
+                                    console.log("IDPDV RECUPERE !!!!!!");
+                                    UserStore.linkPdv(authCode, userInfos.IdPdv);
+                                    UserStore.linkFbAccount(authCode, senderID);
+                                    UserStore.linkFirstName(authCode, prenom);
+                                    UserStore.linkLastName(authCode, nomFamille);
+                                }
+
+                                this.sendSignInSuccessMessage(senderID, prenom, nomFamille, sexe); //TODO name PDV Favori
                             })
                             .catch(err => {
                                 console.log("Impossible de recuperer le nom du PDV");
                             })
-
-                        if (userInfos.IdPdv && nomFamille && prenom) {
-                            console.log("IDPDV RECUPERE !!!!!!");
-                            UserStore.linkPdv(authCode, userInfos.IdPdv);
-                            UserStore.linkFbAccount(authCode, senderID);
-                            UserStore.linkFirstName(authCode, prenom);
-                            UserStore.linkLastName(authCode, nomFamille);
-                        }
-                        this.sendSignInSuccessMessage(senderID, prenom, nomFamille, sexe); //TODO name PDV Favori
                     })
     
                 

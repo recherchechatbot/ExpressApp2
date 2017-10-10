@@ -9,10 +9,10 @@ class UserStore extends Store {
             mcoId,
             fbId,
             idPdv,
+            foSession,
             prenom,
             nomFamille,
-            namePdvFavori,
-            foSession
+            namePdvFavori
         );
         this.set(email, user);
         return user;
