@@ -453,6 +453,7 @@ class FacebookBot {
                     .catch(err => {
                         console.log("La récup des infos client a échoué !");
                     });
+                console.log(idPdvFavori);
                 this.getNamePdv(idPdvFavori)
                     .then((n) => {
                         var fichePdv = JSONbig.parse(n);
