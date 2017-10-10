@@ -617,14 +617,6 @@ class FacebookBot {
         })
     }
 
-    sendSignInSuccessMessage(senderId, prenom, nomFamille, sexe) { //TODO add name pdv favori as parameter
-        console; log("On appelle bien la methode sign in message");
-        let messageData = "Bonjour " + sexe + " " + nomFamille + ". Vous êtes bien connecté sur le Drive Intermarché. Votre magasin par défaut est situé à ";
-        console.log("le message à envoyer est : " + messageData);
-        this.sendFBMessage(senderId, messageData);
-
-    }
-
     getNamePdv(idPdv) {
         return new Promise((resolve, reject) => {
             request({
