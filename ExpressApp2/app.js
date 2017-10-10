@@ -440,6 +440,22 @@ class FacebookBot {
                         else {
                             sexe = "Mme"
                         }
+                        console.log("IIIIIIIIIIIIIIIIIDDDDDDDDDDDDDDDDDDDPPPPPPPPPPPDDDDDDDVVVVVVVV: " + idPdvFavori);
+                        this.getNamePdv(idPdv)
+                            .then((n) => {
+                                var fichePdv = JSONbig.parse(n);
+                                if (fichePdv.Site) {
+                                    var namePdvFavori = fichePdv.Site;
+                                    console.log("aaaaaaaaaaaaaaa" + namePdvFavori);
+                                    UserStore.linknamePdvFavori(authCode, namePdvFavori);
+                                    console.log("SUCCEEEEEEEEEEEEEEEESssssss");
+                                }
+                            })
+                            .catch(err => {
+                                console.log("Impossible de recuperer le nom du PDV");
+                            })
+                    }
+    }
                         if (userInfos.IdPdv && nomFamille && prenom) {
                             console.log("IDPDV RECUPERE !!!!!!");
                             UserStore.linkPdv(authCode, userInfos.IdPdv);
@@ -463,27 +479,6 @@ class FacebookBot {
                 break;
             default:
                 break;
-        }
-    }
-    receivedAccountLink2(event) {
-        var status = event.account_linking.status;
-        switch (status) {
-            case 'linked':
-                var idPdv = user_profile.idPdv;
-                console.log("IIIIIIIIIIIIIIIIIDDDDDDDDDDDDDDDDDDDPPPPPPPPPPPDDDDDDDVVVVVVVV: " + idPdv);
-                this.getNamePdv(idPdv)
-                    .then((n) => {
-                        var fichePdv = JSONbig.parse(n);
-                        if (fichePdv.Site) {
-                            var namePdvFavori = fichePdv.Site;
-                            console.log("aaaaaaaaaaaaaaa" + namePdvFavori);
-                            UserStore.linknamePdvFavori(authCode, namePdvFavori);
-                            console.log("SUCCEEEEEEEEEEEEEEEESssssss");
-                        }
-                    })
-                    .catch(err => {
-                        console.log("Impossible de recuperer le nom du PDV");
-                    })
         }
     }
 
