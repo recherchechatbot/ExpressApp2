@@ -413,7 +413,7 @@ class FacebookBot {
         this.doTextResponse(senderID, messageData);
     }
 
-    sendSignOutSuccessMessage(senderID, prenom, nomFamille, sexe) {
+    sendSignOutSuccessMessage(prenom) {
         let messageData = {
             "text": "Au revoir " + prenom + ", ce fut un plaisir. Si vous le desirez vous pouvez donner une note sur 5 pour évaluer la qualité de notre conversation et aider nos ingenieurs à me rendre meilleur",
             "quick_replies": [
@@ -512,8 +512,16 @@ class FacebookBot {
                 console.log("Tout ce qu'on a sur l'utilisateur c'est ici :" + JSON.stringify(user_profile));
                 break;
             case 'unlinked':
+                this.getMcoUserInfo(authCode)
+                    .then((u) => {
+                        var userInfos = JSONbig.parse(u);
+                        var prenom = userInfos.AdresseDeFacturation.Prenom;
+                        this.sendSignOutSuccessMessage(prenom);
+                    })
+                    .catch(err => {
+                        console.log("Malheureusement ça a merdé au niveau du message d'au revoir");
+                    })
                 UserStore.unlinkWithFbId(senderID);
-                this.sendSignOutSuccessMessage(senderID, prenom, nomFamille, sexe);
                 break;
             default:
                 break;
