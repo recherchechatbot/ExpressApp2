@@ -447,7 +447,7 @@ class FacebookBot {
                                 if (fichePdv.Site) {
                                     var namePdvFavori = fichePdv.Site;
                                     console.log("aaaaaaaaaaaaaaa" + namePdvFavori);
-                                    UserStore.linknamePdvFavori(authCode, namePdvFavori);
+                                    UserStore.linkNamePdvFavori(authCode, namePdvFavori);
                                     console.log("SUCCEEEEEEEEEEEEEEEESssssss");
                                 }
 
