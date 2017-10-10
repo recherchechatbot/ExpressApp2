@@ -463,11 +463,8 @@ class FacebookBot {
                             UserStore.linkFirstName(authCode, prenom);
                             UserStore.linkLastName(authCode, nomFamille);
                         }
-                        console.log("MMMMMMMMMAAAAAAAAAAAAAGGGGGGGGGG: " + user_profile.namePdvFavori);
                         this.sendSignInSuccessMessage(senderID, prenom, nomFamille, sexe); //TODO name PDV Favori
                     })
-    
-                
                     .catch(err => {
                         console.log("La récup des infos client a échoué !");
                     });
@@ -1139,6 +1136,7 @@ app.post('/webhook/', (req, res) => {
                         {
                             console.log('ON RENNNNNNNTRE DANS ACCCOUUUUUNT LINKIIIIIIIIIIIIIIIIIIIING')
                             facebookBot.receivedAccountLink(event);
+                            console.log("WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW: " + user_profile.namePdvFavori);
                         }
                         else if (event.optin)
                         {
