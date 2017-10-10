@@ -409,6 +409,7 @@ class FacebookBot {
         this.sendFBMessage(recipientId, messageData);
     }
     sendSignInSuccessMessage(senderID, prenom, nomFamille, sexe) {
+        console.log("On est rentrés dans la methode signinmessage");
         let messageData = "Bonjour " + sexe + " " + nomFamille + ", vous êtes bien conencté sur votre espace client Drive Intermarché"; 
         this.sendFBMessage(senderID, messageData);
     }
