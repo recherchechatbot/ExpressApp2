@@ -87,7 +87,7 @@ class UserStore extends Store {
 
     linkFirstName(mcoId, prenom) {
         const currentUser = this.getByMcoId(mcoId);
-        console.log("Current user dans linkFirst Name:  " + currentUser);
+        console.log("Current user dans linkFirst Name:  " + currentUser)
         return this.update(currentUser.email, { prenom });
     }
 
@@ -100,7 +100,7 @@ class UserStore extends Store {
         return this.update(currentUser.email, { nomFamille });
     }
 
-    linkNamePdv(mcoId, namePdvFavori) {
+    linkNamePdvFavori(mcoId, namePdvFavori) {
         const currentUser = this.getByMcoId(mcoId);
         if (isEmpty(currentUser)) {
             return currentUser;
