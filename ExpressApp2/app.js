@@ -413,6 +413,45 @@ class FacebookBot {
         this.doTextResponse(senderID, messageData);
     }
 
+    sendSignOutSuccessMessage(senderID, prenom, nomFamille, sexe) {
+        let messageData = {
+            "text": "Au revoir " + prenom + ", ce fut un plaisir. Si vous le desirez vous pouvez donner une note sur 5 pour évaluer la qualité de notre conversation et aider nos ingenieurs à me rendre meilleur";
+            "quick_replies": [
+                {
+                    "content_type": "text",
+                    "title": "0",
+                    "payload": "0",
+                },
+                {
+                    "content_type": "text",
+                    "title": "1",
+                    "payload": "1",
+                },
+                {
+                    "content_type": "text",
+                    "title": "2",
+                    "payload": "2",
+                },
+                {
+                    "content_type": "text",
+                    "title": "3",
+                    "payload": "3",
+                },
+                {
+                    "content_type": "text",
+                    "title": "4",
+                    "payload": "4",
+                },
+                {
+                    "content_type": "text",
+                    "title": "5",
+                    "payload": "5",
+                }
+            ]
+        }
+        this.sendFBMessage(senderID, messageData);
+    }
+
     receivedAccountLink(event) {
         var senderID = event.sender.id;
         var recipientID = event.recipient.id;
