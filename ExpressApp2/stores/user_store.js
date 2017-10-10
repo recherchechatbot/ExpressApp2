@@ -9,7 +9,7 @@ class UserStore extends Store {
             mcoId,
             fbId,
             idPdv,
-            prenom,
+            //prenom,
             nomFamille,
             namePdvFavori,
             foSession
