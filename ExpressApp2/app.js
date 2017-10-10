@@ -453,12 +453,10 @@ class FacebookBot {
                             UserStore.linkPdv(authCode, userInfos.IdPdv)
                             UserStore.linkFbAccount(authCode, senderID);
                         }
-                        if (userInfos)
-                    })
                     .catch(err => {
                         console.log("La récup des infos client a échoué !");
                     });
-                this.sendSignInSuccessMessage(prenom, nomFamille, sexe, namePdvFavori );
+                this.sendSignInSuccessMessage(senderID, prenom, nomFamille, sexe, namePdvFavori);
                 break;
             case 'unlinked':
                 UserStore.unlinkWithFbId(senderID);
