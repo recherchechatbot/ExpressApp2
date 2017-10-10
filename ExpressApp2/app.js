@@ -1136,7 +1136,6 @@ app.post('/webhook/', (req, res) => {
                         {
                             console.log('ON RENNNNNNNTRE DANS ACCCOUUUUUNT LINKIIIIIIIIIIIIIIIIIIIING')
                             facebookBot.receivedAccountLink(event);
-                            console.log("WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW: " + user_profile.namePdvFavori);
                         }
                         else if (event.optin)
                         {
