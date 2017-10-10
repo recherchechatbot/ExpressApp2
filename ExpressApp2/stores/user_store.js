@@ -102,10 +102,6 @@ class UserStore extends Store {
 
     linkNamePdvFavori(mcoId, namePdvFavori) {
         const currentUser = this.getByMcoId(mcoId);
-        if (isEmpty(currentUser)) {
-            return currentUser;
-        }
-
         return this.update(currentUser.email, { namePdvFavori });
     }
 
