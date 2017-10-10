@@ -512,6 +512,7 @@ class FacebookBot {
                 console.log("Tout ce qu'on a sur l'utilisateur c'est ici :" + JSON.stringify(user_profile));
                 break;
             case 'unlinked':
+                console.log("Ceci est l'authcode: " + authCode);
                 this.getMcoUserInfo(authCode)
                     .then((u) => {
                         console.log("si on voit que ça woulah c'est chaud");
