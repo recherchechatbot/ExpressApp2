@@ -440,21 +440,8 @@ class FacebookBot {
                         else {
                             sexe = "Mme"
                         }
-                        this.getNamePdv(idPdvFavori)
-                            .then((n) => {
-                                var fichePdv = JSONbig.parse(n);
-                                if (fichePdv.Site) {
-                                    var namePdvFavori = fichePdv.Site;
-                                    console.log("aaaaaaaaaaaaaaa" + namePdvFavori + authCode);
-                                    UserStore.linknamePdvFavori(authCode, namePdvFavori);
-                                }
-                            })
-                            .catch(err => {
-                                console.log("Impossible de recuperer le nom du PDV");
-                            })
                         if (userInfos.IdPdv && nomFamille && prenom) {
                             console.log("IDPDV RECUPERE !!!!!!");
-                            console.log("NAMEPDV: " + namePdvFavori);
                             UserStore.linkPdv(authCode, userInfos.IdPdv);
                             UserStore.linkFbAccount(authCode, senderID);
                             UserStore.linkFirstName(authCode, prenom);
@@ -466,6 +453,19 @@ class FacebookBot {
                     .catch(err => {
                         console.log("La récup des infos client a échoué !");
                     });
+                this.getNamePdv(idPdvFavori)
+                    .then((n) => {
+                        var fichePdv = JSONbig.parse(n);
+                        if (fichePdv.Site) {
+                            var namePdvFavori = fichePdv.Site;
+                            console.log("aaaaaaaaaaaaaaa" + namePdvFavori + authCode);
+                            UserStore.linknamePdvFavori(authCode, namePdvFavori);
+                            console.log("SUCCEEEEEEEEEEEEEEEESssssss");
+                        }
+                    })
+                    .catch(err => {
+                        console.log("Impossible de recuperer le nom du PDV");
+                    })
                 const user_profile = UserStore.getByFbId(senderID);
                 console.log("Tout ce qu'on a sur l'utilisateur c'est ici :" + JSON.stringify(user_profile));
                 console.log("REGARDEEEEEEEE: " + user_profile.prenom + "      " + user_profile.nomFamille + "        " + user_profile.namePdvFavori + "          " + user_profile.IdPdv);
