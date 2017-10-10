@@ -466,6 +466,7 @@ class FacebookBot {
         }
     }
     receivedAccountLink2(event) {
+        var status = event.account_linking.status;
         switch (status) {
             case 'linked':
                 var idPdv = user_profile.idPdv;
