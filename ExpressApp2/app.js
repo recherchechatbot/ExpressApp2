@@ -463,7 +463,7 @@ class FacebookBot {
                             UserStore.linkFirstName(authCode, prenom);
                             UserStore.linkLastName(authCode, nomFamille);
                         }
-
+                        console.log("MMMMMMMMMAAAAAAAAAAAAAGGGGGGGGGG: " + user_profile.namePdvFavori);
                         this.sendSignInSuccessMessage(senderID, prenom, nomFamille, sexe); //TODO name PDV Favori
                     })
     
