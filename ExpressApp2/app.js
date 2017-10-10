@@ -426,18 +426,39 @@ class FacebookBot {
                 this.getMcoUserInfo(authCode)
                     .then((u) => {
                         var userInfos = JSONbig.parse(u);
-                        var stringUserInfos = JSON.stringify(u);
+                        var nomFamille = userInfos.AdresseDeFacturation.Nom;
+                        var prenom = userInfos.AdresseDeFacturation.Prenom;
+                        var idPdvFavori = userInfos.IdPdv;
+                        var sexe = "yolo";
+                        if (userInfos.AdresseDeFacturation.IdCivilite == 1) {
+                            sexe = "M.";
+                        }
+                        else {
+                            sexe= "Mme"
+                        }
+                        this.getNamePdv(idPdvFavori)
+                            .then((n) => {
+                                var fichePdv = JSONbig.parse(n);
+                                if (fichePdv.Site) {
+                                    var namePdvFavori = fichePdv.Site;
+                                }
+                            })
+                            .catch(err => {
+                                console.log("Impossible de recuperer le nom du PDV");
+                            })
+
                         console.log("infos utilisateur" + stringUserInfos);
                         if (userInfos.IdPdv) {
                             console.log("IDPDV RECUPERE !!!!!!");
                             UserStore.linkPdv(authCode, userInfos.IdPdv)
                             UserStore.linkFbAccount(authCode, senderID);
                         }
+                        if (userInfos)
                     })
                     .catch(err => {
                         console.log("La récup des infos client a échoué !");
                     });
-                    //sendSignInSuccessMessage(senderId, linkedUser.username);
+                this.sendSignInSuccessMessage(prenom, nomFamille, sexe, namePdvFavori );
                 break;
             case 'unlinked':
                 UserStore.unlinkWithFbId(senderID);
@@ -580,6 +601,29 @@ class FacebookBot {
                     reject(error);
                 } else {
                     console.log('Mco user info result : ', response.body);
+                    resolve(response.body);
+                }
+            });
+        })
+    }
+
+    sendSignInSuccessMessage(senderId, prenom, nomFamille, sexe, namePdvFavori) {
+        let messageData = "Bonjour " + sexe + " " + nomFamille + ". Vous êtes bien connecté sur le Drive Intermarché. Votre magasin par défaut est situé à " + namePdvFavori;
+        this.sendFBMessage(senderId, messageData);
+
+    }
+
+    getNamePdv(idPdv) {
+        return new Promise((resolve, reject) => {
+            request({
+                uri: MCO_URL + "api/v1/pdv/fiche/" + idPdv,
+                method: 'GET',
+            }, (error, response) => {
+                if (error) {
+                    console.log('Error while getting name PDV: ', error);
+                    reject(error);
+                } else {
+                    console.log('Fiche PDV ', response.body);
                     resolve(response.body);
                 }
             });
