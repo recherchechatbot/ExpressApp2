@@ -408,6 +408,10 @@ class FacebookBot {
         console.log("sendAccountUnlinking FIN");
         this.sendFBMessage(recipientId, messageData);
     }
+    sendSignInSuccessMessage(senderID, prenom, nomFamille, sexe) {
+        let messageData = "Bonjour " + sexe + " " + nomFamille + ", vous êtes bien conencté sur votre espace client Drive Intermarché"; 
+        this.sendFBMessage(senderID, messageData);
+    }
 
     receivedAccountLink(event) {
         var senderID = event.sender.id;
