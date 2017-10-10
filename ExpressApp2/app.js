@@ -1389,6 +1389,7 @@ app.post('/ai', (req, res) => {
     if (body.result.action === 'recherche_libre_recette') {
         const sender_id = body.originalRequest.data.sender.id;
         const user_profile = UserStore.getByFbId(sender_id);
+        console.log("OOOOOOOOOOOOOOOOOOAAAAAAAAAAAAAAAAAAAAA: " + user_profile.prenom + user_profile.nomFamille + user_profile.namePdvFavori);
 
         var existeUser = !isEmpty(user_profile);
 
