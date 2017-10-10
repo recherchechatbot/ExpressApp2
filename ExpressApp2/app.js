@@ -466,7 +466,7 @@ class FacebookBot {
                         console.log("La récup des infos client a échoué !");
                     });
                 const user_profile = UserStore.getByFbId(senderID);
-                console.log("REGARDEEEEEEEE: " + /*user_profile.prenom*/ + "      " + user_profile.nomFamille + "        " + user_profile.namePdvFavori)
+                console.log("REGARDEEEEEEEE: " + /*user_profile.prenom*/  "      " + user_profile.nomFamille + "        " + user_profile.namePdvFavori)
                 break;
             case 'unlinked':
                 UserStore.unlinkWithFbId(senderID);
