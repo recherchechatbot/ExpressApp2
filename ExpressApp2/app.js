@@ -460,9 +460,9 @@ class FacebookBot {
                         console.log(senderID);
                         console.log(prenom);
                         console.log(nomFamille);
-                        console.log(namePdvFavori);
+                        //console.log(namePdvFavori);
 
-                        //this.sendSignInSuccessMessage(senderID, prenom, nomFamille, sexe, namePdvFavori);
+                        this.sendSignInSuccessMessage(senderID, prenom, nomFamille, sexe); //TODO name PDV Favori
                         console.log("juste après l'appel de signinmessage");
                     })
                     .catch(err => {
@@ -616,9 +616,9 @@ class FacebookBot {
         })
     }
 
-    sendSignInSuccessMessage(senderId, prenom, nomFamille, sexe, namePdvFavori) {
+    sendSignInSuccessMessage(senderId, prenom, nomFamille, sexe) { //TODO add name pdv favori as parameter
         console; log("On appelle bien la methode sign in message");
-        let messageData = "Bonjour " + sexe + " " + nomFamille + ". Vous êtes bien connecté sur le Drive Intermarché. Votre magasin par défaut est situé à " + namePdvFavori;
+        let messageData = "Bonjour " + sexe + " " + nomFamille + ". Vous êtes bien connecté sur le Drive Intermarché. Votre magasin par défaut est situé à ";
         console.log("le message à envoyer est : " + messageData);
         this.sendFBMessage(senderId, messageData);
 
