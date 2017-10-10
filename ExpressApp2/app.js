@@ -454,12 +454,12 @@ class FacebookBot {
                             })
                         if (userInfos.IdPdv && nomFamille && prenom) {
                             console.log("IDPDV RECUPERE !!!!!!");
+                            console.log("NAMEPDV: " + namePdvFavori);
                             UserStore.linkPdv(authCode, userInfos.IdPdv);
                             UserStore.linkFbAccount(authCode, senderID);
                             UserStore.linkFirstName(authCode, prenom);
                             UserStore.linkLastName(authCode, nomFamille);
                         }
-                        console.log();
 
                         this.sendSignInSuccessMessage(senderID, prenom, nomFamille, sexe); //TODO name PDV Favori
                     })
@@ -627,7 +627,7 @@ class FacebookBot {
                     console.log('Error while getting name PDV: ', error);
                     reject(error);
                 } else {
-                    console.log('Fiche PDV ', response.body);
+                    //console.log('Fiche PDV ', response.body);
                     resolve(response.body);
                 }
             });
