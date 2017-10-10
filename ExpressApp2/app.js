@@ -453,7 +453,23 @@ class FacebookBot {
                     .catch(err => {
                         console.log("La récup des infos client a échoué !");
                     });
-                console.log("IIIIIIIIIIIIIIIIIIIIIIDDDDDDDDDDDDDDPPPPPPPPDDDDDDDDDDDVVVVVVVVVVVVVVV" + user_profile.IdPdv);
+                
+                const user_profile = UserStore.getByFbId(senderID);
+                console.log("Tout ce qu'on a sur l'utilisateur c'est ici :" + JSON.stringify(user_profile));
+                break;
+            case 'unlinked':
+                UserStore.unlinkWithFbId(senderID);
+                //sendApi.sendSignOutSuccessMessage(senderId);
+                break;
+            default:
+                break;
+        }
+    }
+    receivedAccountLink2(event) {
+        switch (status) {
+            case 'linked':
+                var idPdv = user_profile.idPdv;
+                console.log("IIIIIIIIIIIIIIIIIDDDDDDDDDDDDDDDDDDDPPPPPPPPPPPDDDDDDDVVVVVVVV: " + idPdv);
                 this.getNamePdv(idPdv)
                     .then((n) => {
                         var fichePdv = JSONbig.parse(n);
@@ -467,16 +483,6 @@ class FacebookBot {
                     .catch(err => {
                         console.log("Impossible de recuperer le nom du PDV");
                     })
-                const user_profile = UserStore.getByFbId(senderID);
-                console.log("Tout ce qu'on a sur l'utilisateur c'est ici :" + JSON.stringify(user_profile));
-                console.log("REGARDEEEEEEEE: " + user_profile.prenom + "      " + user_profile.nomFamille + "        " + user_profile.namePdvFavori + "          " + user_profile.IdPdv);
-                break;
-            case 'unlinked':
-                UserStore.unlinkWithFbId(senderID);
-                //sendApi.sendSignOutSuccessMessage(senderId);
-                break;
-            default:
-                break;
         }
     }
 
@@ -1135,6 +1141,7 @@ app.post('/webhook/', (req, res) => {
                         {
                             console.log('ON RENNNNNNNTRE DANS ACCCOUUUUUNT LINKIIIIIIIIIIIIIIIIIIIING')
                             facebookBot.receivedAccountLink(event);
+                            facebookBot.receivedAccountLink2(event);
                         }
                         else if (event.optin)
                         {
