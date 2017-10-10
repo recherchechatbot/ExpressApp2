@@ -445,23 +445,28 @@ class FacebookBot {
                                 var fichePdv = JSONbig.parse(n);
                                 if (fichePdv.Site) {
                                     var namePdvFavori = fichePdv.Site;
+                                    UserStore.linknamePdvFavori(authCode, namePdvFavori);
                                 }
                             })
                             .catch(err => {
                                 console.log("Impossible de recuperer le nom du PDV");
                             })
-                        if (userInfos.IdPdv) {
+                        if (userInfos.IdPdv && nomFamille && prenom) {
                             console.log("IDPDV RECUPERE !!!!!!");
-                            UserStore.linkPdv(authCode, userInfos.IdPdv)
+                            UserStore.linkFirstName(authCode, prenom);
+                            UserStore.linkLastName(authCode, nomFamille);
+                            UserStore.linkPdv(authCode, userInfos.IdPdv);
                             UserStore.linkFbAccount(authCode, senderID);
                         }
-                        console.log(namePdvFavori);
+                        console.log();
 
                         this.sendSignInSuccessMessage(senderID, prenom, nomFamille, sexe); //TODO name PDV Favori
                     })
                     .catch(err => {
                         console.log("La récup des infos client a échoué !");
                     });
+                const user_profile = UserStore.getByFbId(senderID);
+                console.log("REGARDEEEEEEEE: " + user_profile.prenom + "      " + user_profile.nomFamille + "        " + user_profile.namePdvFavori)
                 break;
             case 'unlinked':
                 UserStore.unlinkWithFbId(senderID);

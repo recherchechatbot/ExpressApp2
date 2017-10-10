@@ -9,6 +9,9 @@ class UserStore extends Store {
             mcoId,
             fbId,
             idPdv,
+            prenom,
+            nomFamille,
+            namePdvFavori,
             foSession
         );
         this.set(email, user);
@@ -80,6 +83,33 @@ class UserStore extends Store {
         }
 
         return this.update(currentUser.email, { idPdv });
+    }
+
+    linkFirstName(mcoId, prenom) {
+        const currentUser = this.getByMcoId(mcoId);
+        if (isEmpty(currentUser)) {
+            return currentUser;
+        }
+
+        return this.update(currentUser.email, { prenom });
+    }
+
+    linkLastName(mcoId, nomFamille) {
+        const currentUser = this.getByMcoId(mcoId);
+        if (isEmpty(currentUser)) {
+            return currentUser;
+        }
+
+        return this.update(currentUser.email, { nomFamille });
+    }
+
+    linkNamePdv(mcoId, namePdvFavori) {
+        const currentUser = this.getByMcoId(mcoId);
+        if (isEmpty(currentUser)) {
+            return currentUser;
+        }
+
+        return this.update(currentUser.email, { namePdvFavori });
     }
 
     unlinkWithFbId(fbId) {
