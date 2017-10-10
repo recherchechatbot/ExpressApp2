@@ -436,7 +436,7 @@ class FacebookBot {
                         else {
                             sexe = "Mme"
                         }
-                        console.log("Le sexe de l'utilisateur est : +" + sexe);
+                        console.log("Le sexe de l'utilisateur est : " + sexe);
                         console.log("nom de famille:" + nomFamille);
                         console.log("prenom: " + prenom);
                         this.getNamePdv(idPdvFavori)
@@ -457,7 +457,12 @@ class FacebookBot {
                             UserStore.linkFbAccount(authCode, senderID);
                         }
                         console.log("juste avant l'appel de signinmessage");
-                        this.sendSignInSuccessMessage(senderID, prenom, nomFamille, sexe, namePdvFavori);
+                        console.log(senderID);
+                        console.log(prenom);
+                        console.log(nomFamille);
+                        console.log(namePdvFavori);
+
+                        //this.sendSignInSuccessMessage(senderID, prenom, nomFamille, sexe, namePdvFavori);
                         console.log("juste après l'appel de signinmessage");
                     })
                     .catch(err => {
