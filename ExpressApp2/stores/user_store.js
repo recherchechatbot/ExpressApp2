@@ -3,13 +3,13 @@ const Store = require("./store");
 const User = require("../models/user");
 
 class UserStore extends Store {
-    insert(email, mcoId, fbId, idPdv, foSession) {
+    insert(email, mcoId, fbId, idPdv, foSession,prenom, nomFamille,namePdvFavori) {
         const user = new User(
             email,
             mcoId,
             fbId,
             idPdv,
-            //prenom,
+            prenom,
             nomFamille,
             namePdvFavori,
             foSession
