@@ -445,11 +445,9 @@ class FacebookBot {
                         console.log("prenom: " + prenom);
                         this.getNamePdv(idPdvFavori)
                             .then((n) => {
-                                console.log("On rentre dans la methode pour chopper  pdv favori");
                                 var fichePdv = JSONbig.parse(n);
                                 if (fichePdv.Site) {
                                     var namePdvFavori = fichePdv.Site;
-                                    console.log("nom pdv favoriiiiiiiii: " + namePdvFavori);
                                 }
                             })
                             .catch(err => {
@@ -460,15 +458,9 @@ class FacebookBot {
                             UserStore.linkPdv(authCode, userInfos.IdPdv)
                             UserStore.linkFbAccount(authCode, senderID);
                         }
-                        console.log("juste avant l'appel de signinmessage");
-                        console.log(senderID);
-                        console.log(prenom);
-                        console.log(nomFamille);
-                        console.log(sexe);
-                        //console.log(namePdvFavori);
+                        console.log(namePdvFavori);
 
                         this.sendSignInSuccessMessage(senderID, prenom, nomFamille, sexe); //TODO name PDV Favori
-                        console.log("juste après l'appel de signinmessage");
                     })
                     .catch(err => {
                         console.log("La récup des infos client a échoué !");
