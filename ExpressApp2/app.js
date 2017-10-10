@@ -453,10 +453,10 @@ class FacebookBot {
                             })
                         if (userInfos.IdPdv && nomFamille && prenom) {
                             console.log("IDPDV RECUPERE !!!!!!");
-                            UserStore.linkFirstName(authCode, prenom);
-                            UserStore.linkLastName(authCode, nomFamille);
                             UserStore.linkPdv(authCode, userInfos.IdPdv);
                             UserStore.linkFbAccount(authCode, senderID);
+                            UserStore.linkFirstName(authCode, prenom);
+                            UserStore.linkLastName(authCode, nomFamille);
                         }
                         console.log();
 
@@ -467,7 +467,7 @@ class FacebookBot {
                     });
                 const user_profile = UserStore.getByFbId(senderID);
                 console.log("Tout ce qu'on a sur l'utilisateur c'est ici :" + JSON.stringify(user_profile));
-                console.log("REGARDEEEEEEEE: " + user_profile.prenom + "      " + user_profile.nomFamille + "        " + user_profile.namePdvFavori);
+                console.log("REGARDEEEEEEEE: " + user_profile.prenom + "      " + user_profile.nomFamille + "        " + user_profile.namePdvFavori + "          " + user_profile.IdPdv);
                 break;
             case 'unlinked':
                 UserStore.unlinkWithFbId(senderID);

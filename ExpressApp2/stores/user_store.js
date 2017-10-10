@@ -86,10 +86,6 @@ class UserStore extends Store {
     }
 
     linkFirstName(mcoId, prenom) {
-        const currentUser = this.getByMcoId(mcoId);
-        if (isEmpty(currentUser)) {
-            return currentUser;
-        }
 
         return this.update(currentUser.email, { prenom });
     }
