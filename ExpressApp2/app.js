@@ -1274,6 +1274,7 @@ function getAspNetSessionId(email, mdp) {
 app.post('/login', function (req, res) {
 
     var resultat = JSONbig.parse(req.body);
+    console.log("resultat :" resultat);
 
 
     console.log("VALEUR DE BODY : " + JSON.stringify(req.body));
