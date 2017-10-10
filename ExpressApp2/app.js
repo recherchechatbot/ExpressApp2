@@ -460,6 +460,7 @@ class FacebookBot {
                         console.log(senderID);
                         console.log(prenom);
                         console.log(nomFamille);
+                        console.log(sexe);
                         //console.log(namePdvFavori);
 
                         this.sendSignInSuccessMessage(senderID, prenom, nomFamille, sexe); //TODO name PDV Favori
