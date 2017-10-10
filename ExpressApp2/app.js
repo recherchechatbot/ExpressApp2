@@ -514,8 +514,11 @@ class FacebookBot {
             case 'unlinked':
                 this.getMcoUserInfo(authCode)
                     .then((u) => {
+                        console.log("si on voit que ça woulah c'est chaud");
                         var userInfos = JSONbig.parse(u);
+                        console.log("si on voit que ça c'est le prenom qui merde");
                         var prenom = userInfos.AdresseDeFacturation.Prenom;
+                        console.log("si on voit ça c'est le sendsignout qui merde");
                         this.sendSignOutSuccessMessage(prenom);
                     })
                     .catch(err => {
