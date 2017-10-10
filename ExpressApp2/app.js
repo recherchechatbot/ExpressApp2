@@ -627,12 +627,13 @@ class FacebookBot {
                     console.log('Error while getting name PDV: ', error);
                     reject(error);
                 } else {
-                    //console.log('Fiche PDV ', response.body);
+                    console.log('Fiche PDV ', response.body);
                     resolve(response.body);
                 }
             });
         })
     }
+
 
     getRecapPanier(c) {
         var options = {
