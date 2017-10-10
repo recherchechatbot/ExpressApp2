@@ -434,7 +434,7 @@ class FacebookBot {
                             sexe = "M.";
                         }
                         else {
-                            sexe= "Mme"
+                            sexe = "Mme"
                         }
                         this.getNamePdv(idPdvFavori)
                             .then((n) => {
@@ -453,6 +453,7 @@ class FacebookBot {
                             UserStore.linkPdv(authCode, userInfos.IdPdv)
                             UserStore.linkFbAccount(authCode, senderID);
                         }
+                    })
                     .catch(err => {
                         console.log("La récup des infos client a échoué !");
                     });
