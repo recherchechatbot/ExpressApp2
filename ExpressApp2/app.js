@@ -426,7 +426,8 @@ class FacebookBot {
                 this.getMcoUserInfo(authCode)
                     .then((u) => {
                         var userInfos = JSONbig.parse(u);
-
+                        var stringUserInfos = JSON.stringify(u);
+                        console.log("infos utilisateur" + stringUserInfos);
                         if (userInfos.IdPdv) {
                             console.log("IDPDV RECUPERE !!!!!!");
                             UserStore.linkPdv(authCode, userInfos.IdPdv)
@@ -436,7 +437,7 @@ class FacebookBot {
                     .catch(err => {
                         console.log("La récup des infos client a échoué !");
                     });
-                //sendApi.sendSignInSuccessMessage(senderId, linkedUser.username);
+                    //sendSignInSuccessMessage(senderId, linkedUser.username);
                 break;
             case 'unlinked':
                 UserStore.unlinkWithFbId(senderID);
