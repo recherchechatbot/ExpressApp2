@@ -436,11 +436,16 @@ class FacebookBot {
                         else {
                             sexe = "Mme"
                         }
+                        console.log("Le sexe de l'utilisateur est : +" + sexe);
+                        console.log("nom de famille:" + nomFamille);
+                        console.log("prenom: " + prenom);
                         this.getNamePdv(idPdvFavori)
                             .then((n) => {
+                                console.log("On rentre dans la methode pour chopper  pdv favori");
                                 var fichePdv = JSONbig.parse(n);
                                 if (fichePdv.Site) {
                                     var namePdvFavori = fichePdv.Site;
+                                    console.log("nom pdv favoriiiiiiiii: " + namePdvFavori);
                                 }
                             })
                             .catch(err => {
@@ -597,7 +602,7 @@ class FacebookBot {
                     console.log('Error while getting Mco user info: ', error);
                     reject(error);
                 } else {
-                    console.log('Mco user info result : ', response.body);
+                    //console.log('Mco user info result : ', response.body);
                     resolve(response.body);
                 }
             });
@@ -605,7 +610,9 @@ class FacebookBot {
     }
 
     sendSignInSuccessMessage(senderId, prenom, nomFamille, sexe, namePdvFavori) {
+        console; log("On appelle bien la methode sign in message");
         let messageData = "Bonjour " + sexe + " " + nomFamille + ". Vous êtes bien connecté sur le Drive Intermarché. Votre magasin par défaut est situé à " + namePdvFavori;
+        console.log("le message à envoyer est : " + messageData);
         this.sendFBMessage(senderId, messageData);
 
     }
@@ -620,7 +627,7 @@ class FacebookBot {
                     console.log('Error while getting name PDV: ', error);
                     reject(error);
                 } else {
-                    console.log('Fiche PDV ', response.body);
+                    //console.log('Fiche PDV ', response.body);
                     resolve(response.body);
                 }
             });
