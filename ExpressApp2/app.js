@@ -456,11 +456,13 @@ class FacebookBot {
                             UserStore.linkPdv(authCode, userInfos.IdPdv)
                             UserStore.linkFbAccount(authCode, senderID);
                         }
+                        console.log("juste avant l'appel de signinmessage");
+                        this.sendSignInSuccessMessage(senderID, prenom, nomFamille, sexe, namePdvFavori);
+                        console.log("juste après l'appel de signinmessage");
                     })
                     .catch(err => {
                         console.log("La récup des infos client a échoué !");
                     });
-                this.sendSignInSuccessMessage(senderID, prenom, nomFamille, sexe, namePdvFavori);
                 break;
             case 'unlinked':
                 UserStore.unlinkWithFbId(senderID);
