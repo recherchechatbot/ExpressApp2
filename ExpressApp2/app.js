@@ -446,8 +446,6 @@ class FacebookBot {
                             .catch(err => {
                                 console.log("Impossible de recuperer le nom du PDV");
                             })
-
-                        console.log("infos utilisateur" + stringUserInfos);
                         if (userInfos.IdPdv) {
                             console.log("IDPDV RECUPERE !!!!!!");
                             UserStore.linkPdv(authCode, userInfos.IdPdv)
