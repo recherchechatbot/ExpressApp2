@@ -440,9 +440,6 @@ class FacebookBot {
                         else {
                             sexe = "Mme"
                         }
-                        console.log("Le sexe de l'utilisateur est : " + sexe);
-                        console.log("nom de famille:" + nomFamille);
-                        console.log("prenom: " + prenom);
                         this.getNamePdv(idPdvFavori)
                             .then((n) => {
                                 var fichePdv = JSONbig.parse(n);

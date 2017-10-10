@@ -39,7 +39,8 @@
                     .popup{
                         position:relative;
                         margin:auto;
-                        width:910px;
+                        width:100%;
+                        text-align:center;
                     }
                     .popup .popup_content > .inline{
                         display:inline-block;
@@ -97,7 +98,18 @@
                     .form-elt{
                         margin-top:20px;
                     }
-                    
+                    @media screen and(min-width: 950px){
+                        .popup{
+                            width:950px;
+                            margin:auto;
+                        } 
+                    }
+                    @media screen and(max-width: 950px){
+                        .popup{
+                            width:450px;
+                            margin:auto;
+                        } 
+                    }
                 </style>
 	</head>
         
@@ -115,15 +127,15 @@
             </div>
         </div>
         <div class="inline grey relative">
-            <form name="connexion" action="/login" method="post" id="identification">
+            <form name="connexion">
                 <img src="http://foimg1-delta.integration.eco/Content/images/logos/logo2_fr-FR.png" alt="votre drive intermarché">
                 <p class="connexion_titre">On se connait ?</p>
                 <p>Connectez-vous pour accéder à votre sélection de produits préférés et retrouvez tous vos avantages:</p>
                 <p class="form-elt"><label class="inline" for="email">Email  </label><input class="inline" type="text" name="email" id="email"></p>
                 <p class="form-elt"><label class="inline" for="password">Mot de passe</label><input class="inline" type="password" name="password" id="password"></p>
-				<input type="hidden" id="accountLinkingToken" name="accountLinkingToken" value="<%= accountLinkingToken %>">
-				<input type="hidden" id="redirectURI" name="redirectURI" value="<%= redirectURI %>">
-				<button class="red">Connexion</button>
+		<input type="hidden" id="accountLinkingToken" name="accountLinkingToken" value="<%= accountLinkingToken %>">
+		<input type="hidden" id="redirectURI" name="redirectURI" value="<%= redirectURI %>">
+	   <button class="red">Connexion</button>
             </form>
         </div>
     </div>
