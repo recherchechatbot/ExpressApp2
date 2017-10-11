@@ -419,13 +419,12 @@ class FacebookBot {
             "quick_replies": [
                 {
                     "content_type": "text",
-                    "image_url":"https://img15.hostingpics.net/pics/646988imageedit15309571191.png",
-                    "title": "",
+                    "title": "⭐",
                     "payload": "Autres recettes"
                 },
                 {
                     "content_type": "text",
-                    "title": "Menu Principal",
+                    "title": "⭐⭐",
                     "payload": "Menu Principal"
                 }]
         }
