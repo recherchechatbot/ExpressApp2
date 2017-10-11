@@ -512,19 +512,10 @@ class FacebookBot {
                 console.log("Tout ce qu'on a sur l'utilisateur c'est ici :" + JSON.stringify(user_profile));
                 break;
             case 'unlinked':
-                console.log("Ceci est l'authcode: " + authCode);
-                this.getMcoUserInfo(authCode)
-                    .then((u) => {
-                        console.log("si on voit que ça woulah c'est chaud");
-                        var userInfos = JSONbig.parse(u);
-                        console.log("si on voit que ça c'est le prenom qui merde");
-                        var prenom = userInfos.AdresseDeFacturation.Prenom;
-                        console.log("si on voit ça c'est le sendsignout qui merde");
-                        this.sendSignOutSuccessMessage(prenom);
-                    })
-                    .catch(err => {
-                        console.log("Malheureusement ça a merdé au niveau du message d'au revoir");
-                    })
+                var user_profile = UserStore.getByFbId(senderID);
+                var prenom = user_profile.prenom;
+                console.log("le prenom c'est: " + prenom);
+                this.sendSignOutSuccessMessage(prenom);
                 UserStore.unlinkWithFbId(senderID);
                 break;
             default:
