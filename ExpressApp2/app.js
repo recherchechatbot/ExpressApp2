@@ -1672,7 +1672,7 @@ app.post('/ai', (req, res) => {
                     }
                 }
             };
-            facebookBot.doTextResponse(sender_id, messagedata);
+            facebookBot.doTextResponse(sender_id, text);
             facebookBot.sendFBMessage(sender_id, messagedata);
             //return res.json({
             //    speech: "Voici les résultats de votre recherche:",
