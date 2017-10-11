@@ -420,13 +420,29 @@ class FacebookBot {
                 {
                     "content_type": "text",
                     "title": "⭐",
-                    "payload": "Autres recettes"
+                    "payload": "⭐"
                 },
                 {
                     "content_type": "text",
                     "title": "⭐⭐",
-                    "payload": "Menu Principal"
-                }]
+                    "payload": "⭐⭐"
+                },
+                {
+                    "content_type": "text",
+                    "title": "⭐⭐⭐",
+                    "payload": "⭐⭐⭐"
+                },
+                {
+                    "content_type": "text",
+                    "title": "⭐⭐⭐⭐",
+                    "payload": "⭐⭐⭐⭐"
+                },
+                {
+                    "content_type": "text",
+                    "title": "⭐⭐⭐⭐⭐",
+                    "payload": "⭐⭐⭐⭐⭐"
+                }
+            ]
         }
         console.log('ceci est le messagedata: ' + messageData);
         this.sendFBMessage(senderID, messageData);
