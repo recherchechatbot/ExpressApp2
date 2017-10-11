@@ -409,7 +409,47 @@ class FacebookBot {
         this.sendFBMessage(recipientId, messageData);
     }
     sendSignInSuccessMessage(senderID, prenom, nomFamille, sexe, namePdvFavori) {
-        let messageData = "Bonjour " + sexe + " " + nomFamille + ", vous êtes bien connecté sur votre espace client Drive Intermarché. Votre point de vente favori est situé à " + namePdvFavori + ".";
+        const prenomNormalisé = upperCaseFirstLetter(prenom.toLowerCase());
+        let x = Math.random();
+        if (x>= 0.5) {
+            let text = "Bonjour " + sexe + " " + nomFamille + ", vous êtes bien connecté sur votre espace client Drive Intermarché.";
+            }
+        else {
+            let text = "Bonjour " + prenomNormalisé + ", vous êtes bien connecté sur votre espace client Drive Intermarché.";
+        }
+        let text2 = "Votre point de vente favori est situé à " + namePdvFavori;
+        let text3 = "Vous pouvez choisir une catégorie dans le menu ci- dessous ou directement me poser votre question.Vous pouvez également revenir à ce menu à tout moment, tout simplement en tapant la commande \"menu\".";
+
+        let messagedata = {
+            "attachment": {
+                "type": "template",
+                "payload": {
+                    "template_type": "generic",
+                    "elements": [
+                        {
+                            "title": "Menu Principal",
+                            "image_url": "https://img11.hostingpics.net/pics/345337MenuPrincipal.png",
+                            "buttons": [
+                                {
+                                    "title": "Recettes",
+                                    "type": "postback",
+                                    "webview_height_ratio": "tall",
+                                    "payload": "Recettes"
+                                },
+                                {
+                                    "title": "Faire ses courses",
+                                    "type": "postback",
+                                    "webview_height_ratio": "tall",
+                                    "payload": "Recettes"
+                                }
+                            ]
+                        }
+                    ]
+                }
+            }
+        };
+        facebookBot.doTextResponse(sender_id, text);
+        facebookBot.sendFBMessage(sender_id, messagedata);
         this.doTextResponse(senderID, messageData);
     }
 
@@ -1635,53 +1675,54 @@ app.post('/ai', (req, res) => {
         }
     }
 
-    else if (body.result.action === 'welcome_default') {
-        const sender_id = body.originalRequest.data.sender.id;
-        const user_profile = UserStore.getByFbId(sender_id);
-        const prenom = user_profile.prenom;
-        const prenomNormalisé = upperCaseFirstLetter(prenom.toLowerCase());
-        var existeUser = true;
+    //else if (body.result.action === 'welcome_default') {
+    //    const sender_id = body.originalRequest.data.sender.id;
+    //    const user_profile = UserStore.getByFbId(sender_id);
+    //    const prenom = user_profile.prenom;
+    //    console.log("Prenom normal : " + prenom);
+    //    const prenomNormalisé = upperCaseFirstLetter(prenom.toLowerCase());
+    //    var existeUser = true;
 
-        if (existeUser) {
-            console.log("ACTION RECONNUE : welcome_default");
-            let text = "Bonjour " + prenomNormalisé + ", comment puis-je vous aider? Vous pouvez choisir une catégorie dans le menu ci-dessous ou directement me poser votre question. Vous pouvez également revenir à ce menu à tout moment, tout simplement en tapant la commande \"menu\".";
-            let messagedata = {
-                "attachment": {
-                    "type": "template",
-                    "payload": {
-                        "template_type": "generic",
-                        "elements": [
-                            {
-                                "title": "Menu Principal",
-                                "image_url": "https://img11.hostingpics.net/pics/345337MenuPrincipal.png",
-                                "buttons": [
-                                    {
-                                        "title": "Recettes",
-                                        "type": "postback",
-                                        "webview_height_ratio": "tall",
-                                        "payload": "Recettes"
-                                    },
-                                    {
-                                        "title": "Faire ses courses",
-                                        "type": "postback",
-                                        "webview_height_ratio": "tall",
-                                        "payload": "Recettes"
-                                    }
-                                ]
-                            }
-                        ]
-                    }
-                }
-            };
-            facebookBot.doTextResponse(sender_id, text);
-            facebookBot.sendFBMessage(sender_id, messagedata);
-            //return res.json({
-            //    speech: "Voici les résultats de votre recherche:",
-            //    data: { "facebook": messagedata },
-            //    source: 'recherche_libre_courses'
-            //});
-        }
-    }
+    //    if (existeUser) {
+    //        console.log("ACTION RECONNUE : welcome_default");
+    //        let text = "Bonjour " + prenomNormalisé + ", comment puis-je vous aider? Vous pouvez choisir une catégorie dans le menu ci-dessous ou directement me poser votre question. Vous pouvez également revenir à ce menu à tout moment, tout simplement en tapant la commande \"menu\".";
+    //        let messagedata = {
+    //            "attachment": {
+    //                "type": "template",
+    //                "payload": {
+    //                    "template_type": "generic",
+    //                    "elements": [
+    //                        {
+    //                            "title": "Menu Principal",
+    //                            "image_url": "https://img11.hostingpics.net/pics/345337MenuPrincipal.png",
+    //                            "buttons": [
+    //                                {
+    //                                    "title": "Recettes",
+    //                                    "type": "postback",
+    //                                    "webview_height_ratio": "tall",
+    //                                    "payload": "Recettes"
+    //                                },
+    //                                {
+    //                                    "title": "Faire ses courses",
+    //                                    "type": "postback",
+    //                                    "webview_height_ratio": "tall",
+    //                                    "payload": "Recettes"
+    //                                }
+    //                            ]
+    //                        }
+    //                    ]
+    //                }
+    //            }
+    //        };
+    //        facebookBot.doTextResponse(sender_id, text);
+    //        facebookBot.sendFBMessage(sender_id, messagedata);
+    //        //return res.json({
+    //        //    speech: "Voici les résultats de votre recherche:",
+    //        //    data: { "facebook": messagedata },
+    //        //    source: 'recherche_libre_courses'
+    //        //});
+    //    }
+    //}
     else if (body.result.action === 'Localisation.Recue') {
         console.log("body.result = " + JSON.stringify(body.result));
 
