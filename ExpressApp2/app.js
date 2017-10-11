@@ -408,8 +408,8 @@ class FacebookBot {
         console.log("sendAccountUnlinking FIN");
         this.sendFBMessage(recipientId, messageData);
     }
-    sendSignInSuccessMessage(senderID, prenom, nomFamille, sexe) {
-        let messageData = "Bonjour " + sexe + " " + nomFamille + ", vous êtes bien connecté sur votre espace client Drive Intermarché";
+    sendSignInSuccessMessage(senderID, prenom, nomFamille, sexe, namePdvFavori) {
+        let messageData = "Bonjour " + sexe + " " + nomFamille + ", vous êtes bien connecté sur votre espace client Drive Intermarché. Votre point de vente favori est situé à " + namePdvFavori + ".";
         this.doTextResponse(senderID, messageData);
     }
 
@@ -464,7 +464,7 @@ class FacebookBot {
                                     UserStore.linkFirstName(authCode, prenom);
                                     UserStore.linkLastName(authCode, nomFamille);
                                 }
-                                this.sendSignInSuccessMessage(senderID, prenom, nomFamille, sexe); //TODO name PDV Favori
+                                this.sendSignInSuccessMessage(senderID, prenom, nomFamille, sexe, namePdvFavori); //TODO name PDV Favori
                             })
                             .catch(err => {
                                 console.log("Impossible de recuperer le nom du PDV");
