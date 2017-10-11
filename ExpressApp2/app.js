@@ -1718,7 +1718,7 @@ app.post('/ai', (req, res) => {
                             }
                         }
                     };
-                    facebookBot.sendFBMessage(sender_id, messageData);
+                    facebookBot.sendFBMessage(sender_id, messagedata);
                     //return res.json({
                     //    speech: "Voici les résultats de votre recherche:",
                     //    data: { "facebook": messagedata },
