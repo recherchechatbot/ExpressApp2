@@ -449,12 +449,12 @@ class FacebookBot {
                 }
             }
         };
-        this.sendFBSenderAction(senderID, "typing_on")
+        this.sendFBSenderAction(senderID, "typing_on");
         this.doTextResponse(senderID, text);
         this.doTextResponse(senderID, text2);
         this.doTextResponse(senderID, text3);
         this.sendFBMessage(senderID, messagedata);
-        this.sendFBSenderAction(senderID, "typing_off")
+        this.sendFBSenderAction(senderID, "typing_off");
         
     }
 
