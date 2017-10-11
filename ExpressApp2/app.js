@@ -410,6 +410,7 @@ class FacebookBot {
     }
     sendSignInSuccessMessage(senderID, prenom, nomFamille, sexe, namePdvFavori) {
         const prenomNormalise = upperCaseFirstLetter(prenom.toLowerCase());
+        const nomNormalise = upperCaseFirstLetter(nomFamille.toLowerCase());
         let x = Math.random();
         let text = "";
         if (x>= 0.5) {
@@ -1486,6 +1487,7 @@ app.post('/ai', (req, res) => {
             getRecette(body.result.parameters, token_auth)
                 .then((r) => {
                     var listeRecette = JSONbig.parse(r);
+                    let text = "Voici les resultats de votre recherche";
                     let messagedata = {
                         "attachment": {
                             "type": "template",
@@ -1562,7 +1564,7 @@ app.post('/ai', (req, res) => {
                             }
                         ]
                     };
-
+                    facebookBot.doTextResponse(text);//Possibilité de foirage ici BUG POssible
                     return res.json({
                         speech: "Recettes",
                         data: { "facebook": messagedata },
@@ -1585,6 +1587,21 @@ app.post('/ai', (req, res) => {
             });
         }
     }
+    else if (body.result.action === 'welcome_default') {
+        const sender_id = body.originalRequest.data.sender.id;
+        if (existeUser) {
+            console.log('existe user dans welcome intent');
+            const text = 'Bonjour'; //TODO faire un text un peu mieux ici
+            facebookBot.doTextResponse(sender_id, text);
+        }
+        else {
+            return res.json({
+                speech: "Welcome",
+                data: { "facebook": facebookBot.getButtonLogin() },
+                source: 'welcome_default'
+            });
+        }
+    }
     else if (body.result.action === 'recherche_libre_courses' || body.result.action === 'input_recherche_produit')
     {
         const sender_id = body.originalRequest.data.sender.id;
@@ -1604,6 +1621,8 @@ app.post('/ai', (req, res) => {
                     console.log("Nous sommes à la recherche d'un produit");
 
                     console.log("Voici la liste de produits : " + JSON.stringify(r));
+
+                    let text = "Resultats de votre recherche sur le point de vente de" + user_profile.linkNamePdvFavori;
 
                     let messagedata = {
                         "attachment": {
@@ -1700,6 +1719,8 @@ app.post('/ai', (req, res) => {
                             }
                         ]
                     };
+
+                    facebookBot.doTextResponse(text);
 
                     return res.json({
                         speech: "Voici les résultats de votre recherche:",
