@@ -1650,9 +1650,8 @@ app.post('/ai', (req, res) => {
                         "template_type": "generic",
                         "elements": [
                             {
-                                "title": r[0].Libelle,
-                                "image_url": r[0].NomImage,
-                                "subtitle": "Cliquez ci-dessous pour ajouter au panier",
+                                "title": "Menu Principal",
+                                "image_url": "https://img11.hostingpics.net/pics/345337MenuPrincipal.png",
                                 "default_action": {
                                     "type": "web_url",
                                     "url": "http://google.fr",
@@ -1660,46 +1659,16 @@ app.post('/ai', (req, res) => {
                                 },
                                 "buttons": [
                                     {
-                                        "title": "Cliquez ici",
+                                        "title": "Recettes",
                                         "type": "postback",
                                         "webview_height_ratio": "tall",
-                                        "payload": "idP=" + r[0].IdProduit
-                                    }
-                                ]
-                            },
-                            {
-                                "title": r[1].Libelle,
-                                "image_url": r[1].NomImage,
-                                "subtitle": "Cliquez ci-dessous pour ajouter au panier",
-                                "default_action": {
-                                    "type": "web_url",
-                                    "url": "http://google.fr",
-                                    "webview_height_ratio": "tall"
-                                },
-                                "buttons": [
+                                        "payload": "Recettes"
+                                    },
                                     {
-                                        "title": "Cliquez ici",
+                                        "title": "Faire ses courses",
                                         "type": "postback",
                                         "webview_height_ratio": "tall",
-                                        "payload": "idP=" + r[1].IdProduit
-                                    }
-                                ]
-                            },
-                            {
-                                "title": r[2].Libelle,
-                                "image_url": r[2].NomImage,
-                                "subtitle": "Cliquez ci-dessous pour ajouter au panier",
-                                "default_action": {
-                                    "type": "web_url",
-                                    "url": "http://google.fr",
-                                    "webview_height_ratio": "tall"
-                                },
-                                "buttons": [
-                                    {
-                                        "title": "Cliquez ici",
-                                        "type": "postback",
-                                        "webview_height_ratio": "tall",
-                                        "payload": "idP=" + r[2].IdProduit
+                                        "payload": "Recettes"
                                     }
                                 ]
                             }
