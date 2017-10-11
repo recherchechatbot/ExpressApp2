@@ -1643,11 +1643,11 @@ app.post('/ai', (req, res) => {
 
         if (existeUser) {
             console.log("ACTION RECONNUE : welcome_default");
+            let text = "Bonjour comment puis-je vous aider? Vous pouvez choisir une catégorie dans le menu ci-dessous ou directement me poser votre question. Vous pouvez également revenir à ce menu à tout moment, tout simplement en tapant la commande \"menu\".";
             let messagedata = {
                 "attachment": {
                     "type": "template",
                     "payload": {
-                        "text": "Bonjour comment puis-je vous aider? Vous pouvez choisir une catégorie dans le menu ci-dessous ou directement me poser votre question. Vous pouvez également revenir à ce menu à tout moment, tout simplement en tapant la commande \"menu\".",
                         "template_type": "generic",
                         "elements": [
                             {
@@ -1672,6 +1672,7 @@ app.post('/ai', (req, res) => {
                     }
                 }
             };
+            facebookBot.doTextResponse(sender_id, messagedata);
             facebookBot.sendFBMessage(sender_id, messagedata);
             //return res.json({
             //    speech: "Voici les résultats de votre recherche:",
