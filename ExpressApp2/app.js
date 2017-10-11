@@ -441,7 +441,7 @@ class FacebookBot {
                                     "title": "Faire ses courses",
                                     "type": "postback",
                                     "webview_height_ratio": "tall",
-                                    "payload": "Recettes"
+                                    "payload": "Faire ses courses"
                                 }
                             ]
                         }
@@ -1567,7 +1567,7 @@ app.post('/ai', (req, res) => {
             });
         }
     }
-    else if (body.result.action === 'recherche_libre_courses')
+    else if (body.result.action === 'recherche_libre_courses' || body.result.action === 'input_recherche_produit')
     {
         const sender_id = body.originalRequest.data.sender.id;
         const user_profile = UserStore.getByFbId(sender_id);
@@ -1604,7 +1604,7 @@ app.post('/ai', (req, res) => {
                                         },
                                         "buttons": [
                                             {
-                                                "title": "Cliquez ici",
+                                                "title": "Ajouter au panier",
                                                 "type": "postback",
                                                 "webview_height_ratio": "tall",
                                                 "payload": "idP=" + r[0].IdProduit
@@ -1622,7 +1622,7 @@ app.post('/ai', (req, res) => {
                                         },
                                         "buttons": [
                                             {
-                                                "title": "Cliquez ici",
+                                                "title": "Ajouter au panier",
                                                 "type": "postback",
                                                 "webview_height_ratio": "tall",
                                                 "payload": "idP=" + r[1].IdProduit
@@ -1640,16 +1640,47 @@ app.post('/ai', (req, res) => {
                                         },
                                         "buttons": [
                                             {
-                                                "title": "Cliquez ici",
+                                                "title": "Ajouter au panier",
                                                 "type": "postback",
                                                 "webview_height_ratio": "tall",
                                                 "payload": "idP=" + r[2].IdProduit
                                             }
                                         ]
+                                    },
+                                    {
+                                        "title": "Plus de résultats sur notre site",
+                                        "image_url": "http://www.lessenciel-dinard.com/images/stores/intermarche-le-drive-logo-intermarche-le-drivejpg.jpg",
+                                        "subtitle": "Vous serez redirigé vers notre site internet",
+                                        "default_action": {
+                                            "type": "web_url",
+                                            "url": `https://drive.intermarche.com/${user_profile.idPdv}-${user_profile.linkNamePdvFavori}/produit/recherche/${produit1}`,
+                                            "webview_height_ratio": "tall"
+                                        },
+                                        "buttons": [
+                                            {
+                                                "title": "Par ici",
+                                                "type": "web_url",
+                                                "url": `https://drive.intermarche.com/${user_profile.idPdv}-${user_profile.linkNamePdvFavori}/produit/recherche/${produit1}`,
+                                                "webview_height_ratio": "tall"
+                                            }
+                                        ]
                                     }
+
                                 ]
                             }
-                        }
+                        },
+                            "quick_replies": [
+                            {
+                                "content_type": "text",
+                                "title": "Autre Produit",
+                                "payload": "Autre Produit"
+                            },
+                            {
+                                "content_type": "text",
+                                "title": "Menu Principal",
+                                "payload": "Menu Principal"
+                            }
+                        ]
                     };
 
                     return res.json({
