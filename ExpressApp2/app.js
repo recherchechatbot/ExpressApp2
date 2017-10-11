@@ -420,7 +420,7 @@ class FacebookBot {
                 {
                     "content_type": "text",
                     "image_url":"https://img15.hostingpics.net/pics/646988imageedit15309571191.png",
-                    "title": "1/5",
+                    "title": "",
                     "payload": "Autres recettes"
                 },
                 {
