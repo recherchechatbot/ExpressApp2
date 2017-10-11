@@ -1473,7 +1473,7 @@ app.post('/ai', (req, res) => {
 
     console.log("BODY /AI " + JSON.stringify(body));
 
-    if (body.result.action === 'recherche_libre_recette') {
+    if (body.result.action === 'recherche_libre_recette' || body.result.action === 'input_ingredient_recette') {
         const sender_id = body.originalRequest.data.sender.id;
         const user_profile = UserStore.getByFbId(sender_id);
         var existeUser = !isEmpty(user_profile);
