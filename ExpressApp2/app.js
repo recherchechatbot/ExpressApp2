@@ -414,9 +414,11 @@ class FacebookBot {
     }
 
     sendSignOutSuccessMessage(prenom, senderID) {
-        let messageData = "Au revoir " + prenom + ", ce fut un plaisir. Si vous le desirez vous pouvez donner une note sur 5 pour évaluer la qualité de notre conversation et aider nos ingenieurs à me rendre meilleur";
+        let messageData = {
+            "text": "Au revoir " + prenom + ", ce fut un plaisir. Si vous le desirez vous pouvez donner une note sur 5 pour évaluer la qualité de notre conversation et aider nos ingenieurs à me rendre meilleur"
+        }
         console.log('ceci est le messagedata: ' + messageData);
-        this.doTextResponse(senderID, messageData);
+        this.sendFBMessage(senderID, messageData);
     }
 
     receivedAccountLink(event) {
