@@ -1448,64 +1448,100 @@ app.post('/ai', (req, res) => {
                 .then((r) => {
                     var listeRecette = JSONbig.parse(r);
 
-                    let messagedata = {
-                        "attachment": {
-                            "type": "template",
-                            "payload": {
-                                "template_type": "generic",
-                                "elements": [
-                                    {
-                                        "title": listeRecette.Recettes[0].Titre,
-                                        "image_url": listeRecette.Recettes[0].ImageUrl,
-                                        "subtitle": "Vous serez redirigé vers notre site web",
-                                        "default_action": {
-                                            "type": "web_url",
-                                            "url": "http://google.fr",
-                                            "webview_height_ratio": "tall"
-                                        },
-                                        "buttons": [
-                                            {
-                                                "title": "Cliquez ici",
-                                                "type": "web_url",
-                                                "url": "http://google.fr",
-                                                "webview_height_ratio": "tall"
-                                            }
-                                        ]
-                                    },
-                                    {
-                                        "title": listeRecette.Recettes[1].Titre,
-                                        "image_url": listeRecette.Recettes[1].ImageUrl,
-                                        "subtitle": "Vous serez redirigé vers notre site web",
-                                        "default_action": {
-                                            "type": "web_url",
-                                            "url": "http://google.fr",
-                                            "webview_height_ratio": "tall"
-                                        },
-                                        "buttons": [
-                                            {
-                                                "title": "Cliquez ici",
-                                                "type": "web_url",
-                                                "url": "http://google.fr",
-                                                "webview_height_ratio": "tall"
-                                            }
-                                        ]
-                                    }
-                                ]
-                            }
-                        },
+                    let messageData = {
+                        "text": "Au revoir, ce fut un plaisir. Si vous le desirez vous pouvez donner une note sur 5 pour évaluer la qualité de notre conversation et aider nos ingenieurs à me rendre meilleur",
                         "quick_replies": [
                             {
                                 "content_type": "text",
-                                "title": "Autres recettes",
-                                "payload": "Autres recettes"
+                                "title": "0",
+                                "payload": "0",
                             },
                             {
                                 "content_type": "text",
-                                "title": "Menu Principal",
-                                "payload": "Menu Principal"
+                                "title": "1",
+                                "payload": "1",
+                            },
+                            {
+                                "content_type": "text",
+                                "title": "2",
+                                "payload": "2",
+                            },
+                            {
+                                "content_type": "text",
+                                "title": "3",
+                                "payload": "3",
+                            },
+                            {
+                                "content_type": "text",
+                                "title": "4",
+                                "payload": "4",
+                            },
+                            {
+                                "content_type": "text",
+                                "title": "5",
+                                "payload": "5",
                             }
                         ]
-                    };
+                    }
+
+                    //let messagedata = {
+                    //    "attachment": {
+                    //        "type": "template",
+                    //        "payload": {
+                    //            "template_type": "generic",
+                    //            "elements": [
+                    //                {
+                    //                    "title": listeRecette.Recettes[0].Titre,
+                    //                    "image_url": listeRecette.Recettes[0].ImageUrl,
+                    //                    "subtitle": "Vous serez redirigé vers notre site web",
+                    //                    "default_action": {
+                    //                        "type": "web_url",
+                    //                        "url": "http://google.fr",
+                    //                        "webview_height_ratio": "tall"
+                    //                    },
+                    //                    "buttons": [
+                    //                        {
+                    //                            "title": "Cliquez ici",
+                    //                            "type": "web_url",
+                    //                            "url": "http://google.fr",
+                    //                            "webview_height_ratio": "tall"
+                    //                        }
+                    //                    ]
+                    //                },
+                    //                {
+                    //                    "title": listeRecette.Recettes[1].Titre,
+                    //                    "image_url": listeRecette.Recettes[1].ImageUrl,
+                    //                    "subtitle": "Vous serez redirigé vers notre site web",
+                    //                    "default_action": {
+                    //                        "type": "web_url",
+                    //                        "url": "http://google.fr",
+                    //                        "webview_height_ratio": "tall"
+                    //                    },
+                    //                    "buttons": [
+                    //                        {
+                    //                            "title": "Cliquez ici",
+                    //                            "type": "web_url",
+                    //                            "url": "http://google.fr",
+                    //                            "webview_height_ratio": "tall"
+                    //                        }
+                    //                    ]
+                    //                }
+                    //            ]
+                    //        }
+                    //    },
+                    //    "quick_replies": [
+                    //        {
+                    //            "content_type": "text",
+                    //            "title": "Autres recettes",
+                    //            "payload": "Autres recettes"
+                    //        },
+                    //        {
+                    //            "content_type": "text",
+                    //            "title": "Menu Principal",
+                    //            "payload": "Menu Principal"
+                    //        }
+                    //    ]
+                    //};
 
                     return res.json({
                         speech: "Recettes",
