@@ -409,13 +409,13 @@ class FacebookBot {
         this.sendFBMessage(recipientId, messageData);
     }
     sendSignInSuccessMessage(senderID, prenom, nomFamille, sexe, namePdvFavori) {
-        const prenomNormalisé = upperCaseFirstLetter(prenom.toLowerCase());
+        const prenomNormalise = upperCaseFirstLetter(prenom.toLowerCase());
         let x = Math.random();
         if (x>= 0.5) {
             let text = "Bonjour " + sexe + " " + nomFamille + ", vous êtes bien connecté sur votre espace client Drive Intermarché.";
             }
         else {
-            let text = "Bonjour " + prenomNormalisé + ", vous êtes bien connecté sur votre espace client Drive Intermarché.";
+            let text = "Bonjour " + prenomNormalise + ", vous êtes bien connecté sur votre espace client Drive Intermarché.";
         }
         let text2 = "Votre point de vente favori est situé à " + namePdvFavori;
         let text3 = "Vous pouvez choisir une catégorie dans le menu ci- dessous ou directement me poser votre question.Vous pouvez également revenir à ce menu à tout moment, tout simplement en tapant la commande \"menu\".";
