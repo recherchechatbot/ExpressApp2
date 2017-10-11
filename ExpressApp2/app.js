@@ -419,7 +419,8 @@ class FacebookBot {
             "quick_replies": [
                 {
                     "content_type": "text",
-                    "title": "Autres recettes",
+                    "image_url":"https://img15.hostingpics.net/pics/646988imageedit15309571191.png",
+                    "title": "1/5",
                     "payload": "Autres recettes"
                 },
                 {
