@@ -508,8 +508,8 @@ class FacebookBot {
                         console.log("La récup des infos client a échoué !");
                     });
                 
-                const user_profile = UserStore.getByFbId(senderID);
-                console.log("Tout ce qu'on a sur l'utilisateur c'est ici :" + JSON.stringify(user_profile));
+                //const user_profile = UserStore.getByFbId(senderID);
+                //console.log("Tout ce qu'on a sur l'utilisateur c'est ici :" + JSON.stringify(user_profile));
                 break;
             case 'unlinked':
                 var user_profile = UserStore.getByFbId(senderID);
