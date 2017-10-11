@@ -1449,7 +1449,6 @@ app.post('/ai', (req, res) => {
                     var listeRecette = JSONbig.parse(r);
 
                     let messageData = {
-                        "text": "Au revoir, ce fut un plaisir. Si vous le desirez vous pouvez donner une note sur 5 pour évaluer la qualité de notre conversation et aider nos ingenieurs à me rendre meilleur",
                         "quick_replies": [
                             {
                                 "content_type": "text",
