@@ -479,11 +479,11 @@ class FacebookBot {
                 //console.log("Tout ce qu'on a sur l'utilisateur c'est ici :" + JSON.stringify(user_profile));
                 break;
             case 'unlinked':
-                var user_profile = UserStore.getByFbId(senderID);
-                var prenom = user_profile.prenom;
-                console.log("le prenom c'est: " + prenom);
-                this.sendSignOutSuccessMessage(prenom);
-                UserStore.unlinkWithFbId(senderID);
+                //var user_profile = UserStore.getByFbId(senderID);
+                //var prenom = user_profile.prenom;
+                //console.log("le prenom c'est: " + prenom);
+                //this.sendSignOutSuccessMessage(prenom);
+                //UserStore.unlinkWithFbId(senderID);
                 break;
             default:
                 break;
