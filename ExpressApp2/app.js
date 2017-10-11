@@ -426,7 +426,7 @@ class FacebookBot {
                     "content_type": "text",
                     "title": "Menu Principal",
                     "payload": "Menu Principal"
-                }
+                }]
         }
         console.log('ceci est le messagedata: ' + messageData);
         this.sendFBMessage(senderID, messageData);
