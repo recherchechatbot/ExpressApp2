@@ -1479,7 +1479,7 @@ app.post('/ai', (req, res) => {
         var existeUser = !isEmpty(user_profile);
 
         if (existeUser) {
-            console.log("ACTION RECONNUE : recherche_libre_recette")
+            console.log("ACTION RECONNUE : recherche_libre_recette ou input_ingredient_recette")
             console.log("DEBUT appel WS recettes");
             const token_auth = user_profile.mcoId;
 
@@ -1524,6 +1524,24 @@ app.post('/ai', (req, res) => {
                                                 "title": "Cliquez ici",
                                                 "type": "web_url",
                                                 "url": "http://google.fr",
+                                                "webview_height_ratio": "tall"
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "title": "Plus de résultats sur notre site",
+                                        "image_url": "http://www.lessenciel-dinard.com/images/stores/intermarche-le-drive-logo-intermarche-le-drivejpg.jpg",
+                                        "subtitle": "Vous serez redirigé vers notre site internet",
+                                        "default_action": {
+                                            "type": "web_url",
+                                            "url": `https://drive.intermarche.com/${user_profile.idPdv}-pdv/recette/recherche/${nourriture1}`, //TODO mettre tirets entre espaces si il y a dans le nom du pdv favori
+                                            "webview_height_ratio": "tall"
+                                        },
+                                        "buttons": [
+                                            {
+                                                "title": "Par ici",
+                                                "type": "web_url",
+                                                "url": `https://drive.intermarche.com/${user_profile.idPdv}-pdv/produit/recherche/${produit1}`, //TODO mettre tirets entre espaces si il y a dans le nom du pdv favori
                                                 "webview_height_ratio": "tall"
                                             }
                                         ]
@@ -1575,7 +1593,7 @@ app.post('/ai', (req, res) => {
         var existeUser = !isEmpty(user_profile);
 
         if (existeUser) {
-            console.log("ACTION RECONNUE : recherche_libre_courses")
+            console.log("ACTION RECONNUE : recherche_libre_courses ou input_recherche_produit ")
             console.log("DEBUT appel FO");
 
             var cookieSession = 'ASP.NET_SessionId=' + user_profile.foSession + ';&IdPdv=' + user_profile.idPdv;
@@ -1653,14 +1671,14 @@ app.post('/ai', (req, res) => {
                                         "subtitle": "Vous serez redirigé vers notre site internet",
                                         "default_action": {
                                             "type": "web_url",
-                                            "url": `https://drive.intermarche.com/${user_profile.idPdv}-${user_profile.linkNamePdvFavori}/produit/recherche/${produit1}`,
+                                            "url": `https://drive.intermarche.com/${user_profile.idPdv}-pdv/produit/recherche/${produit1}`,
                                             "webview_height_ratio": "tall"
                                         },
                                         "buttons": [
                                             {
                                                 "title": "Par ici",
                                                 "type": "web_url",
-                                                "url": `https://drive.intermarche.com/${user_profile.idPdv}-${user_profile.linkNamePdvFavori}/produit/recherche/${produit1}`,
+                                                "url": `https://drive.intermarche.com/${user_profile.idPdv}-pdv/produit/recherche/${produit1}`,
                                                 "webview_height_ratio": "tall"
                                             }
                                         ]
