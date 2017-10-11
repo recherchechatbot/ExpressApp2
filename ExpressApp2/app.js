@@ -1634,6 +1634,118 @@ app.post('/ai', (req, res) => {
             });
         }
     }
+
+    else if (body.result.action === 'welcome_default') {
+        const sender_id = body.originalRequest.data.sender.id;
+        const user_profile = UserStore.getByFbId(sender_id);
+
+        var existeUser = !isEmpty(user_profile);
+
+        if (existeUser) {
+            console.log("ACTION RECONNUE : recherche_libre_courses")
+            console.log("DEBUT appel FO");
+
+            var cookieSession = 'ASP.NET_SessionId=' + user_profile.foSession + ';&IdPdv=' + user_profile.idPdv;
+            console.log("Voila la valeur qu'on passe : " + cookieSession);
+
+            getProduit(body.result.parameters, user_profile.idPdv, cookieSession)
+                .then((r) => {
+                    console.log("Nous sommes à la recherche d'un produit");
+
+                    console.log("Voici la liste de produits : " + JSON.stringify(r));
+
+                    let messagedata = {
+                        "attachment": {
+                            "type": "template",
+                            "payload": {
+                                "template_type": "generic",
+                                "elements": [
+                                    {
+                                        "title": r[0].Libelle,
+                                        "image_url": r[0].NomImage,
+                                        "subtitle": "Cliquez ci-dessous pour ajouter au panier",
+                                        "default_action": {
+                                            "type": "web_url",
+                                            "url": "http://google.fr",
+                                            "webview_height_ratio": "tall"
+                                        },
+                                        "buttons": [
+                                            {
+                                                "title": "Cliquez ici",
+                                                "type": "postback",
+                                                "webview_height_ratio": "tall",
+                                                "payload": "idP=" + r[0].IdProduit
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "title": r[1].Libelle,
+                                        "image_url": r[1].NomImage,
+                                        "subtitle": "Cliquez ci-dessous pour ajouter au panier",
+                                        "default_action": {
+                                            "type": "web_url",
+                                            "url": "http://google.fr",
+                                            "webview_height_ratio": "tall"
+                                        },
+                                        "buttons": [
+                                            {
+                                                "title": "Cliquez ici",
+                                                "type": "postback",
+                                                "webview_height_ratio": "tall",
+                                                "payload": "idP=" + r[1].IdProduit
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "title": r[2].Libelle,
+                                        "image_url": r[2].NomImage,
+                                        "subtitle": "Cliquez ci-dessous pour ajouter au panier",
+                                        "default_action": {
+                                            "type": "web_url",
+                                            "url": "http://google.fr",
+                                            "webview_height_ratio": "tall"
+                                        },
+                                        "buttons": [
+                                            {
+                                                "title": "Cliquez ici",
+                                                "type": "postback",
+                                                "webview_height_ratio": "tall",
+                                                "payload": "idP=" + r[2].IdProduit
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        }
+                    };
+                    facebookBot.sendFBMessage(sender_id, messageData);
+                    //return res.json({
+                    //    speech: "Voici les résultats de votre recherche:",
+                    //    data: { "facebook": messagedata },
+                    //    source: 'recherche_libre_courses'
+                    //});
+                })
+                .catch(err => {
+
+                    console.log("on est dans le catch et oui !!!!! ");
+                    console.log("L'erreur c'est : " + err);
+
+                    return res.status(400).json({
+                        speech: "ERREUR : " + err,
+                        message: "ERREUR : " + err,
+                        source: 'recherche_libre_courses'
+                    });
+                });
+
+        }
+        else {
+            return res.json({
+                speech: "Courses",
+                data: { "facebook": facebookBot.getButtonLogin() },
+                source: 'recherche_libre_courses'
+            });
+        }
+    }
     else if (body.result.action === 'Localisation.Recue') {
         console.log("body.result = " + JSON.stringify(body.result));
 
