@@ -449,10 +449,10 @@ class FacebookBot {
                 }
             }
         };
-        this.doTextResponse(sender_id, text);
-        this.doTextResponse(sender_id, text2);
-        this.doTextResponse(sender_id, text3);
-        this.sendFBMessage(sender_id, messagedata);
+        this.doTextResponse(senderID, text);
+        this.doTextResponse(senderID, text2);
+        this.doTextResponse(senderID, text3);
+        this.sendFBMessage(senderID, messagedata);
         
     }
 
