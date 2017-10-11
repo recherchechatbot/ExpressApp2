@@ -448,7 +448,7 @@ class FacebookBot {
         //            "payload": "5",
         //        }
         //    ]
-        //}
+        }
         this.doTextResponse(senderID, messageData);
     }
 
