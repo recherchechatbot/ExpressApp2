@@ -1647,16 +1647,12 @@ app.post('/ai', (req, res) => {
                 "attachment": {
                     "type": "template",
                     "payload": {
+                        "text": "Bonjour comment puis-je vous aider? Vous pouvez choisir une catégorie dans le menu ci-dessous ou directement me poser votre question. Vous pouvez également revenir à ce menu à tout moment, tout simplement en tapant la commande \"menu\".",
                         "template_type": "generic",
                         "elements": [
                             {
                                 "title": "Menu Principal",
                                 "image_url": "https://img11.hostingpics.net/pics/345337MenuPrincipal.png",
-                                "default_action": {
-                                    "type": "web_url",
-                                    "url": "http://google.fr",
-                                    "webview_height_ratio": "tall"
-                                },
                                 "buttons": [
                                     {
                                         "title": "Recettes",
