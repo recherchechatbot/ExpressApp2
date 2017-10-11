@@ -450,12 +450,25 @@ class FacebookBot {
                 }
             }
         };
-        this.sendFBSenderAction(senderID, "typing_on");
-        this.doTextResponse(senderID, text);
-        this.doTextResponse(senderID, text2);
-        this.doTextResponse(senderID, text3);
-        this.sendFBMessage(senderID, messagedata);
-        this.sendFBSenderAction(senderID, "typing_off");
+        //this.sendFBSenderAction(senderID, "typing_on");
+        //this.doTextResponse(senderID, text);
+        //this.doTextResponse(senderID, text2);
+        //this.doTextResponse(senderID, text3);
+        //this.sendFBMessage(senderID, messagedata);
+        //this.sendFBSenderAction(senderID, "typing_off");
+
+        this.sendFBSenderAction(senderID, "typing_on")
+            .then(() => this.sleep(1000))
+            .then(() => this.doTextResponse(senderID, text))
+            .then(() => this.sendFBSenderAction(senderID, "typing_on"))
+            .then(() => this.sleep(1000))
+            .then(() => this.doTextResponse(senderID, text2))
+            .then(() => this.sendFBSenderAction(senderID, "typing_on"))
+            .then(() => this.sleep(1000))
+            .then(() => this.doTextResponse(senderID, text3))
+            .then(() => this.sendFBSenderAction(senderID, "typing_on"))
+            .then(() => this.sleep(1000))
+            .then(() => this.sendFBMessage(senderID, messagedata))
         
     }
 
@@ -869,6 +882,11 @@ class FacebookBot {
                         "locale": "default",
                         "composer_input_disabled": false,
                         "call_to_actions": [
+                            {
+                                "title": "Menu Principal",
+                                "type": "postback",
+                                "payload": "Menu"
+                            },
                             {
                                 "title": "Se déconnecter",
                                 "type": "postback",
