@@ -1534,8 +1534,8 @@ app.post('/ai', (req, res) => {
                         "quick_replies": [
                             {
                                 "content_type": "text",
-                                "title": "Autres recettes",
-                                "payload": "Autres recettes"
+                                "title": "Autre recherche",
+                                "payload": "Autre recherche"
                             },
                             {
                                 "content_type": "text",
