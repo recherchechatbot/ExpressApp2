@@ -450,9 +450,9 @@ class FacebookBot {
             }
         };
         this.doRichContentResponse(senderID, text);
-        this.doRichContentResponse(senderID, text2)
-        this.doRichContentResponse(senderID, text3)
-        this.doRichContentResponse(senderID, messagedata)
+        //this.doRichContentResponse(senderID, text2)
+        //this.doRichContentResponse(senderID, text3)
+        //this.doRichContentResponse(senderID, messagedata)
         
     }
 
