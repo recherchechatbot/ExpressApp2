@@ -1638,12 +1638,13 @@ app.post('/ai', (req, res) => {
     else if (body.result.action === 'welcome_default') {
         const sender_id = body.originalRequest.data.sender.id;
         const user_profile = UserStore.getByFbId(sender_id);
-
+        const prenom = user_profile.prenom;
+        const prenomNormalisé = upperCaseFirstLetter(prenom.toLowerCase());
         var existeUser = true;
 
         if (existeUser) {
             console.log("ACTION RECONNUE : welcome_default");
-            let text = "Bonjour comment puis-je vous aider? Vous pouvez choisir une catégorie dans le menu ci-dessous ou directement me poser votre question. Vous pouvez également revenir à ce menu à tout moment, tout simplement en tapant la commande \"menu\".";
+            let text = "Bonjour " + prenomNormalisé + ", comment puis-je vous aider? Vous pouvez choisir une catégorie dans le menu ci-dessous ou directement me poser votre question. Vous pouvez également revenir à ce menu à tout moment, tout simplement en tapant la commande \"menu\".";
             let messagedata = {
                 "attachment": {
                     "type": "template",
@@ -1819,6 +1820,12 @@ function getProduit(param, idPdv, c) {
         })
     })
 }
+
+function upperCaseFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
+
 function getRecette(param, mcoId) {
     let nourriture1 = param['Nourriture'];
     let nourriture2 = param['Nourriture1'];
