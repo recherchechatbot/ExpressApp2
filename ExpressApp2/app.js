@@ -448,9 +448,11 @@ class FacebookBot {
                 }
             }
         };
-        facebookBot.doTextResponse(sender_id, text);
-        facebookBot.sendFBMessage(sender_id, messagedata);
-        this.doTextResponse(senderID, messageData);
+        this.doTextResponse(sender_id, text);
+        this.doTextResponse(sender_id, text2);
+        this.doTextResponse(sender_id, text3);
+        this.sendFBMessage(sender_id, messagedata);
+        
     }
 
     sendSignOutSuccessMessage(prenom, senderID) {
