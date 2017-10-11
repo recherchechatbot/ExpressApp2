@@ -450,9 +450,9 @@ class FacebookBot {
             }
         };
         this.doTextResponse(senderID, text);
-        this.doTextResponse(senderID, text2);
-        this.doTextResponse(senderID, text3);
-        this.sendFBMessage(senderID, messagedata);
+        setTimeout(this.doTextResponse(senderID, text2),1500);
+        setTimeout(this.doTextResponse(senderID, text3),1500);
+        setTimeout(this.sendFBMessage(senderID, messagedata),500);
         
     }
 
