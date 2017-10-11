@@ -413,7 +413,7 @@ class FacebookBot {
         this.doTextResponse(senderID, messageData);
     }
 
-    sendSignOutSuccessMessage(prenom) {
+    sendSignOutSuccessMessage(prenom, senderID) {
         let messageData = "Au revoir " + prenom + ", ce fut un plaisir. Si vous le desirez vous pouvez donner une note sur 5 pour évaluer la qualité de notre conversation et aider nos ingenieurs à me rendre meilleur";
         console.log('ceci est le messagedata: ' + messageData);
         this.doTextResponse(senderID, messageData);
@@ -480,10 +480,10 @@ class FacebookBot {
                 break;
             case 'unlinked':
                 var user_profile = UserStore.getByFbId(senderID);
-                //var prenom = user_profile.prenom;
-                //console.log("le prenom c'est: " + prenom);
-                //this.sendSignOutSuccessMessage(prenom);
-                //UserStore.unlinkWithFbId(senderID);
+                var prenom = user_profile.prenom;
+                console.log("le prenom c'est: " + prenom);
+                this.sendSignOutSuccessMessage(prenom,senderID);
+                UserStore.unlinkWithFbId(senderID);
                 break;
             default:
                 break;
