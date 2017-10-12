@@ -988,7 +988,8 @@ facebookBot.setupGreetingText();
 
 
 app.get('/recherche/recette/:m', (req, res) => {
-    let mot = req.param('m');
+    let fieldName = 'm';
+    let mot = req.params.fieldName;
 
     switch (mot.toLowerCase()) {
         case "poulet":
@@ -2003,8 +2004,10 @@ function getRecette(param, mcoId) {
     console.log("DANS GETRECETTES TokenAuthentification = " + mcoId);
 
     return new Promise((resolve, reject) => {
+        console.log('on est dans le promise');
         request(options, (error, response) => {
             if (!error && response.statusCode == 200) {
+                console.log('pas d\'erreur normalement dans le promise');
                 resolve(response.body);
             }
             else {
