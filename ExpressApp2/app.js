@@ -1644,10 +1644,13 @@ app.post('/ai', (req, res) => {
             var cookieSession = 'ASP.NET_SessionId=' + user_profile.foSession + ';&IdPdv=' + user_profile.idPdv;
             console.log("Voila la valeur qu'on passe : " + cookieSession);
             let produit1 = body.result.parameters['Nourriture'];
+            console.log("Ceci est le produit numero 1 : " + produit1);
+
 
             getProduit(body.result.parameters, user_profile.idPdv, cookieSession)
                 .then((r) => {
                     let url = "https://drive.intermarche.com/" + user_profile.idPdv + "-pdv/produit/recherche/" + produit1;
+                    console.log("ceci est l'url qu'on passe : " + url);
 
                     console.log("Voici la liste de produits : " + JSON.stringify(r));
 
