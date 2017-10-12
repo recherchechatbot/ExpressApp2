@@ -326,9 +326,40 @@ class FacebookBot {
                 this.sendAccountLinking(sender);
             }
             else if (existeUser && text.startsWith("idP=")) {
+                let messageData = {
+                    attachment: {
+                        type: "template",
+                        payload: {
+                            template_type: "button",
+                            text: "Produit bien ajouté au panier",
+                            buttons: [
+                                {
+                                    title:"Autre Produit",
+                                    type: "postback",
+                                    payload:"autre produit"
+                            },
+                                {
+                                    title: "Aller en caisse",
+                                    type: "web_url",
+                                    url:"https://drive.intermarche.com/mon-panier",
+                                    payload: "autre produit"
+                                }
+                            ]
+                        }
+                    }
+                };
                 var id = parseInt(text.replace('idP=', ''));
-                console.log("id du produit à ajouter" + id)
+                console.log("id du produit à ajouter" + id);
                 this.addProductBasket(userProfile.mcoId, id);
+
+                this.sleep(1000)
+                    .then(() => this.sendFBSenderAction(senderID, "typing_on"))
+                    .then(() => this.doTextResponse(senderID, text))
+                    .then(() => this.sendFBSenderAction(senderID, "typing_on"))
+                    .then(() => this.sleep(1000))
+                    .then(() => this.sendFBMessage(senderID, messagedata))
+
+                
 
                 var cookieSession = 'ASP.NET_SessionId=' + userProfile.foSession;
                 console.log("Le getAspNetSessionId est : " + cookieSession);
@@ -460,12 +491,6 @@ class FacebookBot {
         this.sendFBSenderAction(senderID, "typing_on")
             .then(() => this.sleep(1000))
             .then(() => this.doTextResponse(senderID, text))
-            .then(() => this.sendFBSenderAction(senderID, "typing_on"))
-            .then(() => this.sleep(1000))
-            .then(() => this.doTextResponse(senderID, text2))
-            .then(() => this.sendFBSenderAction(senderID, "typing_on"))
-            .then(() => this.sleep(1000))
-            .then(() => this.doTextResponse(senderID, text3))
             .then(() => this.sendFBSenderAction(senderID, "typing_on"))
             .then(() => this.sleep(1000))
             .then(() => this.sendFBMessage(senderID, messagedata))
@@ -1743,7 +1768,7 @@ app.post('/ai', (req, res) => {
                             {
                                 "content_type": "text",
                                 "title": "Autre Produit",
-                                "payload": "Autre Produit"
+                                "payload": "autre produit"
                             },
                             {
                                 "content_type": "text",
