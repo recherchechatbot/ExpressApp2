@@ -1890,6 +1890,7 @@ app.post('/ai', (req, res) => {
 
     else if (body.result.action === 'Menu.Principal') {
         const sender_id = body.originalRequest.data.sender.id;
+        const user_profile = UserStore.getByFbId(sender_id);
 
         var existeUser = !isEmpty(user_profile);
 
