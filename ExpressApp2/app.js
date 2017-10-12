@@ -1547,11 +1547,6 @@ app.post('/ai', (req, res) => {
                                         "title": listeRecette.Recettes[0].Titre,
                                         "image_url": listeRecette.Recettes[0].ImageUrl,
                                         "subtitle": "Vous serez redirigé vers notre site web",
-                                        "default_action": {
-                                            "type": "web_url",
-                                            "url": "http://google.fr",
-                                            "webview_height_ratio": "tall"
-                                        },
                                         "buttons": [
                                             {
                                                 "title": "Cliquez ici",
@@ -1565,11 +1560,6 @@ app.post('/ai', (req, res) => {
                                         "title": listeRecette.Recettes[1].Titre,
                                         "image_url": listeRecette.Recettes[1].ImageUrl,
                                         "subtitle": "Vous serez redirigé vers notre site web",
-                                        "default_action": {
-                                            "type": "web_url",
-                                            "url": "http://google.fr",
-                                            "webview_height_ratio": "tall"
-                                        },
                                         "buttons": [
                                             {
                                                 "title": "Cliquez ici",
@@ -1696,11 +1686,6 @@ app.post('/ai', (req, res) => {
                                         "title": r[0].Libelle,
                                         "image_url": r[0].NomImage,
                                         "subtitle": "Cliquez ci-dessous pour ajouter au panier",
-                                        "default_action": {
-                                            "type": "web_url",
-                                            "url": "http://google.fr",
-                                            "webview_height_ratio": "tall"
-                                        },
                                         "buttons": [
                                             {
                                                 "title": "Ajouter au panier",
@@ -1714,11 +1699,7 @@ app.post('/ai', (req, res) => {
                                         "title": r[1].Libelle,
                                         "image_url": r[1].NomImage,
                                         "subtitle": "Cliquez ci-dessous pour ajouter au panier",
-                                        "default_action": {
-                                            "type": "web_url",
-                                            "url": "http://google.fr",
-                                            "webview_height_ratio": "tall"
-                                        },
+                                        
                                         "buttons": [
                                             {
                                                 "title": "Ajouter au panier",
@@ -1732,11 +1713,7 @@ app.post('/ai', (req, res) => {
                                         "title": r[2].Libelle,
                                         "image_url": r[2].NomImage,
                                         "subtitle": "Cliquez ci-dessous pour ajouter au panier",
-                                        "default_action": {
-                                            "type": "web_url",
-                                            "url": "http://google.fr",
-                                            "webview_height_ratio": "tall"
-                                        },
+                                        
                                         "buttons": [
                                             {
                                                 "title": "Ajouter au panier",
