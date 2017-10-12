@@ -420,7 +420,7 @@ class FacebookBot {
             text = "Bonjour " + prenomNormalise + ", vous êtes bien connecté sur votre espace client Drive Intermarché.";
         }
         let text2 = "Votre point de vente favori est situé à " + namePdvFavori;
-        let text3 = "Vous pouvez choisir une catégorie dans le menu ci- dessous ou directement me poser votre question.Vous pouvez également revenir à ce menu à tout moment, tout simplement en tapant la commande \"menu\".";
+        let text3 = "Vous pouvez choisir une catégorie dans le menu ci- dessous ou directement me poser votre question. Vous pouvez également revenir à ce menu à tout moment, tout simplement en tapant la commande \"menu\".";
 
         let messagedata = {
             "attachment": {
@@ -1655,7 +1655,7 @@ app.post('/ai', (req, res) => {
 
                     console.log("Voici la liste de produits : " + JSON.stringify(r));
 
-                    let text = "Resultats de votre recherche sur le point de vente de" + user_profile.namePdvFavori;
+                    let text = "Resultats de votre recherche sur le point de vente de " + user_profile.namePdvFavori;
 
                     let messagedata = {
                         "attachment": {
