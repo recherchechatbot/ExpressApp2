@@ -342,7 +342,6 @@ class FacebookBot {
                                     title: "Aller en caisse",
                                     type: "web_url",
                                     url:"https://drive.intermarche.com/mon-panier",
-                                    payload: "autre produit"
                                 }
                             ]
                         }
