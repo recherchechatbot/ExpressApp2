@@ -1651,7 +1651,7 @@ app.post('/ai', (req, res) => {
                 .then((r) => {
                     let url = "https://drive.intermarche.com/" + user_profile.idPdv + "-pdv/produit/recherche/" + produit1;
                     console.log("ceci est l'url qu'on passe : " + url);
-                    console.log(r[0].NomImage);
+                    console.log(r[0]);
 
                     console.log("Voici la liste de produits : " + JSON.stringify(r));
 
@@ -1753,12 +1753,12 @@ app.post('/ai', (req, res) => {
                         ]
                     };
 
-                    facebookBot.doTextResponse(text);
-
-                    return res.json({
-                        speech: "Voici les résultats de votre recherche:",
-                        data: { "facebook": messagedata },
-                        source: 'recherche_libre_courses'
+                    console.log('juste avant le dotextresponse');
+                    facebookBot.sendFBSenderAction(sender_id, "typing_on")
+                        .then(() => facebookBot.doTextResponse(sender_id, text))
+                        .then(() => facebookBot.sleep(1000))
+                        .then(() => facebookBot.sendFBSenderAction(sender_id, "typing_on"))
+                        .then(() => facebookBot.sendFBMessage(sender_id, messagedata))
                     });
                 })
                 .catch(err => {
