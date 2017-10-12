@@ -353,9 +353,9 @@ class FacebookBot {
                 this.addProductBasket(userProfile.mcoId, id);
 
                 this.sleep(1000)
-                    .then(() => this.sendFBSenderAction(senderID, "typing_on"))
+                    .then(() => this.sendFBSenderAction(sender, "typing_on"))
                     .then(() => this.sleep(1000))
-                    .then(() => this.sendFBMessage(senderID, messagedata))
+                    .then(() => this.sendFBMessage(sender, messagedata))
 
                 
 
