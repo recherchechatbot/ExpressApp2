@@ -1581,7 +1581,7 @@ app.post('/ai', (req, res) => {
                                     },
                                     {
                                         "title": "Plus de résultats sur notre site",
-                                        "image_url": "http://www.lessenciel-dinard.com/images/stores/intermarche-le-drive-logo-intermarche-le-drivejpg.jpg",
+                                        "image_url": "https://img15.hostingpics.net/pics/159660logodrive.jpg",
                                         "subtitle": "Vous serez redirigé vers notre site internet",
                                         "default_action": {
                                             "type": "web_url",
@@ -1748,7 +1748,7 @@ app.post('/ai', (req, res) => {
                                     },
                                     {
                                         "title": "Plus de résultats sur notre site",
-                                        "image_url": "http://www.lessenciel-dinard.com/images/stores/intermarche-le-drive-logo-intermarche-le-drivejpg.jpg",
+                                        "image_url": "https://img15.hostingpics.net/pics/159660logodrive.jpg",
                                         "subtitle": "Vous serez redirigé vers notre site internet",
                                         "default_action": {
                                             "type": "web_url",
