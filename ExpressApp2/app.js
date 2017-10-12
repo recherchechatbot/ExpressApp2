@@ -1547,25 +1547,25 @@ app.post('/ai', (req, res) => {
                                                 "webview_height_ratio": "tall"
                                             }
                                         ]
+                                    },
+                                    {
+                                        "title": "Plus de résultats sur notre site",
+                                        "image_url": "http://www.lessenciel-dinard.com/images/stores/intermarche-le-drive-logo-intermarche-le-drivejpg.jpg",
+                                        "subtitle": "Vous serez redirigé vers notre site internet",
+                                        "default_action": {
+                                            "type": "web_url",
+                                            "url":  "http://google.fr",   /*"https://drive.intermarche.com/" + user_profile.idPdv + "-pdv/produit/recherche/" + nourriture1, *///TODO mettre tirets entre espaces si il y a dans le nom du pdv favori
+                                            "webview_height_ratio": "tall"
+                                        },
+                                        "buttons": [
+                                            {
+                                                "title": "Par ici",
+                                                "type": "web_url",
+                                                "url": "http://google.fr", /*"https://drive.intermarche.com/" + user_profile.idPdv + "-pdv/produit/recherche/" + nourriture1,*/ //TODO mettre tirets entre espaces si il y a dans le nom du pdv favori
+                                                "webview_height_ratio": "tall"
+                                            }
+                                        ]
                                     }
-                                    //{
-                                    //    "title": "Plus de résultats sur notre site",
-                                    //    "image_url": "http://www.lessenciel-dinard.com/images/stores/intermarche-le-drive-logo-intermarche-le-drivejpg.jpg",
-                                    //    "subtitle": "Vous serez redirigé vers notre site internet",
-                                    //    "default_action": {
-                                    //        "type": "web_url",
-                                    //        "url": "https://drive.intermarche.com/" + user_profile.idPdv + "-pdv/produit/recherche/" + nourriture1, //TODO mettre tirets entre espaces si il y a dans le nom du pdv favori
-                                    //        "webview_height_ratio": "tall"
-                                    //    },
-                                    //    "buttons": [
-                                    //        {
-                                    //            "title": "Par ici",
-                                    //            "type": "web_url",
-                                    //            "url": "https://drive.intermarche.com/" + user_profile.idPdv + "-pdv/produit/recherche/" + nourriture1, //TODO mettre tirets entre espaces si il y a dans le nom du pdv favori
-                                    //            "webview_height_ratio": "tall"
-                                    //        }
-                                    //    ]
-                                    //}
                                 ]
                             }
                         },
