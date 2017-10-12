@@ -458,7 +458,7 @@ class FacebookBot {
                     "elements": [
                         {
                             "title": "Menu Principal",
-                            "image_url": "https://driveimg1.intermarche.com/fr/Ressources/images/publication/4723.jpg",
+                            "image_url": "https://img15.hostingpics.net/pics/159660logodrive.jpg",
                             "buttons": [
                                 {
                                     "title": "Recettes",
@@ -1933,7 +1933,7 @@ app.post('/ai', (req, res) => {
                         "elements": [
                             {
                                 "title": "Menu Principal",
-                                "image_url": "https://driveimg1.intermarche.com/fr/Ressources/images/publication/4723.jpg",
+                                "image_url": "https://img15.hostingpics.net/pics/159660logodrive.jpg",
                                 "buttons": [
                                     {
                                         "title": "Recettes",
