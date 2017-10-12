@@ -1554,14 +1554,14 @@ app.post('/ai', (req, res) => {
                                         "subtitle": "Vous serez redirigé vers notre site internet",
                                         "default_action": {
                                             "type": "web_url",
-                                            "url": `https://drive.intermarche.com/${user_profile.idPdv}-pdv/recette/recherche/${nourriture1}`, //TODO mettre tirets entre espaces si il y a dans le nom du pdv favori
+                                            "url": "https://drive.intermarche.com/" + user_profile.idPdv + "-pdv/produit/recherche/" + nourriture1, //TODO mettre tirets entre espaces si il y a dans le nom du pdv favori
                                             "webview_height_ratio": "tall"
                                         },
                                         "buttons": [
                                             {
                                                 "title": "Par ici",
                                                 "type": "web_url",
-                                                "url": `https://drive.intermarche.com/${user_profile.idPdv}-pdv/produit/recherche/${produit1}`, //TODO mettre tirets entre espaces si il y a dans le nom du pdv favori
+                                                "url": "https://drive.intermarche.com/" + user_profile.idPdv + "-pdv/produit/recherche/" + nourriture1, //TODO mettre tirets entre espaces si il y a dans le nom du pdv favori
                                                 "webview_height_ratio": "tall"
                                             }
                                         ]
