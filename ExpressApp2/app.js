@@ -354,8 +354,6 @@ class FacebookBot {
 
                 this.sleep(1000)
                     .then(() => this.sendFBSenderAction(senderID, "typing_on"))
-                    .then(() => this.doTextResponse(senderID, text))
-                    .then(() => this.sendFBSenderAction(senderID, "typing_on"))
                     .then(() => this.sleep(1000))
                     .then(() => this.sendFBMessage(senderID, messagedata))
 
