@@ -414,7 +414,7 @@ class FacebookBot {
         let x = Math.random();
         let text = "";
         if (x>= 0.5) {
-            text = "Bonjour " + sexe + " " + nomFamille + ", vous êtes bien connecté sur votre espace client Drive Intermarché.";
+            text = "Bonjour " + sexe + " " + nomNormalise + ", vous êtes bien connecté sur votre espace client Drive Intermarché.";
             }
         else {
             text = "Bonjour " + prenomNormalise + ", vous êtes bien connecté sur votre espace client Drive Intermarché.";
