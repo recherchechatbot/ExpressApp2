@@ -486,10 +486,15 @@ class FacebookBot {
         //this.sendFBSenderAction(senderID, "typing_off");
 
         this.sendFBSenderAction(senderID, "typing_on")
-            .then(() => this.sleep(1000))
             .then(() => this.doTextResponse(senderID, text))
-            .then(() => this.sendFBSenderAction(senderID, "typing_on"))
             .then(() => this.sleep(1000))
+            .then(() => this.sendFBSenderAction(senderID, "typing_on"))
+            .then(() => this.doTextResponse(senderID, text2))
+            .then(() => this.sleep(1000))
+            .then(() => this.sendFBSenderAction(senderID, "typing_on"))
+            .then(() => this.doTextResponse(senderID, text3))
+            .then(() => this.sleep(1000))
+            .then(() => this.sendFBSenderAction(senderID, "typing_on"))
             .then(() => this.sendFBMessage(senderID, messagedata))
         
     }
