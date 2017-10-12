@@ -1506,10 +1506,7 @@ app.post('/ai', (req, res) => {
 
             getRecette(body.result.parameters, token_auth)
                 .then((r) => {
-                    console.log('test check si on a bien idpdv' + user_profile.idPdv);
-                    console.log("test check si on a bien nourriture1" + nourriture1);
-                    let url1 = "https://drive.intermarche.com/" + user_profile.idPdv + "-pdv/produit/recherche/" + nourriture1;
-                    //let url = `https://drive.intermarche.com/${user_profile.idPdv}-pdv/produit/recherche/${nourriture1}`;
+                    let url = "https://drive.intermarche.com/" + user_profile.idPdv + "-pdv/recette/recherche/" + nourriture1;
                     console.log('c\'est l\'urrrrrrlllllll: ' + url1);
                     var listeRecette = JSONbig.parse(r);
                     let messagedata = {
@@ -1560,14 +1557,14 @@ app.post('/ai', (req, res) => {
                                         "subtitle": "Vous serez redirigé vers notre site internet",
                                         "default_action": {
                                             "type": "web_url",
-                                            "url":  "http://google.fr",    //TODO mettre tirets entre espaces si il y a dans le nom du pdv favori
+                                            "url":  url,    //TODO mettre tirets entre espaces si il y a dans le nom du pdv favori
                                             "webview_height_ratio": "tall"
                                         },
                                         "buttons": [
                                             {
                                                 "title": "Par ici",
                                                 "type": "web_url",
-                                                "url": "http://google.fr", /*"https://drive.intermarche.com/" + user_profile.idPdv + "-pdv/produit/recherche/" + nourriture1,*/ //TODO mettre tirets entre espaces si il y a dans le nom du pdv favori
+                                                "url": url, /*"https://drive.intermarche.com/" + user_profile.idPdv + "-pdv/produit/recherche/" + nourriture1,*/ //TODO mettre tirets entre espaces si il y a dans le nom du pdv favori
                                                 "webview_height_ratio": "tall"
                                             }
                                         ]
@@ -1646,10 +1643,11 @@ app.post('/ai', (req, res) => {
 
             var cookieSession = 'ASP.NET_SessionId=' + user_profile.foSession + ';&IdPdv=' + user_profile.idPdv;
             console.log("Voila la valeur qu'on passe : " + cookieSession);
+            let produit1 = body.result.parameters.['Nourriture'];
 
             getProduit(body.result.parameters, user_profile.idPdv, cookieSession)
                 .then((r) => {
-                    console.log("Nous sommes à la recherche d'un produit");
+                    let url = "https://drive.intermarche.com/" + user_profile.idPdv + "-pdv/produit/recherche/" + produit1;
 
                     console.log("Voici la liste de produits : " + JSON.stringify(r));
 
@@ -1721,14 +1719,14 @@ app.post('/ai', (req, res) => {
                                         "subtitle": "Vous serez redirigé vers notre site internet",
                                         "default_action": {
                                             "type": "web_url",
-                                            "url": `https://drive.intermarche.com/${user_profile.idPdv}-pdv/produit/recherche/${produit1}`,
+                                            "url": url,
                                             "webview_height_ratio": "tall"
                                         },
                                         "buttons": [
                                             {
                                                 "title": "Par ici",
                                                 "type": "web_url",
-                                                "url": `https://drive.intermarche.com/${user_profile.idPdv}-pdv/produit/recherche/${produit1}`,
+                                                "url": url,
                                                 "webview_height_ratio": "tall"
                                             }
                                         ]
