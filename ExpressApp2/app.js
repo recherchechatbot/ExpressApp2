@@ -1505,6 +1505,8 @@ app.post('/ai', (req, res) => {
 
             getRecette(body.result.parameters, token_auth)
                 .then((r) => {
+                    let url = `https://drive.intermarche.com/${user_profile.idPdv}-pdv/produit/recherche/${nourriture1}`;
+                    console.log('c\'est l\'urrrrrrlllllll: ' + url);
                     var listeRecette = JSONbig.parse(r);
                     let messagedata = {
                         "attachment": {
@@ -1554,7 +1556,7 @@ app.post('/ai', (req, res) => {
                                         "subtitle": "Vous serez redirigé vers notre site internet",
                                         "default_action": {
                                             "type": "web_url",
-                                            "url":  "http://google.fr",   /*"https://drive.intermarche.com/" + user_profile.idPdv + "-pdv/produit/recherche/" + nourriture1, *///TODO mettre tirets entre espaces si il y a dans le nom du pdv favori
+                                            "url":  "http://google.fr",    //TODO mettre tirets entre espaces si il y a dans le nom du pdv favori
                                             "webview_height_ratio": "tall"
                                         },
                                         "buttons": [
