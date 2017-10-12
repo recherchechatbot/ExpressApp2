@@ -1655,7 +1655,7 @@ app.post('/ai', (req, res) => {
 
                     console.log("Voici la liste de produits : " + JSON.stringify(r));
 
-                    let text = "Resultats de votre recherche sur le point de vente de" + user_profile.linkNamePdvFavori;
+                    let text = "Resultats de votre recherche sur le point de vente de" + user_profile.namePdvFavori;
 
                     let messagedata = {
                         "attachment": {
