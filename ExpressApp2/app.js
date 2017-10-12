@@ -342,6 +342,7 @@ class FacebookBot {
                                     title: "Aller en caisse",
                                     type: "web_url",
                                     url:"https://drive.intermarche.com/mon-panier",
+                                    payload: "autre produit"
                                 }
                             ]
                         }
@@ -457,7 +458,7 @@ class FacebookBot {
                     "elements": [
                         {
                             "title": "Menu Principal",
-                            "image_url": "https://img11.hostingpics.net/pics/345337MenuPrincipal.png",
+                            "image_url": "https://driveimg1.intermarche.com/fr/Ressources/images/publication/4723.jpg",
                             "buttons": [
                                 {
                                     "title": "Recettes",
@@ -1930,7 +1931,7 @@ app.post('/ai', (req, res) => {
                         "elements": [
                             {
                                 "title": "Menu Principal",
-                                "image_url": "https://img11.hostingpics.net/pics/345337MenuPrincipal.png",
+                                "image_url": "https://driveimg1.intermarche.com/fr/Ressources/images/publication/4723.jpg",
                                 "buttons": [
                                     {
                                         "title": "Recettes",
