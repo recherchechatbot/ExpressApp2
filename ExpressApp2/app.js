@@ -1586,7 +1586,7 @@ app.post('/ai', (req, res) => {
                     facebookBot.sendFBSenderAction(sender_id, "typing_on")
                         .then(() => facebookBot.doTextResponse(sender_id, text))
                         .then(() => facebookBot.sleep(1000))
-                        .then(() => facebookBot.sendFBSenderAction(sender_id, "typing_on")
+                        .then(() => facebookBot.sendFBSenderAction(sender_id, "typing_on"))
                         .then(() => facebookBot.sendFBMessage(sender_id, messagedata))
                     
 
