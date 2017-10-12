@@ -1651,6 +1651,7 @@ app.post('/ai', (req, res) => {
                 .then((r) => {
                     let url = "https://drive.intermarche.com/" + user_profile.idPdv + "-pdv/produit/recherche/" + produit1;
                     console.log("ceci est l'url qu'on passe : " + url);
+                    console.log(r[0].NomImage);
 
                     console.log("Voici la liste de produits : " + JSON.stringify(r));
 
