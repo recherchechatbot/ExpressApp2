@@ -1643,7 +1643,7 @@ app.post('/ai', (req, res) => {
 
             var cookieSession = 'ASP.NET_SessionId=' + user_profile.foSession + ';&IdPdv=' + user_profile.idPdv;
             console.log("Voila la valeur qu'on passe : " + cookieSession);
-            let produit1 = body.result.parameters.['Nourriture'];
+            let produit1 = body.result.parameters['Nourriture'];
 
             getProduit(body.result.parameters, user_profile.idPdv, cookieSession)
                 .then((r) => {
