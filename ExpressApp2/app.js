@@ -1890,42 +1890,53 @@ app.post('/ai', (req, res) => {
 
     else if (body.result.action === 'Menu.Principal') {
         const sender_id = body.originalRequest.data.sender.id;
-        let text = "Comment puis-je vous aider? Vous pouvez choisir une catégorie dans le menu ci-dessous ou directement me poser votre question.Vous pouvez revenir à ce menu à tout moment, tout simplement en tapant la commande \"menu\".";
-        let messagedata = {
-            "attachment": {
-                "type": "template",
-                "payload": {
-                    "template_type": "generic",
-                    "elements": [
-                        {
-                            "title": "Menu Principal",
-                            "image_url": "https://img11.hostingpics.net/pics/345337MenuPrincipal.png",
-                            "buttons": [
-                                {
-                                    "title": "Recettes",
-                                    "type": "postback",
-                                    "webview_height_ratio": "tall",
-                                    "payload": "Recettes"
-                                },
-                                {
-                                    "title": "Faire ses courses",
-                                    "type": "postback",
-                                    "webview_height_ratio": "tall",
-                                    "payload": "Faire ses courses"
-                                }
-                            ]
-                        }
-                    ]
+
+        var existeUser = !isEmpty(user_profile);
+
+        if (existeUser) {
+            let text = "Comment puis-je vous aider? Vous pouvez choisir une catégorie dans le menu ci-dessous ou directement me poser votre question.Vous pouvez revenir à ce menu à tout moment, tout simplement en tapant la commande \"menu\".";
+            let messagedata = {
+                "attachment": {
+                    "type": "template",
+                    "payload": {
+                        "template_type": "generic",
+                        "elements": [
+                            {
+                                "title": "Menu Principal",
+                                "image_url": "https://img11.hostingpics.net/pics/345337MenuPrincipal.png",
+                                "buttons": [
+                                    {
+                                        "title": "Recettes",
+                                        "type": "postback",
+                                        "webview_height_ratio": "tall",
+                                        "payload": "Recettes"
+                                    },
+                                    {
+                                        "title": "Faire ses courses",
+                                        "type": "postback",
+                                        "webview_height_ratio": "tall",
+                                        "payload": "Faire ses courses"
+                                    }
+                                ]
+                            }
+                        ]
+                    }
                 }
-            }
-        };
+            };
 
-        facebookBot.sendFBSenderAction(sender_id, "typing_on")
-            .then(() => facebookBot.doTextResponse(sender_id, text))
-            .then(() => facebookBot.sleep(1000))
-            .then(() => facebookBot.sendFBSenderAction(sender_id, "typing_on"))
-            .then(() => facebookBot.sendFBMessage(sender_id, messagedata))
-
+            facebookBot.sendFBSenderAction(sender_id, "typing_on")
+                .then(() => facebookBot.doTextResponse(sender_id, text))
+                .then(() => facebookBot.sleep(1000))
+                .then(() => facebookBot.sendFBSenderAction(sender_id, "typing_on"))
+                .then(() => facebookBot.sendFBMessage(sender_id, messagedata))
+        }
+        else {
+            return res.json({
+                speech: "Menu",
+                data: { "facebook": facebookBot.getButtonLogin() },
+                source: 'Menu.Principal'
+            });
+        }
     }
 
     
