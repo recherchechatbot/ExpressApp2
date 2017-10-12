@@ -1541,6 +1541,7 @@ app.post('/ai', (req, res) => {
                             "type": "template",
                             "payload": {
                                 "template_type": "generic",
+                                "image_aspect_ratio":"square",
                                 "elements": [
                                     {
                                         "title": listeRecette.Recettes[0].Titre,
@@ -1689,6 +1690,7 @@ app.post('/ai', (req, res) => {
                             "type": "template",
                             "payload": {
                                 "template_type": "generic",
+                                "image_aspect_ratio": "square",
                                 "elements": [
                                     {
                                         "title": r[0].Libelle,
