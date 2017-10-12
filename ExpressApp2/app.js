@@ -988,8 +988,7 @@ facebookBot.setupGreetingText();
 
 
 app.get('/recherche/recette/:m', (req, res) => {
-    let fieldName = 'm';
-    let mot = req.params.fieldName;
+    let mot = req.query['m'];
 
     switch (mot.toLowerCase()) {
         case "poulet":
