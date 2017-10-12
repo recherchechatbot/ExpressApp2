@@ -1505,8 +1505,11 @@ app.post('/ai', (req, res) => {
 
             getRecette(body.result.parameters, token_auth)
                 .then((r) => {
-                    let url = `https://drive.intermarche.com/${user_profile.idPdv}-pdv/produit/recherche/${nourriture1}`;
-                    console.log('c\'est l\'urrrrrrlllllll: ' + url);
+                    console.log('test check si on a bien idpdv' + user_profile.IdPdv);
+                    console.log("test check si on a bien nourriture1" + nourriture1);
+                    let url1 = "https://drive.intermarche.com/" + user_profile.idPdv + "-pdv/produit/recherche/" + nourriture1;
+                    //let url = `https://drive.intermarche.com/${user_profile.idPdv}-pdv/produit/recherche/${nourriture1}`;
+                    console.log('c\'est l\'urrrrrrlllllll: ' + url1);
                     var listeRecette = JSONbig.parse(r);
                     let messagedata = {
                         "attachment": {
