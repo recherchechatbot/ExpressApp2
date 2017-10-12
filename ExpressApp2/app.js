@@ -1759,7 +1759,14 @@ app.post('/ai', (req, res) => {
                         .then(() => facebookBot.sleep(1000))
                         .then(() => facebookBot.sendFBSenderAction(sender_id, "typing_on"))
                         .then(() => facebookBot.sendFBMessage(sender_id, messagedata))
-                    });
+
+                    //facebookBot.doTextResponse(text);
+
+                    //return res.json({
+                    //    speech: "Voici les résultats de votre recherche:",
+                    //    data: { "facebook": messagedata },
+                    //    source: 'recherche_libre_courses'
+                    //});
                 })
                 .catch(err => {
 
