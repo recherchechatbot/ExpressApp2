@@ -1502,6 +1502,7 @@ app.post('/ai', (req, res) => {
             console.log("DEBUT appel WS recettes");
             const token_auth = user_profile.mcoId;
             let text = "Voici les resultats de votre recherche";
+            let nourriture1 = body.result.parameters['Nourriture'];
 
             getRecette(body.result.parameters, token_auth)
                 .then((r) => {
