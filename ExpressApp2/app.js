@@ -1501,11 +1501,11 @@ app.post('/ai', (req, res) => {
             console.log("ACTION RECONNUE : recherche_libre_recette ou input_ingredient_recette")
             console.log("DEBUT appel WS recettes");
             const token_auth = user_profile.mcoId;
+            let text = "Voici les resultats de votre recherche";
 
             getRecette(body.result.parameters, token_auth)
                 .then((r) => {
                     var listeRecette = JSONbig.parse(r);
-                    let text = "Voici les resultats de votre recherche";
                     let messagedata = {
                         "attachment": {
                             "type": "template",
@@ -1582,12 +1582,19 @@ app.post('/ai', (req, res) => {
                             }
                         ]
                     };
-                    facebookBot.doTextResponse(text);//Possibilité de foirage ici BUG POssible
-                    return res.json({
-                        speech: "Recettes",
-                        data: { "facebook": messagedata },
-                        source: 'recherche_libre_recette'
-                    });
+                    console.log('juste avant le dotextresponse');
+                    facebookBot.sendFBSenderAction(sender, "typing_on")
+                        .then(() => facebookBot.sleep(1000))
+                        .then(() => facebookBot.doTextResponse(sender_id, text))
+                        .then(() => facebookBot.sleep(1000))
+                        .then(() => facebookBot.sendFBMessage(sender_id, messagedata))
+                    
+
+                    //return res.json({
+                    //    speech: "Recettes",
+                    //    data: { "facebook": messagedata },
+                    //    source: 'recherche_libre_recette'
+                    //});
                 })
                 .catch(err => {
                     return res.status(400).json({
