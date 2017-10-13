@@ -1634,6 +1634,7 @@ app.post('/ai', (req, res) => {
     }
     else if (body.result.action === 'welcome_default') {
         const sender_id = body.originalRequest.data.sender.id;
+        const user_profile = UserStore.getByFbId(sender_id);
         var existeUser = !isEmpty(user_profile);
         if (existeUser) {
             console.log('existe user dans welcome intent');
