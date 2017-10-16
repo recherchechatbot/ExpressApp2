@@ -349,7 +349,9 @@ class FacebookBot {
                 };
                 var id = parseInt(text.replace('idP=', ''));
                 console.log("id du produit à ajouter" + id);
-                this.addProductBasket(userProfile.mcoId, id);
+                //this.addProductBasket(userProfile.mcoId, id);
+                var cookieSession = 'ASP.NET_SessionId=' + userProfile.foSession;
+                this.addProductBasketFront(id, cookieSession);
 
                 this.sleep(1000)
                     .then(() => this.sendFBSenderAction(sender, "typing_on"))
@@ -357,7 +359,7 @@ class FacebookBot {
 
                 
 
-                var cookieSession = 'ASP.NET_SessionId=' + userProfile.foSession;
+                //var cookieSession = 'ASP.NET_SessionId=' + userProfile.foSession;
                 console.log("Le getAspNetSessionId est : " + cookieSession);
                 this.getRecapPanier(cookieSession)
                     .then((r) => {
@@ -818,6 +820,36 @@ class FacebookBot {
                 resolve(response.body);
             });
         });
+    }
+
+    addProductBasketFront(idProduit,cookie) {
+        return new Promise((resolve, reject) => {
+            request({
+                url: FO_URL + 'Plus',
+                method: 'POST',
+                body: {
+                    "idProduit": idProduit,
+                    "trackingCode": null,
+                    "idSource": null,
+                    "idUniversProduitComplementaire": null
+                },
+                headers: {
+                    'cookie': cookie
+                },
+                json: true
+            }, (error, response) => {
+                if (error) {
+                    console.log('Erreur lors de l\'ajout du panier : ', error);
+                    reject(error);
+                } else if (response.body.error) {
+                    console.log('Error: ', response.body.error);
+                    reject(new Error(response.body.error));
+                }
+                console.log("ceci est le body lorsqu'on essaye d'ajouter un truc au panier:" + JSON.stringify(response.body));
+                resolve(response.body);
+            });
+        });
+
     }
 
     sendFBSenderAction(sender, action) {
