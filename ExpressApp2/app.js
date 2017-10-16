@@ -351,7 +351,17 @@ class FacebookBot {
                 console.log("id du produit à ajouter" + id);
                 //this.addProductBasket(userProfile.mcoId, id);
                 var cookieSession = 'ASP.NET_SessionId=' + userProfile.foSession;
-                this.addProductBasketFront(id, cookieSession);
+                this.addProductBasketFront(id, cookieSession)
+                    .then((r) => {
+                        let text = "Le montant total de votre panier est de " + panier.MontantFinal;
+                        let panier = JSONbig.parse(r);
+                        console.log("Retour recap panier = " + JSON.stringify(r));
+                        console.log("Le montant total du panier est de :" + panier.MontantFinal);
+                        this.doTextResponse(text);
+                    })
+                    .catch(err => {
+                        console.log("getRecapPanier err :" + err);
+                    });
 
                 this.sleep(1000)
                     .then(() => this.sendFBSenderAction(sender, "typing_on"))
@@ -360,16 +370,16 @@ class FacebookBot {
                 
 
                 //var cookieSession = 'ASP.NET_SessionId=' + userProfile.foSession;
-                console.log("Le getAspNetSessionId est : " + cookieSession);
-                this.getRecapPanier(cookieSession)
-                    .then((r) => {
-                        let panier = JSONbig.parse(r);
-                        console.log("Retour recap panier = " + JSON.stringify(r));
-                        console.log("Le montant total du panier est de :" + panier.Total);
-                    })
-                    .catch(err => {
-                        console.log("getRecapPanier err :" + err);
-                    });
+                //console.log("Le getAspNetSessionId est : " + cookieSession);
+                //this.getRecapPanier(cookieSession)
+                //    .then((r) => {
+                //        let panier = JSONbig.parse(r);
+                //        console.log("Retour recap panier = " + JSON.stringify(r));
+                //        console.log("Le montant total du panier est de :" + panier.Total);
+                //    })
+                //    .catch(err => {
+                //        console.log("getRecapPanier err :" + err);
+                //    });
             }
             else {
                 // Handle a text message from this sender
@@ -847,8 +857,10 @@ class FacebookBot {
                 }
                 console.log("ceci est le body lorsqu'on essaye d'ajouter un truc au panier:" + JSON.stringify(response.body));
                 resolve(response.body);
-            });
+                });
+
         });
+
 
     }
 
