@@ -333,6 +333,7 @@ class FacebookBot {
                 this.sendFBSenderAction(sender, "typing_on");
                 this.addProductBasketFront(id, cookieSession)
                     .then((r) => {
+                        let panier = JSONbig.parse(r);
                         let messageData = {
                             attachment: {
                                 type: "template",
@@ -354,7 +355,6 @@ class FacebookBot {
                                 }
                             }
                         };
-                        let panier = JSONbig.parse(r);
                         console.log("Retour recap panier = " + JSON.stringify(r));
                         console.log("Le montant total du panier est de :" + panier.MontantFinal);
                         this.sleep(1000)
