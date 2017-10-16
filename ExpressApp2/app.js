@@ -359,6 +359,14 @@ class FacebookBot {
                         };
                         console.log("Retour recap panier = " + JSON.stringify(r));
                         console.log("Le montant total du panier est de :" + r.MontantFinal);
+                        this.getRecapPanier(cookieSession)
+                            .then((res) => {
+                                console.log(res);
+                            })
+                            .catch(e => {
+                                console.log("ERRRREUR pour /AFFICHERPANIER");
+                            })
+
                         this.sleep(1000)
                             .then(() => this.sendFBSenderAction(sender, "typing_on"))
                             .then(() => this.sendFBMessage(sender, messageData))
