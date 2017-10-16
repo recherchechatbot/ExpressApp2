@@ -361,7 +361,7 @@ class FacebookBot {
                         console.log("Le montant total du panier est de :" + r.MontantFinal);
                         this.getRecapPanier(cookieSession)
                             .then((res) => {
-                                console.log(res);
+                                console.log("RESUUUUULTAT QUAND ON APPELLE /AfficherPanier :" + res);
                             })
                             .catch(e => {
                                 console.log("ERRRREUR pour /AFFICHERPANIER");
