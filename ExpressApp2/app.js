@@ -791,13 +791,11 @@ class FacebookBot {
                 body: {
 
                     SynchronisationForte: false,
-                    DateDerniereSynchronisation: "2014-03-18T15:19:30.0900000",
                     Articles: [
                         {
                             IdPanierDetail: 0,
                             AccepteSubstitution: true,
                             Commentaire: "",
-                            DateDerniereMaj: "2017-10-09T15:00:20.000",
                             IdProduit: idProduit,
                             Quantite: 1
                         }
