@@ -334,14 +334,14 @@ class FacebookBot {
                 this.addProductBasketFront(id, cookieSession)
                     .then((r) => {
                         console.log("on est dans le then");
-                        let panier = JSONbig.parse(r);
+                        //let panier = JSONbig.parse(r);
                         console.log("entre panier et messagedata");
                         let messageData = {
                             attachment: {
                                 type: "template",
                                 payload: {
                                     template_type: "button",
-                                    text: "Produit bien ajouté au panier. Le montant total de votre panier s'élève à: " + panier.MontantFinal,
+                                    text: "Produit bien ajouté au panier. Le montant total de votre panier s'élève à: " + r.MontantFinal,
                                     buttons: [
                                         {
                                             title: "Autre Produit",
@@ -358,7 +358,7 @@ class FacebookBot {
                             }
                         };
                         console.log("Retour recap panier = " + JSON.stringify(r));
-                        console.log("Le montant total du panier est de :" + panier.MontantFinal);
+                        console.log("Le montant total du panier est de :" + r.MontantFinal);
                         this.sleep(1000)
                             .then(() => this.sendFBSenderAction(sender, "typing_on"))
                             .then(() => this.sendFBMessage(sender, messageData))
