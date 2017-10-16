@@ -331,49 +331,58 @@ class FacebookBot {
                 //this.addProductBasket(userProfile.mcoId, id);
                 var cookieSession = 'ASP.NET_SessionId=' + userProfile.foSession;
                 this.sendFBSenderAction(sender, "typing_on");
-                this.addProductBasketFront(id, cookieSession)
-                    .then((r) => {
-                        console.log("on est dans le then");
-                        //let panier = JSONbig.parse(r);
-                        console.log("entre panier et messagedata");
-                        let messageData = {
-                            attachment: {
-                                type: "template",
-                                payload: {
-                                    template_type: "button",
-                                    text: "Produit bien ajouté au panier. Le montant total de votre panier s'élève à: " + r.MontantFinal,
-                                    buttons: [
-                                        {
-                                            title: "Autre Produit",
-                                            type: "postback",
-                                            payload: "autre produit"
-                                        },
-                                        {
-                                            title: "Aller en caisse",
-                                            type: "web_url",
-                                            url: "https://drive.intermarche.com/mon-panier",
-                                        }
-                                    ]
-                                }
-                            }
-                        };
-                        console.log("Retour recap panier = " + JSON.stringify(r));
-                        console.log("Le montant total du panier est de :" + r.MontantFinal);
-                        this.getRecapPanier(cookieSession)
-                            .then((res) => {
-                                console.log("RESUUUUULTAT QUAND ON APPELLE /AfficherPanier :" + res);
-                            })
-                            .catch(e => {
-                                console.log("ERRRREUR pour /AFFICHERPANIER");
-                            })
 
-                        this.sleep(1000)
-                            .then(() => this.sendFBSenderAction(sender, "typing_on"))
-                            .then(() => this.sendFBMessage(sender, messageData))
-                    })
-                    .catch(err => {
-                        console.log("getRecapPanier err :" + err);
-                    });
+                this.hitFO(cookieSession)
+                .then(() => {
+                    this.addProductBasketFront(id, cookieSession)
+                        .then((r) => {
+                            console.log("on est dans le then");
+                            //let panier = JSONbig.parse(r);
+                            console.log("entre panier et messagedata");
+                            let messageData = {
+                                attachment: {
+                                    type: "template",
+                                    payload: {
+                                        template_type: "button",
+                                        text: "Produit bien ajouté au panier. Le montant total de votre panier s'élève à: " + r.MontantFinal,
+                                        buttons: [
+                                            {
+                                                title: "Autre Produit",
+                                                type: "postback",
+                                                payload: "autre produit"
+                                            },
+                                            {
+                                                title: "Aller en caisse",
+                                                type: "web_url",
+                                                url: "https://drive.intermarche.com/mon-panier",
+                                            }
+                                        ]
+                                    }
+                                }
+                            };
+                            console.log("Retour recap panier = " + JSON.stringify(r));
+                            console.log("Le montant total du panier est de :" + r.MontantFinal);
+                            this.getRecapPanier(cookieSession)
+                                .then((res) => {
+                                    console.log("RESUUUUULTAT QUAND ON APPELLE /AfficherPanier :" + res);
+                                })
+                                .catch(e => {
+                                    console.log("ERRRREUR pour /AFFICHERPANIER");
+                                })
+
+                            this.sleep(1000)
+                                .then(() => this.sendFBSenderAction(sender, "typing_on"))
+                                .then(() => this.sendFBMessage(sender, messageData))
+                        })
+                        .catch(err => {
+                            console.log("getRecapPanier err :" + err);
+                        });
+                })
+                .catch(err => {
+                    console.log("ERREUR hit fo :" + err);
+                });
+
+                
 
                 
                 
@@ -871,6 +880,27 @@ class FacebookBot {
         });
 
 
+    }
+
+    hitFO(cookie) {
+        return new Promise((resolve, reject) => {
+            request({
+                url: FO_URL,
+                method: 'GET',
+                headers: {
+                    'cookie': cookie
+                }
+            }, (error, response) => {
+                if (error) {
+                    reject(error);
+                } else if (response.body.error) {
+                    reject(new Error(response.body.error));
+                }
+
+                console.log("HIT FO OK :");
+                resolve();
+            });
+        });
     }
 
     sendFBSenderAction(sender, action) {
