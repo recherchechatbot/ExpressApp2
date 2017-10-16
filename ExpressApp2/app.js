@@ -326,27 +326,6 @@ class FacebookBot {
                 this.sendAccountLinking(sender);
             }
             else if (existeUser && text.startsWith("idP=")) {
-                let messageData = {
-                    attachment: {
-                        type: "template",
-                        payload: {
-                            template_type: "button",
-                            text: "Produit bien ajouté au panier",
-                            buttons: [
-                                {
-                                    title:"Autre Produit",
-                                    type: "postback",
-                                    payload:"autre produit"
-                            },
-                                {
-                                    title: "Aller en caisse",
-                                    type: "web_url",
-                                    url:"https://drive.intermarche.com/mon-panier",
-                                }
-                            ]
-                        }
-                    }
-                };
                 var id = parseInt(text.replace('idP=', ''));
                 console.log("id du produit à ajouter" + id);
                 //this.addProductBasket(userProfile.mcoId, id);
@@ -354,12 +333,31 @@ class FacebookBot {
                 this.sendFBSenderAction(sender, "typing_on");
                 this.addProductBasketFront(id, cookieSession)
                     .then((r) => {
+                        let messageData = {
+                            attachment: {
+                                type: "template",
+                                payload: {
+                                    template_type: "button",
+                                    text: "Produit bien ajouté au panier. Le montant total de votre panier s'élève à: " + panier.MontantFinal,
+                                    buttons: [
+                                        {
+                                            title: "Autre Produit",
+                                            type: "postback",
+                                            payload: "autre produit"
+                                        },
+                                        {
+                                            title: "Aller en caisse",
+                                            type: "web_url",
+                                            url: "https://drive.intermarche.com/mon-panier",
+                                        }
+                                    ]
+                                }
+                            }
+                        };
                         let panier = JSONbig.parse(r);
-                        let text = "Le montant total de votre panier est de " + panier.MontantFinal;
                         console.log("Retour recap panier = " + JSON.stringify(r));
                         console.log("Le montant total du panier est de :" + panier.MontantFinal);
-                        this.doTextResponse(text)
-                            .then(() => this.sleep(1000)
+                        this.sleep(1000)
                             .then(() => this.sendFBSenderAction(sender, "typing_on"))
                             .then(() => this.sendFBMessage(sender, messageData))
                     })
