@@ -1875,26 +1875,17 @@ app.post('/ai', (req, res) => {
                                                 "payload": "idP=" + r[2].IdProduit
                                             }
                                         ]
-                                    },
-                                    {
-                                        "title": "Plus de résultats sur notre site",
-                                        "image_url": "https://img15.hostingpics.net/pics/159660logodrive.jpg",
-                                        "subtitle": "Vous serez redirigé vers notre site internet",
-                                        "default_action": {
-                                            "type": "web_url",
-                                            "url": url,
-                                            "webview_height_ratio": "tall"
-                                        },
-                                        "buttons": [
-                                            {
-                                                "title": "Par ici",
-                                                "type": "web_url",
-                                                "url": url,
-                                                "webview_height_ratio": "tall"
-                                            }
-                                        ]
                                     }
+                                    
 
+                                ],
+                                "buttons": [
+                                    {
+                                        "title": "Voir plus de résultats sur notre site",
+                                        "type": "web_url",
+                                        "url": url,
+                                        "webview_height_ratio": "tall"
+                                    }
                                 ]
                             }
                         },
