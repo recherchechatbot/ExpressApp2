@@ -333,7 +333,9 @@ class FacebookBot {
                 this.sendFBSenderAction(sender, "typing_on");
                 this.addProductBasketFront(id, cookieSession)
                     .then((r) => {
+                        console.log("on est dans le then");
                         let panier = JSONbig.parse(r);
+                        console.log("entre panier et messagedata");
                         let messageData = {
                             attachment: {
                                 type: "template",
