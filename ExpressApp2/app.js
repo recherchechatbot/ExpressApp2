@@ -351,22 +351,23 @@ class FacebookBot {
                 console.log("id du produit à ajouter" + id);
                 //this.addProductBasket(userProfile.mcoId, id);
                 var cookieSession = 'ASP.NET_SessionId=' + userProfile.foSession;
+                this.sendFBSenderAction(sender, "typing_on");
                 this.addProductBasketFront(id, cookieSession)
                     .then((r) => {
-                        let text = "Le montant total de votre panier est de " + panier.MontantFinal;
                         let panier = JSONbig.parse(r);
+                        let text = "Le montant total de votre panier est de " + panier.MontantFinal;
                         console.log("Retour recap panier = " + JSON.stringify(r));
                         console.log("Le montant total du panier est de :" + panier.MontantFinal);
-                        this.doTextResponse(text);
+                        this.doTextResponse(text)
+                            .then(() => this.sleep(1000)
+                            .then(() => this.sendFBSenderAction(sender, "typing_on"))
+                            .then(() => this.sendFBMessage(sender, messageData))
                     })
                     .catch(err => {
                         console.log("getRecapPanier err :" + err);
                     });
 
-                this.sleep(1000)
-                    .then(() => this.sendFBSenderAction(sender, "typing_on"))
-                    .then(() => this.sendFBMessage(sender, messageData))
-
+                
                 
 
                 //var cookieSession = 'ASP.NET_SessionId=' + userProfile.foSession;
