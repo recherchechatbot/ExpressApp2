@@ -339,39 +339,46 @@ class FacebookBot {
                             console.log("on est dans le then");
                             //let panier = JSONbig.parse(r);
                             console.log("entre panier et messagedata");
-                            let messageData = {
-                                attachment: {
-                                    type: "template",
-                                    payload: {
-                                        template_type: "button",
-                                        text: "Produit bien ajouté au panier. Le montant total de votre panier s'élève à: " + r.MontantFinal,
-                                        buttons: [
-                                            {
-                                                title: "Autre Produit",
-                                                type: "postback",
-                                                payload: "autre produit"
-                                            },
-                                            {
-                                                title: "Aller en caisse",
-                                                type: "web_url",
-                                                url: "https://drive.intermarche.com/mon-panier",
-                                            }
-                                        ]
-                                    }
-                                }
-                            };
                             console.log("Retour recap panier = " + JSON.stringify(r));
                             console.log("Le montant total du panier est de :" + r.MontantFinal);
                             this.getRecapPanier(cookieSession)
                                 .then((res) => {
                                     console.log("RESUUUUULTAT QUAND ON APPELLE /AfficherPanier :" + res);
+                                    let len = res.NbArticles;
+                                    let textRecapPanier = "";
+                                    for (var i = 0; i <= len; i++) {
+                                        textRecapPanier += res.Panier[i].Libelle + " - Qté: " + res.Panier[i].Quantite + " - Prix tot: " + res.Panier[i].Prix + "\n" + "----------" + "\n";
+                                    }
+
+                                    let messageData = {
+                                        attachment: {
+                                            type: "template",
+                                            payload: {
+                                                template_type: "button",
+                                                text: "VOTRE PANIER" + "\n\n" + textRecapPanier + "TOTAL: " + res.Total,
+                                                buttons: [
+                                                    {
+                                                        title: "Autre Produit",
+                                                        type: "postback",
+                                                        payload: "autre produit"
+                                                    },
+                                                    {
+                                                        title: "Aller en caisse",
+                                                        type: "web_url",
+                                                        url: "https://drive.intermarche.com/mon-panier",
+                                                    }
+                                                ]
+                                            }
+                                        }
+                                    };
                                 })
                                 .catch(e => {
                                     console.log("ERRRREUR pour /AFFICHERPANIER");
                                 })
-
-                            this.sleep(1000)
+                            this.sendFBSenderAction(sender, "typing_on")
+                                .then(() => this.doTextResponse(sender, "Produit bien ajouté au panier"))
                                 .then(() => this.sendFBSenderAction(sender, "typing_on"))
+                                .then(() => this.sleep(1000))
                                 .then(() => this.sendFBMessage(sender, messageData))
                         })
                         .catch(err => {
@@ -1333,6 +1340,7 @@ app.post('/webhook/', (req, res) => {
                                     });
                                 }
                             }
+                            console.log("EVENTICIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII" + event);
 
                             facebookBot.processMessageEvent(event);
                         } else if (event.postback && event.postback.payload) {
@@ -1825,8 +1833,6 @@ app.post('/ai', (req, res) => {
                 //        }
                 //    }
                 //}
-                    
-                    console.log("REPPPPPPPPPPPPPOOOOOOOOOOOOONNNNNNNNSSSSSSSEEEEEEEEE:" + JSON.stringify(r));
                     let messagedata = {
                         "attachment": {
                             "type": "template",
