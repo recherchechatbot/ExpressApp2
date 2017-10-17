@@ -337,28 +337,38 @@ class FacebookBot {
                     this.addProductBasketFront(id, cookieSession)
                         .then((r) => {
                             console.log("on est dans le then");
+                            this.sendFBSenderAction(sender, "typing_on")
+                                .then(() => this.doTextResponse(sender, "Produit bien ajouté au panier"))
                             //let panier = JSONbig.parse(r);
                             this.getRecapPanier(cookieSession)
                                 .then((res) => {
-                                    console.log("RESUUUUULTAT QUAND ON APPELLE /AfficherPanier :" + res);
+                                    //console.log("RESUUUUULTAT QUAND ON APPELLE /AfficherPanier :" + res);
                                     var resParsed = JSON.parse(res);
                                     let len = resParsed.NbArticles;
                                     let textRecapPanier = "VOTRE PANIER" + "\n\n";
+                                    console.log('Text recap panier' + textRecapPanier);
                                     let myTextArray = [];//Liste contenant tous les messages de taille inferieure à 640 car. sans couper de ligne en deux
                                     for (var i = 0; i <= len; i++) {
+                                        console.log('Nous sommes dans la boucle qui parcoure le panier ' + i);
                                         let line = resParsed.Panier[i].Libelle + " - Qté: " + resParsed.Panier[i].Quantite + " - Prix tot: " + resParsed.Panier[i].PrixArticle + "\n" + "-----------" + "\n";
+                                        console.log('La ligne ' + i + ' est bien définie: '+ line);
                                         if (textRecapPanier.length + line.length <= FB_TEXT_LIMIT) {
+                                            console.log("cas où on est en dessous de la limite");
                                             textRecapPanier += line;
+                                            console.log('ceci est le textRecapPanier: ' + textRecapPanier);
                                         }
                                         else {
+                                            console.log('debut cas où message trop long');
                                             myTextArray.push(textRecapPanier);
+                                            console.log("ceci est mon array: " + JSON.stringify(myTextArray));
                                             textRecapPanier = line;
                                         }
                                     }
 
-                                    this.sendFBSenderAction(sender, "typing_on")
-                                        .then(() => this.doTextResponse(sender, "Produit bien ajouté au panier"))
                                     
+
+
+                                    var nbMessages = myTextArray.length;
 
                                     let messageData = {
                                         attachment: {
@@ -381,8 +391,6 @@ class FacebookBot {
                                             }
                                         }
                                     };
-
-                                    var nbMessages = myTextArray.length;
                                     for (var i = 0; i < nbMessages; i++){
                                         this.sendFBSenderAction(sender, "typing_on")
                                             .then(() => this.doTextResponse(sender, myTextArray[i]))
@@ -897,7 +905,7 @@ class FacebookBot {
                     console.log('Error: ', response.body.error);
                     reject(new Error(response.body.error));
                 }
-                console.log("ceci est le body lorsqu'on essaye d'ajouter un truc au panier:" + JSON.stringify(response.body));
+                //console.log("ceci est le body lorsqu'on essaye d'ajouter un truc au panier:" + JSON.stringify(response.body));
                 resolve(response.body);
                 });
 
