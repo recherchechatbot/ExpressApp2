@@ -343,18 +343,29 @@ class FacebookBot {
                                     console.log("RESUUUUULTAT QUAND ON APPELLE /AfficherPanier :" + res);
                                     var resParsed = JSON.parse(res);
                                     let len = resParsed.NbArticles;
-                                    let textRecapPanier = "";
+                                    let textRecapPanier = "VOTRE PANIER" + "\n\n";
+                                    let myTextArray = [];//Liste contenant tous les messages de taille inferieure à 640 car. sans couper de ligne en deux
                                     for (var i = 0; i <= len; i++) {
-                                        
-                                        textRecapPanier += resParsed.Panier[i].Libelle + " - Qté: " + resParsed.Panier[i].Quantite + " - Prix tot: " + resParsed.Panier[i].PrixArticle + "\n" + "----------" + "\n";
+                                        let line = resParsed.Panier[i].Libelle + " - Qté: " + resParsed.Panier[i].Quantite + " - Prix tot: " + resParsed.Panier[i].PrixArticle + "\n" + "-----------" + "\n";
+                                        if (textRecapPanier.length + line.length <= FB_TEXT_LIMIT) {
+                                            textRecapPanier += line;
+                                        }
+                                        else {
+                                            myTextArray.push(textRecapPanier);
+                                            textRecapPanier = line;
+                                        }
                                     }
+
+                                    this.sendFBSenderAction(sender, "typing_on")
+                                        .then(() => this.doTextResponse(sender, "Produit bien ajouté au panier"))
+                                    
 
                                     let messageData = {
                                         attachment: {
                                             type: "template",
                                             payload: {
                                                 template_type: "button",
-                                                text: "VOTRE PANIER" + "\n\n" + textRecapPanier + "TOTAL: " + resParsed.Total,
+                                                text: myTextArray[nbMessages]+ "TOTAL: " + resParsed.Total,
                                                 buttons: [
                                                     {
                                                         title: "Autre Produit",
@@ -370,11 +381,17 @@ class FacebookBot {
                                             }
                                         }
                                     };
+
+                                    var nbMessages = myTextArray.length;
+                                    for (var i = 0; i < nbMessages; i++){
+                                        this.sendFBSenderAction(sender, "typing_on")
+                                            .then(() => this.doTextResponse(sender, myTextArray[i]))
+                                    }
+                                    
                                     this.sendFBSenderAction(sender, "typing_on")
-                                        .then(() => this.doTextResponse(sender, "Produit bien ajouté au panier"))
-                                        .then(() => this.sendFBSenderAction(sender, "typing_on"))
-                                        .then(() => this.sleep(1000))
                                         .then(() => this.sendFBMessage(sender, messageData))
+
+
                                 })
                                 .catch(e => {
                                     console.log("ERRRREUR pour /AFFICHERPANIER");
