@@ -1864,7 +1864,7 @@ app.post('/ai', (req, res) => {
                             }
                         ]
                     };
-                    var nbProduits = Math.min(4, r.length);
+                    var nbProduits = Math.min(3, r.length);
                     for (var i = 0; i < nbProduits; i++) {
                         var lineProduct = {
                             "title": r[i].Libelle,
