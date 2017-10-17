@@ -1836,7 +1836,7 @@ app.post('/ai', (req, res) => {
                                 //"image_aspect_ratio": "square",
                                 "elements": [
                                     {
-                                        "title": r[0].Libelle + ' \n'+ r[0].Prix,
+                                        "title": r[0].Libelle + '\n'+ r[0].Prix,
                                         "image_url": r[0].NomImage,
                                         "subtitle": r[0].PrixParQuantite,
                                         "buttons": [
@@ -1849,9 +1849,9 @@ app.post('/ai', (req, res) => {
                                         ]
                                     },
                                     {
-                                        "title": r[1].Libelle,
+                                        "title": r[1].Libelle + '\n' + r[1].Prix,
                                         "image_url": r[1].NomImage,
-                                        "subtitle": "Cliquez ci-dessous pour ajouter au panier",
+                                        "subtitle": r[1].PrixParQuantite,
                                         
                                         "buttons": [
                                             {
@@ -1863,9 +1863,9 @@ app.post('/ai', (req, res) => {
                                         ]
                                     },
                                     {
-                                        "title": r[2].Libelle,
+                                        "title": r[2].Libelle + '\n' + r[2].Prix,
                                         "image_url": r[2].NomImage,
-                                        "subtitle": "Cliquez ci-dessous pour ajouter au panier",
+                                        "subtitle": r[2].PrixParQuantite,
                                         
                                         "buttons": [
                                             {
