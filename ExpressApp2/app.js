@@ -343,12 +343,12 @@ class FacebookBot {
                                     console.log("RESUUUUULTAT QUAND ON APPELLE /AfficherPanier :" + res);
                                     var resParsed = JSON.parse(res);
                                     let len = resParsed.NbArticles;
-                                    console.log("avant quantity");
-                                    let quantity = parseInt(resParsed.Panier[i].QuantiteEntiere, 10);
-                                    console.log("avant price");
-                                    let price = parseInt(resParsed.Panier[i].PrixArticleDec, 10);
                                     let textRecapPanier = "";
                                     for (var i = 0; i <= len; i++) {
+                                        console.log("avant quantity " + i);
+                                        let quantity = parseInt(resParsed.Panier[i].QuantiteEntiere, 10);
+                                        console.log("avant price" + i);
+                                        let price = parseInt(resParsed.Panier[i].PrixArticleDec, 10);
                                         textRecapPanier += resParsed.Panier[i].Libelle + " - Qté: " + quantity + " - Prix tot: " + quantity*price + "\n" + "----------" + "\n";
                                     }
 
