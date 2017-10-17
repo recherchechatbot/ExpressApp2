@@ -1836,9 +1836,9 @@ app.post('/ai', (req, res) => {
                                 //"image_aspect_ratio": "square",
                                 "elements": [
                                     {
-                                        "title": r[0].Libelle + '\n\n'+ r[0].Prix,
+                                        "title": r[0].Libelle,
                                         "image_url": r[0].NomImage,
-                                        "subtitle": r[0].PrixParQuantite,
+                                        "subtitle": r[0].Prix + '\n'+ r[0].PrixParQuantite,
                                         "buttons": [
                                             {
                                                 "title": "Ajouter au panier",
