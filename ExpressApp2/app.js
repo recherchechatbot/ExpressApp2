@@ -371,15 +371,16 @@ class FacebookBot {
                                             }
                                         }
                                     };
+                                    this.sendFBSenderAction(sender, "typing_on")
+                                        .then(() => this.doTextResponse(sender, "Produit bien ajouté au panier"))
+                                        .then(() => this.sendFBSenderAction(sender, "typing_on"))
+                                        .then(() => this.sleep(1000))
+                                        .then(() => this.sendFBMessage(sender, messageData))
                                 })
                                 .catch(e => {
                                     console.log("ERRRREUR pour /AFFICHERPANIER");
                                 })
-                            this.sendFBSenderAction(sender, "typing_on")
-                                .then(() => this.doTextResponse(sender, "Produit bien ajouté au panier"))
-                                .then(() => this.sendFBSenderAction(sender, "typing_on"))
-                                .then(() => this.sleep(1000))
-                                .then(() => this.sendFBMessage(sender, messageData))
+                            
                         })
                         .catch(err => {
                             console.log("getRecapPanier err :" + err);
