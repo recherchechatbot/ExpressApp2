@@ -1840,51 +1840,7 @@ app.post('/ai', (req, res) => {
                                 "template_type": "list",
                                 "top_element_style": "compact",
                                 //"image_aspect_ratio": "square",
-                                "elements": [
-                                    {
-                                        "title": r[0].Libelle,
-                                        "image_url": r[0].NomImage,
-                                        "subtitle": r[0].Prix + ' ('+ r[0].Conditionnement +')' + '\n' + r[0].PrixParQuantite,
-                                        "buttons": [
-                                            {
-                                                "title": "Ajouter au panier",
-                                                "type": "postback",
-                                                "webview_height_ratio": "tall",
-                                                "payload": "idP=" + r[0].IdProduit
-                                            }
-                                        ]
-                                    },
-                                    {
-                                        "title": r[1].Libelle,
-                                        "image_url": r[1].NomImage,
-                                        "subtitle": r[1].Prix + ' (' + r[1].Conditionnement + ')' + '\n' + r[1].PrixParQuantite,
-                                        
-                                        "buttons": [
-                                            {
-                                                "title": "Ajouter au panier",
-                                                "type": "postback",
-                                                "webview_height_ratio": "tall",
-                                                "payload": "idP=" + r[1].IdProduit
-                                            }
-                                        ]
-                                    },
-                                    {
-                                        "title": r[2].Libelle,
-                                        "image_url": r[2].NomImage,
-                                        "subtitle": r[2].Prix + ' (' + r[2].Conditionnement + ')' + '\n' + r[2].PrixParQuantite,
-                                        
-                                        "buttons": [
-                                            {
-                                                "title": "Ajouter au panier",
-                                                "type": "postback",
-                                                "webview_height_ratio": "tall",
-                                                "payload": "idP=" + r[2].IdProduit
-                                            }
-                                        ]
-                                    }
-                                    
-
-                                ],
+                                "elements": [],
                                 "buttons": [
                                     {
                                         "title": "Voir plus de résultats sur notre site",
@@ -1908,6 +1864,38 @@ app.post('/ai', (req, res) => {
                             }
                         ]
                     };
+                    var nbProduits = Math.min(4, r.length);
+                    for (var i = 0; i < nbProduits; i++) {
+                        var lineProduct = {
+                            "title": r[i].Libelle,
+                            "image_url": r[i].NomImage,
+                            "subtitle": r[i].Prix + ' (' + r[i].Conditionnement + ')' + '\n' + r[i].PrixParQuantite,
+                            "buttons": [
+                                {
+                                    "title": "Ajouter au panier",
+                                    "type": "postback",
+                                    "webview_height_ratio": "tall",
+                                    "payload": "idP=" + r[i].IdProduit
+                                }
+                            ]
+                        }
+                    messagedata.attachment.payload.elements.push(lineProduct);
+                    }
+                    var lineFinalProduct = {
+                        "title": r[nbProduits].Libelle,
+                        "image_url": r[nbProduits].NomImage,
+                        "subtitle": r[nbProduits].Prix + ' (' + r[nbProduits].Conditionnement + ')' + '\n' + r[nbProduits].PrixParQuantite,
+                        "buttons": [
+                            {
+                                "title": "Ajouter au panier",
+                                "type": "postback",
+                                "webview_height_ratio": "tall",
+                                "payload": "idP=" + r[nbProduits].IdProduit
+                            }
+                        ]
+                    }
+                    messagedata.attachment.payload.elements.push(lineFinalProduct)
+
 
                     console.log('juste avant le dotextresponse');
                     facebookBot.sendFBSenderAction(sender_id, "typing_on")
