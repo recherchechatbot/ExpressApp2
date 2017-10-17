@@ -1836,7 +1836,7 @@ app.post('/ai', (req, res) => {
                                 //"image_aspect_ratio": "square",
                                 "elements": [
                                     {
-                                        "title": r[0].Libelle + '\n/n'+ r[0].Prix,
+                                        "title": r[0].Libelle + '\n\n'+ r[0].Prix,
                                         "image_url": r[0].NomImage,
                                         "subtitle": r[0].PrixParQuantite,
                                         "buttons": [
