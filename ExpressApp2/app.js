@@ -345,11 +345,8 @@ class FacebookBot {
                                     let len = resParsed.NbArticles;
                                     let textRecapPanier = "";
                                     for (var i = 0; i <= len; i++) {
-                                        console.log("avant quantity " + i);
-                                        let quantity = parseFloat(resParsed.Panier[i].QuantiteEntiere, 10);
-                                        console.log("avant price" + i);
-                                        let price = parseFloat(resParsed.Panier[i].PrixArticleDec, 10);
-                                        textRecapPanier += resParsed.Panier[i].Libelle + " - Qté: " + quantity + " - Prix tot: " + quantity * price + "€" + "\n" + "----------" + "\n";
+                                        
+                                        textRecapPanier += resParsed.Panier[i].Libelle + " - Qté: " + resParsed.Panier[i].Quantite + " - Prix tot: " + resParsed.Panier[i].PrixArticle + "\n" + "----------" + "\n";
                                     }
 
                                     let messageData = {
