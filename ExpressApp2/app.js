@@ -1838,7 +1838,7 @@ app.post('/ai', (req, res) => {
                                     {
                                         "title": r[0].Libelle,
                                         "image_url": r[0].NomImage,
-                                        "subtitle": r[0].Prix + ' ('+ r[0].Conditionnement +')',
+                                        "subtitle": r[0].Prix + ' ('+ r[0].Conditionnement +')' + '\n' + r[0].PrixParQuantite,
                                         "buttons": [
                                             {
                                                 "title": "Ajouter au panier",
@@ -1851,7 +1851,7 @@ app.post('/ai', (req, res) => {
                                     {
                                         "title": r[1].Libelle,
                                         "image_url": r[1].NomImage,
-                                        "subtitle": r[1].Prix + ' (' + r[1].Conditionnement + ')',
+                                        "subtitle": r[1].Prix + ' (' + r[1].Conditionnement + ')' + '\n' + r[1].PrixParQuantite,
                                         
                                         "buttons": [
                                             {
@@ -1865,7 +1865,7 @@ app.post('/ai', (req, res) => {
                                     {
                                         "title": r[2].Libelle,
                                         "image_url": r[2].NomImage,
-                                        "subtitle": r[2].Prix + ' (' + r[2].Conditionnement + ')',
+                                        "subtitle": r[2].Prix + ' (' + r[2].Conditionnement + ')' + '\n' + r[2].PrixParQuantite,
                                         
                                         "buttons": [
                                             {
