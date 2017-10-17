@@ -1849,9 +1849,9 @@ app.post('/ai', (req, res) => {
                                         ]
                                     },
                                     {
-                                        "title": r[1].Libelle + '\n' + r[1].Prix,
+                                        "title": r[1].Libelle,
                                         "image_url": r[1].NomImage,
-                                        "subtitle": r[1].PrixParQuantite,
+                                        "subtitle": r[1].Prix + ' (' + r[1].Conditionnement + ')',
                                         
                                         "buttons": [
                                             {
@@ -1863,9 +1863,9 @@ app.post('/ai', (req, res) => {
                                         ]
                                     },
                                     {
-                                        "title": r[2].Libelle + '\n' + r[2].Prix,
+                                        "title": r[2].Libelle,
                                         "image_url": r[2].NomImage,
-                                        "subtitle": r[2].PrixParQuantite,
+                                        "subtitle": r[2].Prix + ' (' + r[2].Conditionnement + ')',
                                         
                                         "buttons": [
                                             {
