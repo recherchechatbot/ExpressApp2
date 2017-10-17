@@ -1838,7 +1838,7 @@ app.post('/ai', (req, res) => {
                                     {
                                         "title": r[0].Libelle,
                                         "image_url": r[0].NomImage,
-                                        "subtitle": r[0].Prix + '\n'+ r[0].PrixParQuantite,
+                                        "subtitle": r[0].Prix + ' ('+ r[0].r[0].Conditionnement +')',
                                         "buttons": [
                                             {
                                                 "title": "Ajouter au panier",
