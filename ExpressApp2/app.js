@@ -338,16 +338,14 @@ class FacebookBot {
                         .then((r) => {
                             console.log("on est dans le then");
                             //let panier = JSONbig.parse(r);
-                            console.log("entre panier et messagedata");
-                            console.log("Retour recap panier = " + JSON.stringify(r));
-                            console.log("Le montant total du panier est de :" + r.MontantFinal);
                             this.getRecapPanier(cookieSession)
                                 .then((res) => {
                                     console.log("RESUUUUULTAT QUAND ON APPELLE /AfficherPanier :" + res);
-                                    let len = res.NbArticles;
+                                    var resParsed = JSON.parse(res);
+                                    let len = resParsed.NbArticles;                                    
                                     let textRecapPanier = "";
                                     for (var i = 0; i <= len; i++) {
-                                        textRecapPanier += res.Panier[i].Libelle + " - Qté: " + res.Panier[i].Quantite + " - Prix tot: " + res.Panier[i].Prix + "\n" + "----------" + "\n";
+                                        textRecapPanier += resParsed.Panier[i].Libelle + " - Qté: " + resParsed.Panier[i].Quantite + " - Prix tot: " + resParsed.Panier[i].Prix + "\n" + "----------" + "\n";
                                     }
 
                                     let messageData = {
@@ -355,7 +353,7 @@ class FacebookBot {
                                             type: "template",
                                             payload: {
                                                 template_type: "button",
-                                                text: "VOTRE PANIER" + "\n\n" + textRecapPanier + "TOTAL: " + res.Total,
+                                                text: "VOTRE PANIER" + "\n\n" + textRecapPanier + "TOTAL: " + resParsed.Total,
                                                 buttons: [
                                                     {
                                                         title: "Autre Produit",
