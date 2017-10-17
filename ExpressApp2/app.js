@@ -1826,7 +1826,7 @@ app.post('/ai', (req, res) => {
                 //    }
                 //}
                     
-                    console.log("REPPPPPPPPPPPPPOOOOOOOOOOOOONNNNNNNNSSSSSSSEEEEEEEEE:" + r);
+                    console.log("REPPPPPPPPPPPPPOOOOOOOOOOOOONNNNNNNNSSSSSSSEEEEEEEEE:" + JSON.stringify(r));
                     let messagedata = {
                         "attachment": {
                             "type": "template",
