@@ -370,34 +370,63 @@ class FacebookBot {
 
                                     var nbMessages = myTextArray.length;
 
-                                    let messageData = {
-                                        attachment: {
-                                            type: "template",
-                                            payload: {
-                                                template_type: "button",
-                                                text: myTextArray[nbMessages]+ "TOTAL: " + resParsed.Total,
-                                                buttons: [
-                                                    {
-                                                        title: "Autre Produit",
-                                                        type: "postback",
-                                                        payload: "autre produit"
-                                                    },
-                                                    {
-                                                        title: "Aller en caisse",
-                                                        type: "web_url",
-                                                        url: "https://drive.intermarche.com/mon-panier",
-                                                    }
-                                                ]
+
+                                    if (nbMessages == 0) {
+                                        let messageData = {
+                                            attachment: {
+                                                type: "template",
+                                                payload: {
+                                                    template_type: "button",
+                                                    text: textRecapPanier + "TOTAL: " + resParsed.Total,
+                                                    buttons: [
+                                                        {
+                                                            title: "Autre Produit",
+                                                            type: "postback",
+                                                            payload: "autre produit"
+                                                        },
+                                                        {
+                                                            title: "Aller en caisse",
+                                                            type: "web_url",
+                                                            url: "https://drive.intermarche.com/mon-panier",
+                                                        }
+                                                    ]
+                                                }
                                             }
-                                        }
-                                    };
-                                    for (var i = 0; i < nbMessages; i++){
+                                        };
                                         this.sendFBSenderAction(sender, "typing_on")
-                                            .then(() => this.doTextResponse(sender, myTextArray[i]))
+                                            .then(() => this.sendFBMessage(sender, messageData))
+                                    }
+                                    else {
+                                        let messageData = {
+                                            attachment: {
+                                                type: "template",
+                                                payload: {
+                                                    template_type: "button",
+                                                    text: myTextArray[nbMessages] + "TOTAL: " + resParsed.Total,
+                                                    buttons: [
+                                                        {
+                                                            title: "Autre Produit",
+                                                            type: "postback",
+                                                            payload: "autre produit"
+                                                        },
+                                                        {
+                                                            title: "Aller en caisse",
+                                                            type: "web_url",
+                                                            url: "https://drive.intermarche.com/mon-panier",
+                                                        }
+                                                    ]
+                                                }
+                                            }
+                                        };
+                                        for (var i = 0; i < nbMessages; i++) {
+                                            this.sendFBSenderAction(sender, "typing_on")
+                                                .then(() => this.doTextResponse(sender, myTextArray[i]))
+                                        }
+
+                                        this.sendFBSenderAction(sender, "typing_on")
+                                            .then(() => this.sendFBMessage(sender, messageData))
                                     }
                                     
-                                    this.sendFBSenderAction(sender, "typing_on")
-                                        .then(() => this.sendFBMessage(sender, messageData))
 
 
                                 })
