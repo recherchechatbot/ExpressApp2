@@ -361,7 +361,7 @@ class FacebookBot {
                                         else {
                                             console.log('debut cas où message trop long');
                                             myTextArray.push(textRecapPanier);
-                                            nbMessages += 1;
+                                            nbMessages += 1;//TODO replacer ce compteur pourri
                                             textRecapPanier = line;
                                         }
                                     }
