@@ -365,7 +365,7 @@ class FacebookBot {
                                     }
 
 
-                                    console.log("myTextArray icii" + JSON.stringify(myTextArray));
+                                    //console.log("myTextArray icii" + JSON.stringify(myTextArray));
                                     myStringifiedArray = JSON.stringify(myTextArray);
                                     console.log("myStringifiedArray: "+myStringifiedArray);
                                     var nbMessages = myStringifiedArray.length;
