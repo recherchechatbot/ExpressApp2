@@ -365,8 +365,8 @@ class FacebookBot {
                                         }
                                     }
 
-                                    
 
+                                    console.log("myTextArray icii"+myTextArray);
 
                                     var nbMessages = myTextArray.length;
 
