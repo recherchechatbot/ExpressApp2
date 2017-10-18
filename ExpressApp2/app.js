@@ -425,7 +425,7 @@ class FacebookBot {
                                                 }
                                             }
                                         };
-                                        for (var i = 0; i <= nbMessages; i++) {
+                                        for (var i = 0; i < nbMessages; i++) {
                                             console.log("debut for final")
                                             console.log("voyons voir le messag qu'on envoie" + myTextArray[i])
                                             this.sendFBSenderAction(sender, "typing_on")
