@@ -425,18 +425,20 @@ class FacebookBot {
                                                 }
                                             }
                                         };
-                                        for (var i = 0; i < nbMessages; i++) {
-                                            console.log("debut for final")
-                                            console.log("voyons voir le messag qu'on envoie" + myTextArray[i])
+
+                                        for (var i = 0; i < myTextArray.length; i++) {
+                                            console.log("debut for final");
+                                            let mes = myTextArray[i];
+                                            console.log("voyons voir le messag qu'on envoie" + mes);
                                             this.sendFBSenderAction(sender, "typing_on")
                                                 .then(() => this.doTextResponse(sender, "avant"))
-                                                .then(() => this.doTextResponse(sender, myTextArray[i].substring(0, 300)))
+                                                .then(() => this.doTextResponse(sender, mes.substring(0, 300)))
                                                 .then(() => this.doTextResponse(sender, "après"));
-                                            console.log("mytextarray après l'envoi: " + myTextArray[i]);
+                                            console.log("mytextarray après l'envoi: " + mes);
                                         }
 
                                         this.sendFBSenderAction(sender, "typing_on")
-                                            .then(() => this.sendFBMessage(sender, messageData))
+                                            .then(() => this.sendFBMessage(sender, messageData));
                                     }
                                     
 
