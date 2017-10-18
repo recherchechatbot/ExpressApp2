@@ -360,7 +360,6 @@ class FacebookBot {
                                         else {
                                             console.log('debut cas où message trop long');
                                             myTextArray.push(textRecapPanier);
-                                            console.log("ceci est mon array: " + JSON.stringify(myTextArray));
                                             textRecapPanier = line;
                                         }
                                     }
