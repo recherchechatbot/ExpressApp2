@@ -366,10 +366,13 @@ class FacebookBot {
                                         }
                                     }
 
+                                   
 
                                     //console.log("myTextArray icii" + JSON.stringify(myTextArray));
-                                    //let myStringifiedArray = JSON.stringify(myTextArray);
-                                    //console.log("myStringifiedArray: "+myStringifiedArray);            // Marche pas, il me renvoie le nombre de carac. dans la matrice. Sans le stringify il me renvoie pas  une matrice, juste un string donc length undefined.
+                                    let myStringifiedArray = JSON.stringify(myTextArray);
+                                    console.log("myStringifiedArray: " + myStringifiedArray);
+                                    let myParsedArray = JSON.stringify(myParsedArray);
+                                    console.log("myParsedArray: " + myParsedArray); // Marche pas, il me renvoie le nombre de carac. dans la matrice. Sans le stringify il me renvoie pas  une matrice, juste un string donc length undefined.
                                     //var nbMessages = myStringifiedArray.length;
                                     //console.log("nbmessages" + nbMessages);
 
@@ -422,6 +425,8 @@ class FacebookBot {
                                             }
                                         };
                                         for (var i = 0; i <= nbMessages; i++) {
+                                            console.log("debut for final")
+                                            console.log("voyons voir le messag qu'on envoie" + myTextArray[i])
                                             this.sendFBSenderAction(sender, "typing_on")
                                                 .then(() => this.doTextResponse(sender, myTextArray[i]))
                                         }
