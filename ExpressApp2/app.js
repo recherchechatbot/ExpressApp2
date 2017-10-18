@@ -349,7 +349,8 @@ class FacebookBot {
                                     console.log('Text recap panier' + textRecapPanier);
                                     var myTextArray = [];//Liste contenant tous les messages de taille inferieure à 640 car. sans couper de ligne en deux
                                     var nbMessages = 0;
-                                    for (var i = 0; i <= len; i++) {
+
+                                    for (var i = 0; i < len; i++) {
                                         console.log('Nous sommes dans la boucle qui parcoure le panier ' + i);
                                         let line = resParsed.Panier[i].Libelle + " - Qté: " + resParsed.Panier[i].Quantite + " - Prix tot: " + resParsed.Panier[i].PrixArticle + "\n" + "-----------" + "\n";
                                         console.log('La ligne ' + i + ' est bien définie: '+ line);
@@ -366,13 +367,13 @@ class FacebookBot {
                                         }
                                     }
 
-                                   
 
+                                    console.log("myTextArray.length = " + myTextArray.length);
                                     //console.log("myTextArray icii" + JSON.stringify(myTextArray));
                                     let myStringifiedArray = JSON.stringify(myTextArray);
                                     console.log("myStringifiedArray: " + myStringifiedArray);
-                                    let myParsedArray = JSON.parse(myTextArray);
-                                    console.log("myParsedArray: " + myParsedArray); // Marche pas, il me renvoie le nombre de carac. dans la matrice. Sans le stringify il me renvoie pas  une matrice, juste un string donc length undefined.
+                                    //let myParsedArray = JSON.parse(myTextArray);
+                                    //console.log("myParsedArray: " + myParsedArray); // Marche pas, il me renvoie le nombre de carac. dans la matrice. Sans le stringify il me renvoie pas  une matrice, juste un string donc length undefined.
                                     //var nbMessages = myStringifiedArray.length;
                                     //console.log("nbmessages" + nbMessages);
 
