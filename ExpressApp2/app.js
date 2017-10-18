@@ -371,7 +371,7 @@ class FacebookBot {
                                     //console.log("myTextArray icii" + JSON.stringify(myTextArray));
                                     let myStringifiedArray = JSON.stringify(myTextArray);
                                     console.log("myStringifiedArray: " + myStringifiedArray);
-                                    let myParsedArray = JSON.stringify(myParsedArray);
+                                    let myParsedArray = JSON.parse(myTextArray);
                                     console.log("myParsedArray: " + myParsedArray); // Marche pas, il me renvoie le nombre de carac. dans la matrice. Sans le stringify il me renvoie pas  une matrice, juste un string donc length undefined.
                                     //var nbMessages = myStringifiedArray.length;
                                     //console.log("nbmessages" + nbMessages);
