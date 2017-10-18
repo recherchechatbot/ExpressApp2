@@ -405,7 +405,7 @@ class FacebookBot {
                                                 type: "template",
                                                 payload: {
                                                     template_type: "button",
-                                                    text: myTextArray[nbMessages] + "TOTAL: " + resParsed.Total,
+                                                    text: textRecapPanier + "TOTAL: " + resParsed.Total,
                                                     buttons: [
                                                         {
                                                             title: "Autre Produit",
@@ -421,7 +421,7 @@ class FacebookBot {
                                                 }
                                             }
                                         };
-                                        for (var i = 0; i < nbMessages; i++) {
+                                        for (var i = 0; i <= nbMessages; i++) {
                                             this.sendFBSenderAction(sender, "typing_on")
                                                 .then(() => this.doTextResponse(sender, myTextArray[i]))
                                         }
