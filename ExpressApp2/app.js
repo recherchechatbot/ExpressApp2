@@ -430,7 +430,7 @@ class FacebookBot {
                                             console.log("voyons voir le messag qu'on envoie" + myTextArray[i])
                                             this.sendFBSenderAction(sender, "typing_on")
                                                 .then(() => this.doTextResponse(sender, "avant"))
-                                                .then(() => this.doTextResponse(sender, myTextArray[i]))
+                                                .then(() => this.doTextResponse(sender, myTextArray[i].substring(0, 300)))
                                                 .then(() => this.doTextResponse(sender, "après"));
                                             console.log("mytextarray après l'envoi: " + myTextArray[i]);
                                         }
