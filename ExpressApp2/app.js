@@ -345,9 +345,10 @@ class FacebookBot {
                                     //console.log("RESUUUUULTAT QUAND ON APPELLE /AfficherPanier :" + res);
                                     var resParsed = JSON.parse(res);
                                     let len = resParsed.NbArticles;
-                                    let textRecapPanier = "VOTRE PANIER" + "\n\n";
+                                    var textRecapPanier = "VOTRE PANIER" + "\n\n";
                                     console.log('Text recap panier' + textRecapPanier);
-                                    let myTextArray = [];//Liste contenant tous les messages de taille inferieure à 640 car. sans couper de ligne en deux
+                                    var myTextArray = [];//Liste contenant tous les messages de taille inferieure à 640 car. sans couper de ligne en deux
+                                    var nbMessages = 0;
                                     for (var i = 0; i <= len; i++) {
                                         console.log('Nous sommes dans la boucle qui parcoure le panier ' + i);
                                         let line = resParsed.Panier[i].Libelle + " - Qté: " + resParsed.Panier[i].Quantite + " - Prix tot: " + resParsed.Panier[i].PrixArticle + "\n" + "-----------" + "\n";
@@ -360,16 +361,17 @@ class FacebookBot {
                                         else {
                                             console.log('debut cas où message trop long');
                                             myTextArray.push(textRecapPanier);
+                                            nbMessages += 1;
                                             textRecapPanier = line;
                                         }
                                     }
 
 
                                     //console.log("myTextArray icii" + JSON.stringify(myTextArray));
-                                    let myStringifiedArray = JSON.stringify(myTextArray);
-                                    console.log("myStringifiedArray: "+myStringifiedArray);
-                                    var nbMessages = myStringifiedArray.length;
-                                    console.log("nbmessages" + nbMessages);
+                                    //let myStringifiedArray = JSON.stringify(myTextArray);
+                                    //console.log("myStringifiedArray: "+myStringifiedArray);            // Marche pas, il me renvoie le nombre de carac. dans la matrice. Sans le stringify il me renvoie pas  une matrice, juste un string donc length undefined.
+                                    //var nbMessages = myStringifiedArray.length;
+                                    //console.log("nbmessages" + nbMessages);
 
 
                                     if (nbMessages == 0) {
