@@ -305,38 +305,29 @@ class FacebookBot {
     }
 
     processMessageEvent(event) {
-        console.log("VOILI VOILOUUUUUUUUUUUU : " + JSON.stringify(event));
+        
 
         const sender = event.sender.id;
         const text = this.getEventText(event);
-        console.log('BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB');
-        console.log("le texte saisi est : " + text);
 
         if (text) {
             const userProfile = UserStore.getByFbId(sender);
-
             var existeUser = !isEmpty(userProfile);
-
             if (existeUser && text == "deconnecter") {
-                console.log("LE USER EXISTE ON LUI ENVOIE UN BOUTON DE DECO");
                 this.sendAccountUnlinking(sender);
             }
             else if (!existeUser && text == "connecter") {
-                console.log("LE USER N'EXISTE PAS ON LUI ENVOIE UN BOUTON DE CO");
                 this.sendAccountLinking(sender);
             }
             else if (existeUser && text.startsWith("idP=")) {
                 var id = parseInt(text.replace('idP=', ''));
-                console.log("id du produit à ajouter" + id);
                 //this.addProductBasket(userProfile.mcoId, id);
                 var cookieSession = 'ASP.NET_SessionId=' + userProfile.foSession;
                 this.sendFBSenderAction(sender, "typing_on");
-
                 this.hitFO(cookieSession)
                 .then(() => {
                     this.addProductBasketFront(id, cookieSession)
                         .then((r) => {
-                            console.log("on est dans le then");
                             this.sendFBSenderAction(sender, "typing_on")
                                 .then(() => this.doTextResponse(sender, "Produit bien ajouté au panier"))
                             //let panier = JSONbig.parse(r);
@@ -346,14 +337,11 @@ class FacebookBot {
                                     var resParsed = JSON.parse(res);
                                     let len = resParsed.NbArticles;
                                     var textRecapPanier = "VOTRE PANIER" + "\n\n";
-                                    console.log('Text recap panier' + textRecapPanier);
                                     var myTextArray = [];//Liste contenant tous les messages de taille inferieure à 640 car. sans couper de ligne en deux
                                     var nbMessages = 0;
 
                                     for (var i = 0; i < len; i++) {
-                                        console.log('Nous sommes dans la boucle qui parcoure le panier ' + i);
                                         let line = resParsed.Panier[i].Libelle + " - Qté: " + resParsed.Panier[i].Quantite + " - Prix tot: " + resParsed.Panier[i].PrixArticle + "\n" + "-----------" + "\n";
-                                        console.log('La ligne ' + i + ' est bien définie: '+ line);
                                         if (textRecapPanier.length + line.length <= FB_TEXT_LIMIT) {
                                             console.log("cas où on est en dessous de la limite");
                                             textRecapPanier += line;
@@ -1822,7 +1810,7 @@ app.post('/ai', (req, res) => {
             console.log("Ceci est le produit numero 1 : " + produit1);
 
 
-            getProduit(body.result.parameters, user_profile.idPdv, cookieSession)
+            getProduitlo(body.result.parameters, user_profile.idPdv, cookieSession)
                 .then((r) => {
                     let url = "https://drive.intermarche.com/" + user_profile.idPdv + "-pdv/produit/recherche/" + produit1;
                     console.log("ceci est l'url qu'on passe : " + url);
