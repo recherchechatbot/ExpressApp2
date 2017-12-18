@@ -1336,7 +1336,7 @@ app.post('/ai', (req, res) => {
         if (existeUser) {
             var cookieSession = 'ASP.NET_SessionId=' + user_profile.foSession + ';&IdPdv=' + user_profile.idPdv;
             let produit1 = body.result.parameters['Nourriture'];
-            getProduitlo(body.result.parameters, user_profile.idPdv, cookieSession)
+            getProduit(body.result.parameters, user_profile.idPdv, cookieSession)
                 .then((r) => {
                     let url = "https://drive.intermarche.com/" + user_profile.idPdv + "-pdv/produit/recherche/" + produit1;
                     let text = "Resultats de votre recherche sur le point de vente de " + user_profile.namePdvFavori;
