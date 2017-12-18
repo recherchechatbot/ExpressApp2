@@ -17,7 +17,6 @@ class UserStore extends Store {
         this.set(email, user);
         return user;
     }
-
     update(email, updateObject) {
         const currentUser = this.get(email);
         if (!currentUser) { return {}; }
@@ -26,7 +25,6 @@ class UserStore extends Store {
         this.set(email, updatedUser);
         return updatedUser;
     }
-
     getByMcoId(mcoId) {
         console.log("DEBUT getByMcoId mcoId = " + mcoId);
         let currentUser = {};
@@ -39,7 +37,6 @@ class UserStore extends Store {
         console.log("FIN getByMcoId");
         return currentUser;
     }
-
     getByFbId(fbId) {
         console.log("DEBUT getByFbId fbId = " + fbId);
         let currentUser = {};
@@ -54,7 +51,6 @@ class UserStore extends Store {
         console.log("FIN getByFbId");
         return currentUser;
     }
-
     linkMcoAccount(email, mcoId) {
         return this.update(email, { mcoId });
     }
@@ -62,7 +58,6 @@ class UserStore extends Store {
     linkFoSession(email, foSession) {
         return this.update(email, { foSession });
     }
-
     linkFbAccount(mcoId, fbId) {
         console.log("DEBUT linkFbAccount fbId = " + fbId + " mcoId = " + mcoId);
         const currentUser = this.getByMcoId(mcoId);

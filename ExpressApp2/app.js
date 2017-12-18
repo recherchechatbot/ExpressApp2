@@ -34,6 +34,7 @@ app.use(bodyParser.text({ type: 'application/json' }));
 app.set('view engine', 'ejs');
 app.use(express.static('public'));
 
+//Classe Facebook, faite par dialogflow, ocntient toutes les fonctions utiles pour communiquer avec facebook
 class FacebookBot {
     constructor() {
         this.apiAiService = apiai(APIAI_ACCESS_TOKEN, { language: APIAI_LANG, requestSource: "fb" });
@@ -1148,17 +1149,434 @@ class FacebookBot {
 
 }
 
+/**
+ * User login route is used to authorize account_link actions
+ */
+app.post('/login', function (req, res) {
+    var resultat = JSONbig.parse(req.body);
+    var authCode = null;
+    loginRC(resultat.email, resultat.mdp)
+        .then((rep) => {
+            if (rep.id) {
+                loginMCommerce(resultat.email, resultat.mdp, rep.id)
+                    .then((r) => {
+                        if (r.TokenAuthentification) {
+                            if (!UserStore.has(resultat.email)) {
+                                UserStore.insert(resultat.email);
+                                console.log("Le user n'existe pas, on l'insert");
+                            }
+                            else {
+                                console.log("Le user existe déjà");
+                            }
+                            authCode = r.TokenAuthentification
+                            const redirectURISuccess = `${resultat.redirectURI}&authorization_code=${authCode}`;
+                            UserStore.linkMcoAccount(resultat.email, authCode);
+                            getAspNetSessionId(resultat.email, resultat.mdp)
+                                .then((c) => {
+                                    UserStore.linkFoSession(resultat.email, c["ASP.NET_SessionId"]);
+                                })
+                                .catch(err => {
+                                    console.log("impossible de UserStore.linkFoSession");
+                                });
+                            return res.json({
+                                EstEnErreur: false,
+                                urlRedirection: redirectURISuccess
+                            });
+                        }
+                        else {
+                            console.log("le token n'a pas été récupéré mais la réponse est ok");
+                            return res.json({
+                                EstEnErreur: true,
+                                urlRedirection: ""
+                            });
+                        }
+                    })
+            }
+            else {
+                console.log("Impossible de récuperer l'idRC");
+                return res.json({
+                    EstEnErreur: true,
+                    urlRedirection: ""
+                });
+            }
+        })
+        .catch(err => {
+            return res.json({
+                EstEnErreur: true,
+                urlRedirection: ""
+            });
+        });
+});
 
-let facebookBot = new FacebookBot();
+//Gestion des intents en utilisant leur action name
+app.post('/ai', (req, res) => {
+    var body = JSONbig.parse(req.body);
+    console.log("BODY /AI " + JSON.stringify(body));
+    if (body.result.action === 'recherche_libre_recette' || body.result.action === 'input_ingredient_recette') {
+        const sender_id = body.originalRequest.data.sender.id;
+        const user_profile = UserStore.getByFbId(sender_id);
+        var existeUser = !isEmpty(user_profile);
+        if (existeUser) {
+            const token_auth = user_profile.mcoId;
+            let text = "Voici les resultats de votre recherche";
+            let nourriture1 = body.result.parameters['Nourriture'];
+            getRecette(body.result.parameters, token_auth)
+                .then((r) => {
+                    let url = "https://drive.intermarche.com/" + user_profile.idPdv + "-pdv/recette/recherche/" + nourriture1;
+                    var listeRecette = JSONbig.parse(r);
+                    let messagedata = {
+                        "attachment": {
+                            "type": "template",
+                            "payload": {
+                                "template_type": "generic",
+                                "image_aspect_ratio": "square",
+                                "elements": [
+                                    {
+                                        "title": listeRecette.Recettes[0].Titre,
+                                        "image_url": listeRecette.Recettes[0].ImageUrl,
+                                        "subtitle": "Vous serez redirigé vers notre site web",
+                                        "buttons": [
+                                            {
+                                                "title": "Cliquez ici",
+                                                "type": "web_url",
+                                                "url": "http://google.fr",
+                                                "webview_height_ratio": "tall"
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "title": listeRecette.Recettes[1].Titre,
+                                        "image_url": listeRecette.Recettes[1].ImageUrl,
+                                        "subtitle": "Vous serez redirigé vers notre site web",
+                                        "buttons": [
+                                            {
+                                                "title": "Cliquez ici",
+                                                "type": "web_url",
+                                                "url": "http://google.fr",
+                                                "webview_height_ratio": "tall"
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "title": "Plus de résultats sur notre site",
+                                        "image_url": "https://img15.hostingpics.net/pics/159660logodrive.jpg",
+                                        "subtitle": "Vous serez redirigé vers notre site internet",
+                                        "default_action": {
+                                            "type": "web_url",
+                                            "url": url,    //TODO mettre tirets entre espaces si il y a dans le nom du pdv favori
+                                            "webview_height_ratio": "tall"
+                                        },
+                                        "buttons": [
+                                            {
+                                                "title": "Par ici",
+                                                "type": "web_url",
+                                                "url": url, /*"https://drive.intermarche.com/" + user_profile.idPdv + "-pdv/produit/recherche/" + nourriture1,*/ //TODO mettre tirets entre espaces si il y a dans le nom du pdv favori
+                                                "webview_height_ratio": "tall"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        },
+                        "quick_replies": [
+                            {
+                                "content_type": "text",
+                                "title": "Autre recherche",
+                                "payload": "Autre recherche"
+                            },
+                            {
+                                "content_type": "text",
+                                "title": "Menu Principal",
+                                "payload": "Menu Principal"
+                            }
+                        ]
+                    };
+                    facebookBot.sendFBSenderAction(sender_id, "typing_on")
+                        .then(() => facebookBot.doTextResponse(sender_id, text))
+                        .then(() => facebookBot.sleep(1000))
+                        .then(() => facebookBot.sendFBSenderAction(sender_id, "typing_on"))
+                        .then(() => facebookBot.sendFBMessage(sender_id, messagedata))
+                })
+                .catch(err => {
+                    return res.status(400).json({
+                        speech: "ERREUR : " + err,
+                        message: "ERREUR : " + err,
+                        source: 'recherche_libre_recette'
+                    });
+                });
+        }
+        else {
+            return res.json({
+                speech: "Recettes",
+                data: { "facebook": facebookBot.getButtonLogin() },
+                source: 'recherche_libre_recette'
+            });
+        }
+    }
+    else if (body.result.action === 'welcome_default') {
+        const sender_id = body.originalRequest.data.sender.id;
+        const user_profile = UserStore.getByFbId(sender_id);
+        var existeUser = !isEmpty(user_profile);
+        if (existeUser) {
+            const text = 'Bonjour'; //TODO faire un text un peu mieux ici
+            facebookBot.doTextResponse(sender_id, text);
+        }
+        else {
+            return res.json({
+                speech: "Welcome",
+                data: { "facebook": facebookBot.getButtonLogin() },
+                source: 'welcome_default'
+            });
+        }
+    }
+    else if (body.result.action === 'recherche_libre_courses' || body.result.action === 'input_recherche_produit') {
+        const sender_id = body.originalRequest.data.sender.id;
+        const user_profile = UserStore.getByFbId(sender_id);
+        var existeUser = !isEmpty(user_profile);
+        if (existeUser) {
+            var cookieSession = 'ASP.NET_SessionId=' + user_profile.foSession + ';&IdPdv=' + user_profile.idPdv;
+            let produit1 = body.result.parameters['Nourriture'];
+            getProduitlo(body.result.parameters, user_profile.idPdv, cookieSession)
+                .then((r) => {
+                    let url = "https://drive.intermarche.com/" + user_profile.idPdv + "-pdv/produit/recherche/" + produit1;
+                    let text = "Resultats de votre recherche sur le point de vente de " + user_profile.namePdvFavori;
+                    let messagedata = {
+                        "attachment": {
+                            "type": "template",
+                            "payload": {
+                                "template_type": "list",
+                                "top_element_style": "compact",
+                                //"image_aspect_ratio": "square", //A voir si c'est mieux'
+                                "elements": [],
+                                "buttons": [
+                                    {
+                                        "title": "Voir plus de résultats sur notre site",
+                                        "type": "web_url",
+                                        "url": url,
+                                        "webview_height_ratio": "tall"
+                                    }
+                                ]
+                            }
+                        },
+                        "quick_replies": [
+                            {
+                                "content_type": "text",
+                                "title": "Autre Produit",
+                                "payload": "autre produit"
+                            },
+                            {
+                                "content_type": "text",
+                                "title": "Menu Principal",
+                                "payload": "Menu Principal"
+                            }
+                        ]
+                    };
+                    var nbProduits = Math.min(3, r.length);
+                    for (var i = 0; i < nbProduits; i++) {
+                        var lineProduct = {
+                            "title": r[i].Libelle,
+                            "image_url": r[i].NomImage,
+                            "subtitle": r[i].Prix + ' (' + r[i].Conditionnement + ')' + '\n' + r[i].PrixParQuantite,
+                            "buttons": [
+                                {
+                                    "title": "Ajouter au panier",
+                                    "type": "postback",
+                                    "webview_height_ratio": "tall",
+                                    "payload": "idP=" + r[i].IdProduit
+                                }
+                            ]
+                        }
+                        messagedata.attachment.payload.elements.push(lineProduct);
+                    }
+                    var lineFinalProduct = {
+                        "title": r[nbProduits].Libelle,
+                        "image_url": r[nbProduits].NomImage,
+                        "subtitle": r[nbProduits].Prix + ' (' + r[nbProduits].Conditionnement + ')' + '\n' + r[nbProduits].PrixParQuantite,
+                        "buttons": [
+                            {
+                                "title": "Ajouter au panier",
+                                "type": "postback",
+                                "webview_height_ratio": "tall",
+                                "payload": "idP=" + r[nbProduits].IdProduit
+                            }
+                        ]
+                    }
+                    messagedata.attachment.payload.elements.push(lineFinalProduct);
+                    facebookBot.sendFBSenderAction(sender_id, "typing_on")
+                        .then(() => facebookBot.doTextResponse(sender_id, text))
+                        .then(() => facebookBot.sleep(1000))
+                        .then(() => facebookBot.sendFBSenderAction(sender_id, "typing_on"))
+                        .then(() => facebookBot.sendFBMessage(sender_id, messagedata))
+                })
+                .catch(err => {
+                    return res.status(400).json({
+                        speech: "ERREUR : " + err,
+                        message: "ERREUR : " + err,
+                        source: 'recherche_libre_courses'
+                    });
+                });
+        }
+        else {
+            return res.json({
+                speech: "Courses",
+                data: { "facebook": facebookBot.getButtonLogin() },
+                source: 'recherche_libre_courses'
+            });
+        }
+    }
+    else if (body.result.action === 'Localisation.Recue') {
+        console.log("body.result = " + JSON.stringify(body.result));
+        let context = getContextByName(body.result.contexts, "facebook_location");
+        if (context) {
+            let long = context.parameters.long;
+            let lat = context.parameters.lat;
+            getMagasin(lat, long)
+                .then((m) => {
+                    var listeMagasins = JSONbig.parse(m);
+                    if (listeMagasins[0]) {
+                        return res.json({
+                            speech: "Id premier magasin: " + listeMagasins[0].IdPdv,
+                            source: 'Localisation.Recue'
+                        });
+                    }
+                    return res.json({
+                        speech: "Aucun magasin",
+                        source: 'Localisation.Recue'
+                    });
+                })
+                .catch(err => {
+                    return res.status(400).json({
+                        speech: "ERREUR : " + err,
+                        message: "ERREUR : " + err,
+                        source: 'Localisation.Recue'
+                    });
+                });
+        }
+        else {
+            return res.json({
+                speech: "Localisation non recue",
+                source: 'Localisation.Recue'
+            });
+        }
+    }
+    else if (body.result.action === 'input.unknown') {
+        return res.json({
+            speech: "Je suis désolé mais je ne comprends pas encore votre requête. Souhaitez vous que je vous redirige vers un interlocuteur humain?",
+            source: 'input.unknown'
+        });
+    }
+    else if (body.result.action === 'Menu.Principal') {
+        const sender_id = body.originalRequest.data.sender.id;
+        const user_profile = UserStore.getByFbId(sender_id);
+        var existeUser = !isEmpty(user_profile);
+        if (existeUser) {
+            let text = "Comment puis-je vous aider? Vous pouvez choisir une catégorie dans le menu ci-dessous ou directement me poser votre question.Vous pouvez revenir à ce menu à tout moment, tout simplement en tapant la commande \"menu\".";
+            let messagedata = {
+                "attachment": {
+                    "type": "template",
+                    "payload": {
+                        "template_type": "generic",
+                        "elements": [
+                            {
+                                "title": "Menu Principal",
+                                "image_url": "https://img15.hostingpics.net/pics/159660logodrive.jpg",
+                                "buttons": [
+                                    {
+                                        "title": "Recettes",
+                                        "type": "postback",
+                                        "webview_height_ratio": "tall",
+                                        "payload": "Recettes"
+                                    },
+                                    {
+                                        "title": "Faire ses courses",
+                                        "type": "postback",
+                                        "webview_height_ratio": "tall",
+                                        "payload": "Faire ses courses"
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                }
+            };
 
-facebookBot.setupGetStartedButton();
-facebookBot.setupPersistentMenu();
-facebookBot.setupGreetingText();
+            facebookBot.sendFBSenderAction(sender_id, "typing_on")
+                .then(() => facebookBot.doTextResponse(sender_id, text))
+                .then(() => facebookBot.sleep(1000))
+                .then(() => facebookBot.sendFBSenderAction(sender_id, "typing_on"))
+                .then(() => facebookBot.sendFBMessage(sender_id, messagedata))
+        }
+        else {
+            return res.json({
+                speech: "Menu",
+                data: { "facebook": facebookBot.getButtonLogin() },
+                source: 'Menu.Principal'
+            });
+        }
+    }
+});
 
+//Echange avec dialogflow
+app.post('/webhook/', (req, res) => {
+    try {
+        const data = JSONbig.parse(req.body);
+        if (data.entry) {
+            let entries = data.entry;
+            entries.forEach((entry) => {
+                let messaging_events = entry.messaging;
+                if (messaging_events) {
+                    messaging_events.forEach((event) => {
+                        if (event.message && !event.message.is_echo) {
+                            if (event.message.attachments) {
+                                let locations = event.message.attachments.filter(a => a.type === "location");
+                                // delete all locations from original message
+                                event.message.attachments = event.message.attachments.filter(a => a.type !== "location");
+                                if (locations.length > 0) {
+                                    locations.forEach(l => {
+                                        let locationEvent = {
+                                            sender: event.sender,
+                                            postback: {
+                                                payload: "FACEBOOK_LOCATION",
+                                                data: l.payload.coordinates
+                                            }
+                                        };
+                                        facebookBot.processFacebookEvent(locationEvent);
+                                    });
+                                }
+                            }
+                            facebookBot.processMessageEvent(event);
+                        } else if (event.postback && event.postback.payload) {
+                            if (event.postback.payload === "FACEBOOK_WELCOME") {
+                                facebookBot.processFacebookEvent(event);
+                            } else {
+                                facebookBot.processMessageEvent(event);
+                            }
+                        }
+                        else if (event.account_linking) {
+                            console.log('ON RENNNNNNNTRE DANS ACCCOUUUUUNT LINKIIIIIIIIIIIIIIIIIIIING')
+                            facebookBot.receivedAccountLink(event);
+                        }
+                        else if (event.optin) {
+                            facebookBot.receivedAuthentication(event);
+                        }
+                    });
+                }
+            });
+        }
+        return res.status(200).json({
+            status: "ok"
+        });
+    } catch (err) {
+        return res.status(400).json({
+            status: "error",
+            error: err
+        });
+    }
+});
 
+//Recherche recette en dur car MCO trop long pour le timeout imposé par dialogflow
 app.get('/recherche/recette/:m', (req, res) => {
     let mot = req.param('m');
-
     switch (mot.toLowerCase()) {
         case "poulet":
             return res.status(200).json({
@@ -1224,7 +1642,6 @@ app.get('/recherche/recette/:m', (req, res) => {
                 ]
 
             });
-
             break;
         case "tomate":
             return res.status(200).json({
@@ -1285,7 +1702,6 @@ app.get('/recherche/recette/:m', (req, res) => {
                         "ProduitsAnnexes": []
                     }
                 ]
-
             });
             break;
         case "concombre":
@@ -1342,7 +1758,6 @@ app.get('/recherche/recette/:m', (req, res) => {
 
             });
             break;
-
         default:
             return res.status(200).json({
                 "Recettes": [{
@@ -1350,110 +1765,42 @@ app.get('/recherche/recette/:m', (req, res) => {
                     "ImageUrl": "https://www.formassembly.com/images/illustrations/robot-msg-error.png"
                 }
                 ]
-
             });
             break;
     }
 });
 
-app.post('/webhook/', (req, res) => {
-    try {
-        const data = JSONbig.parse(req.body);
-
-        console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA ");
-        //const test = JSONbig.parse(req.originalRequest);
-
-        //console.log("c'est bon c'est gooooooooooooooooooood " + JSON.stringify(test));
-        //console.log("webhooooooooooooooooooooooooooook reeqqqqqqqqqqqqqqqqqq = " + JSON.stringify(test));
-
-        if (data.entry) {
-            let entries = data.entry;
-            entries.forEach((entry) => {
-                let messaging_events = entry.messaging;
-                if (messaging_events) {
-                    messaging_events.forEach((event) => {
-                        if (event.message && !event.message.is_echo) {
-
-                            if (event.message.attachments) {
-                                let locations = event.message.attachments.filter(a => a.type === "location");
-
-                                // delete all locations from original message
-                                event.message.attachments = event.message.attachments.filter(a => a.type !== "location");
-
-                                if (locations.length > 0) {
-                                    locations.forEach(l => {
-                                        let locationEvent = {
-                                            sender: event.sender,
-                                            postback: {
-                                                payload: "FACEBOOK_LOCATION",
-                                                data: l.payload.coordinates
-                                            }
-                                        };
-
-                                        facebookBot.processFacebookEvent(locationEvent);
-                                    });
-                                }
-                            }
-                            console.log("EVENTICIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII" + event);
-
-                            facebookBot.processMessageEvent(event);
-                        } else if (event.postback && event.postback.payload) {
-                            if (event.postback.payload === "FACEBOOK_WELCOME") {
-                                facebookBot.processFacebookEvent(event);
-                            } else {
-                                facebookBot.processMessageEvent(event);
-                            }
-                        }
-                        else if (event.account_linking)
-                        {
-                            console.log('ON RENNNNNNNTRE DANS ACCCOUUUUUNT LINKIIIIIIIIIIIIIIIIIIIING')
-                            facebookBot.receivedAccountLink(event);
-                        }
-                        else if (event.optin)
-                        {
-                            facebookBot.receivedAuthentication(event);
-                        }
-                    });
-                }
-            });
-        }
-
-        return res.status(200).json({
-            status: "ok"
-        });
-    } catch (err) {
-        return res.status(400).json({
-            status: "error",
-            error: err
-        });
-    }
-
-});
-
-
-
+//Oauth/page de connexion
 app.get('/authorize', function (req, res) {
     var accountLinkingToken = req.query.account_linking_token;
     var redirectURI = req.query.redirect_uri;
-
-
     // Redirect users to this URI on successful login
-
     res.render('authorize', {
         accountLinkingToken: accountLinkingToken,
         redirectURI: redirectURI
     });
 });
 
-//email: email,
-//    motdepasse: mdp,
-//        veutcartefid: false,
-//            idrc: "E6D86BF5-FAE6-4F41-8978-07B04AC6DF63"
+//Authorize request facebook avec un verify token aleatoire
+app.get('/webhook/', (req, res) => {
+    if (req.query['hub.verify_token'] === FB_VERIFY_TOKEN) {
+        res.send(req.query['hub.challenge']);
+        setTimeout(() => {
+            facebookBot.doSubscribeRequest();
+        }, 3000);
+    } else {
+        res.send('Error, wrong validation token');
+    }
+});
+
+let facebookBot = new FacebookBot();
+facebookBot.setupGetStartedButton();
+facebookBot.setupPersistentMenu();
+facebookBot.setupGreetingText();
 
 function loginMCommerce(email, mdp, idrc) {
     console.log("Email : " + email);
     console.log("Mdp : " + mdp);
-
     return new Promise((resolve, reject) => {
         request({
             url: MCO_URL + 'api/v1/loginRc',
@@ -1473,17 +1820,14 @@ function loginMCommerce(email, mdp, idrc) {
                 console.log('Error: ', response.body.error);
                 reject(new Error(response.body.error));
             }
-
             resolve(response.body);
         });
     });
 }
 
-
 function loginRC(email, mdp) {
     console.log("Email : " + email);
     console.log("Mdp : " + mdp);
-
     return new Promise((resolve, reject) => {
         request({
             url: RC_URL + 'ReferentielClient/v1/login',
@@ -1505,7 +1849,6 @@ function loginRC(email, mdp) {
                 console.log('Error: ', response.body.error);
                 reject(new Error(response.body.error));
             }
-
             resolve(response.body);
         });
     });
@@ -1527,12 +1870,10 @@ function getAspNetSessionId(email, mdp) {
             referer: 'http://google.fr'
         }
     };
-
     return new Promise((resolve, reject) => {
         request(options, (error, response) => {
             if (!error && response.statusCode == 200) {
                 console.log("getAspNetSessionId retourne : " + response.headers['set-cookie']);
-
                 resolve(parseCookies(response.headers['set-cookie'].toString()));
             }
             else {
@@ -1543,609 +1884,8 @@ function getAspNetSessionId(email, mdp) {
     });
 }
 
-/**
- * User login route is used to authorize account_link actions
- */
-app.post('/login', function (req, res) {
-
-    var resultat = JSONbig.parse(req.body);
-
-
-    console.log("VALEUR DE BODY : " + JSON.stringify(req.body));
-
-    //const userLogin = UserStore.get(username);
-    //if (!userLogin || userLogin.password !== password) {
-    //    res.render('authorize', {
-    //        redirectURI,
-    //        username,
-    //        password,
-    //        errorMessage: !userLogin
-    //            ? 'Uh oh. That username doesn’t exist. Please use the demo account or try again.' // eslint-disable-line max-len
-    //            : 'Oops. Incorrect password',
-    //        errorInput: !userLogin ? 'username' : 'password',
-    //    });
-    //} else {
-    //    linkAccountToMessenger(res, userLogin.username, redirectURI);
-    //}
-
-    var authCode = null;
-
-    loginRC(resultat.email, resultat.mdp)
-        .then((rep) => {
-            console.log("REPONSE du RCCCCCCCCCCCCCC");
-            console.log("Res: " + JSON.stringify(rep));
-            console.log("Res.id :" + rep.id);
-
-            if (rep.id){
-                loginMCommerce(resultat.email, resultat.mdp, rep.id)
-                    .then((r) => {
-                        console.log("ICIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII");
-                        console.log("rrrrrrrrrrrrrrrrrrr" + JSON.stringify(r));
-
-                        if (r.TokenAuthentification) {
-
-                            if (!UserStore.has(resultat.email)) {
-                                UserStore.insert(resultat.email);
-                                console.log("Le user n'existe pas, on l'insert");
-                            }
-                            else {
-                                console.log("Le user existe déjà");
-                            }
-
-                            authCode = r.TokenAuthentification
-                            console.log("le token a bien été récupéré");
-                            const redirectURISuccess = `${resultat.redirectURI}&authorization_code=${authCode}`;
-                            console.log("URL DE REDIRECTION: " + redirectURISuccess);
-
-                            console.log("on link le mco " + authCode + " avec l'email " + resultat.email);
-                            UserStore.linkMcoAccount(resultat.email, authCode);
-
-                            getAspNetSessionId(resultat.email, resultat.mdp)
-                                .then((c) => {
-                                    UserStore.linkFoSession(resultat.email, c["ASP.NET_SessionId"]);
-                                })
-                                .catch(err => {
-                                    console.log("impossible de UserStore.linkFoSession");
-                                });
-
-                            return res.json({
-                                EstEnErreur: false,
-                                urlRedirection: redirectURISuccess
-                            });
-                        }
-                        else {
-                            console.log("le token n'a pas été récupéré mais la réponse est ok");
-                            return res.json({
-                                EstEnErreur: true,
-                                urlRedirection: ""
-                            });
-                        }
-                    })
-            }
-            else {
-                console.log("Impossible de récuperer l'idRC");
-                return res.json({
-                    EstEnErreur: true,
-                    urlRedirection: ""
-                });
-            }
-        })
-        .catch(err => {
-            return res.json({
-                EstEnErreur: true,
-                urlRedirection: ""
-            });
-        });
-
-
-    /*
-      The auth code can be any thing you can use to uniquely identify a user.
-      Once the redirect below happens, this bot will receive an account link
-      message containing this auth code allowing us to identify the user.
-      NOTE: It is considered best practice to use a unique id instead of
-      something guessable like a users username so that malicious
-      users cannot spoof a link.
-     */
-    //const authCode = uuid();
-
-    // set the messenger id of the user to the authCode.
-    // this will be replaced on successful account link
-    // with the users id.
-
-    // Redirect users to this URI on successful login
-
-});
-
-app.post('/ai', (req, res) => {
-
-    var body = JSONbig.parse(req.body);
-
-    console.log("BODY /AI " + JSON.stringify(body));
-
-    if (body.result.action === 'recherche_libre_recette' || body.result.action === 'input_ingredient_recette') {
-        const sender_id = body.originalRequest.data.sender.id;
-        const user_profile = UserStore.getByFbId(sender_id);
-        var existeUser = !isEmpty(user_profile);
-
-        if (existeUser) {
-            console.log("ACTION RECONNUE : recherche_libre_recette ou input_ingredient_recette")
-            console.log("DEBUT appel WS recettes");
-            const token_auth = user_profile.mcoId;
-            let text = "Voici les resultats de votre recherche";
-            let nourriture1 = body.result.parameters['Nourriture'];
-
-            getRecette(body.result.parameters, token_auth)
-                .then((r) => {
-                    let url = "https://drive.intermarche.com/" + user_profile.idPdv + "-pdv/recette/recherche/" + nourriture1;
-                    console.log('c\'est l\'urrrrrrlllllll: ' + url);
-                    var listeRecette = JSONbig.parse(r);
-                    let messagedata = {
-                        "attachment": {
-                            "type": "template",
-                            "payload": {
-                                "template_type": "generic",
-                                "image_aspect_ratio":"square",
-                                "elements": [
-                                    {
-                                        "title": listeRecette.Recettes[0].Titre,
-                                        "image_url": listeRecette.Recettes[0].ImageUrl,
-                                        "subtitle": "Vous serez redirigé vers notre site web",
-                                        "buttons": [
-                                            {
-                                                "title": "Cliquez ici",
-                                                "type": "web_url",
-                                                "url": "http://google.fr",
-                                                "webview_height_ratio": "tall"
-                                            }
-                                        ]
-                                    },
-                                    {
-                                        "title": listeRecette.Recettes[1].Titre,
-                                        "image_url": listeRecette.Recettes[1].ImageUrl,
-                                        "subtitle": "Vous serez redirigé vers notre site web",
-                                        "buttons": [
-                                            {
-                                                "title": "Cliquez ici",
-                                                "type": "web_url",
-                                                "url": "http://google.fr",
-                                                "webview_height_ratio": "tall"
-                                            }
-                                        ]
-                                    },
-                                    {
-                                        "title": "Plus de résultats sur notre site",
-                                        "image_url": "https://img15.hostingpics.net/pics/159660logodrive.jpg",
-                                        "subtitle": "Vous serez redirigé vers notre site internet",
-                                        "default_action": {
-                                            "type": "web_url",
-                                            "url":  url,    //TODO mettre tirets entre espaces si il y a dans le nom du pdv favori
-                                            "webview_height_ratio": "tall"
-                                        },
-                                        "buttons": [
-                                            {
-                                                "title": "Par ici",
-                                                "type": "web_url",
-                                                "url": url, /*"https://drive.intermarche.com/" + user_profile.idPdv + "-pdv/produit/recherche/" + nourriture1,*/ //TODO mettre tirets entre espaces si il y a dans le nom du pdv favori
-                                                "webview_height_ratio": "tall"
-                                            }
-                                        ]
-                                    }
-                                ]
-                            }
-                        },
-                        "quick_replies": [
-                            {
-                                "content_type": "text",
-                                "title": "Autre recherche",
-                                "payload": "Autre recherche"
-                            },
-                            {
-                                "content_type": "text",
-                                "title": "Menu Principal",
-                                "payload": "Menu Principal"
-                            }
-                        ]
-                    };
-                    console.log('juste avant le dotextresponse');
-                    facebookBot.sendFBSenderAction(sender_id, "typing_on")
-                        .then(() => facebookBot.doTextResponse(sender_id, text))
-                        .then(() => facebookBot.sleep(1000))
-                        .then(() => facebookBot.sendFBSenderAction(sender_id, "typing_on"))
-                        .then(() => facebookBot.sendFBMessage(sender_id, messagedata))
-                    
-
-                    //return res.json({
-                    //    speech: "Recettes",
-                    //    data: { "facebook": messagedata },
-                    //    source: 'recherche_libre_recette'
-                    //});
-                })
-                .catch(err => {
-                    return res.status(400).json({
-                        speech: "ERREUR : " + err,
-                        message: "ERREUR : " + err,
-                        source: 'recherche_libre_recette'
-                    });
-                });
-        }
-        else {
-            return res.json({
-                speech: "Recettes",
-                data: { "facebook": facebookBot.getButtonLogin() },
-                source: 'recherche_libre_recette'
-            });
-        }
-    }
-    else if (body.result.action === 'welcome_default') {
-        const sender_id = body.originalRequest.data.sender.id;
-        const user_profile = UserStore.getByFbId(sender_id);
-        var existeUser = !isEmpty(user_profile);
-        if (existeUser) {
-            console.log('existe user dans welcome intent');
-            const text = 'Bonjour'; //TODO faire un text un peu mieux ici
-            facebookBot.doTextResponse(sender_id, text);
-        }
-        else {
-            return res.json({
-                speech: "Welcome",
-                data: { "facebook": facebookBot.getButtonLogin() },
-                source: 'welcome_default'
-            });
-        }
-    }
-    else if (body.result.action === 'recherche_libre_courses' || body.result.action === 'input_recherche_produit')
-    {
-        const sender_id = body.originalRequest.data.sender.id;
-        const user_profile = UserStore.getByFbId(sender_id);
-
-        var existeUser = !isEmpty(user_profile);
-
-        if (existeUser) {
-            console.log("ACTION RECONNUE : recherche_libre_courses ou input_recherche_produit ")
-            console.log("DEBUT appel FO");
-
-            var cookieSession = 'ASP.NET_SessionId=' + user_profile.foSession + ';&IdPdv=' + user_profile.idPdv;
-            console.log("Voila la valeur qu'on passe : " + cookieSession);
-            let produit1 = body.result.parameters['Nourriture'];
-            console.log("Ceci est le produit numero 1 : " + produit1);
-
-
-            getProduitlo(body.result.parameters, user_profile.idPdv, cookieSession)
-                .then((r) => {
-                    let url = "https://drive.intermarche.com/" + user_profile.idPdv + "-pdv/produit/recherche/" + produit1;
-                    console.log("ceci est l'url qu'on passe : " + url);
-                    console.log(r[0]);
-
-                    console.log("Voici la liste de produits : " + JSON.stringify(r));
-
-                    let text = "Resultats de votre recherche sur le point de vente de " + user_profile.namePdvFavori;
-
-                //    let messagedata = {
-                //        "attachment": {
-                //            "type": "template",
-                //            "payload": {
-                //                "template_type": "list",
-                //                "top_element_style": "compact",
-                //                "elements": [
-                //                    {
-                //                        "title": "Classic T-Shirt Collection",
-                //                        "subtitle": "See all our colors",
-                //                        "image_url": "https://peterssendreceiveapp.ngrok.io/img/collection.png",
-                //                        "buttons": [
-                //                            {
-                //                                "title": "View",
-                //                                "type": "web_url",
-                //                                "url": "https://peterssendreceiveapp.ngrok.io/collection",
-                //                                "messenger_extensions": true,
-                //                                "webview_height_ratio": "tall",
-                //                                "fallback_url": "https://peterssendreceiveapp.ngrok.io/"
-                //                            }
-                //                        ]
-                //                    },
-                //                    {
-                //                        "title": "Classic White T-Shirt",
-                //                        "subtitle": "See all our colors",
-                //                        "default_action": {
-                //                            "type": "web_url",
-                //                            "url": "https://peterssendreceiveapp.ngrok.io/view?item=100",
-                //                            "messenger_extensions": true,
-                //                            "webview_height_ratio": "tall",
-                //                            "fallback_url": "https://peterssendreceiveapp.ngrok.io/"
-                //                        }
-                //                    },
-                //                    {
-                //                        "title": "Classic Blue T-Shirt",
-                //                        "image_url": "https://peterssendreceiveapp.ngrok.io/img/blue-t-shirt.png",
-                //                        "subtitle": "100% Cotton, 200% Comfortable",
-                //                        "default_action": {
-                //                            "type": "web_url",
-                //                            "url": "https://peterssendreceiveapp.ngrok.io/view?item=101",
-                //                            "messenger_extensions": true,
-                //                            "webview_height_ratio": "tall",
-                //                            "fallback_url": "https://peterssendreceiveapp.ngrok.io/"
-                //                        },
-                //                        "buttons": [
-                //                            {
-                //                                "title": "Shop Now",
-                //                                "type": "web_url",
-                //                                "url": "https://peterssendreceiveapp.ngrok.io/shop?item=101",
-                //                                "messenger_extensions": true,
-                //                                "webview_height_ratio": "tall",
-                //                                "fallback_url": "https://peterssendreceiveapp.ngrok.io/"
-                //                            }
-                //                        ]
-                //                    }
-                //                ],
-                //                "buttons": [
-                //                    {
-                //                        "title": "View More",
-                //                        "type": "postback",
-                //                        "payload": "payload"
-                //                    }
-                //                ]
-                //            }
-                //        }
-                //    }
-                //}
-                    let messagedata = {
-                        "attachment": {
-                            "type": "template",
-                            "payload": {
-                                "template_type": "list",
-                                "top_element_style": "compact",
-                                //"image_aspect_ratio": "square",
-                                "elements": [],
-                                "buttons": [
-                                    {
-                                        "title": "Voir plus de résultats sur notre site",
-                                        "type": "web_url",
-                                        "url": url,
-                                        "webview_height_ratio": "tall"
-                                    }
-                                ]
-                            }
-                        },
-                            "quick_replies": [
-                            {
-                                "content_type": "text",
-                                "title": "Autre Produit",
-                                "payload": "autre produit"
-                            },
-                            {
-                                "content_type": "text",
-                                "title": "Menu Principal",
-                                "payload": "Menu Principal"
-                            }
-                        ]
-                    };
-                    var nbProduits = Math.min(3, r.length);
-                    for (var i = 0; i < nbProduits; i++) {
-                        var lineProduct = {
-                            "title": r[i].Libelle,
-                            "image_url": r[i].NomImage,
-                            "subtitle": r[i].Prix + ' (' + r[i].Conditionnement + ')' + '\n' + r[i].PrixParQuantite,
-                            "buttons": [
-                                {
-                                    "title": "Ajouter au panier",
-                                    "type": "postback",
-                                    "webview_height_ratio": "tall",
-                                    "payload": "idP=" + r[i].IdProduit
-                                }
-                            ]
-                        }
-                    messagedata.attachment.payload.elements.push(lineProduct);
-                    }
-                    var lineFinalProduct = {
-                        "title": r[nbProduits].Libelle,
-                        "image_url": r[nbProduits].NomImage,
-                        "subtitle": r[nbProduits].Prix + ' (' + r[nbProduits].Conditionnement + ')' + '\n' + r[nbProduits].PrixParQuantite,
-                        "buttons": [
-                            {
-                                "title": "Ajouter au panier",
-                                "type": "postback",
-                                "webview_height_ratio": "tall",
-                                "payload": "idP=" + r[nbProduits].IdProduit
-                            }
-                        ]
-                    }
-                    messagedata.attachment.payload.elements.push(lineFinalProduct)
-
-
-                    console.log('juste avant le dotextresponse');
-                    facebookBot.sendFBSenderAction(sender_id, "typing_on")
-                        .then(() => facebookBot.doTextResponse(sender_id, text))
-                        .then(() => facebookBot.sleep(1000))
-                        .then(() => facebookBot.sendFBSenderAction(sender_id, "typing_on"))
-                        .then(() => facebookBot.sendFBMessage(sender_id, messagedata))
-
-                    //facebookBot.doTextResponse(text);
-
-                    //return res.json({
-                    //    speech: "Voici les résultats de votre recherche:",
-                    //    data: { "facebook": messagedata },
-                    //    source: 'recherche_libre_courses'
-                    //});
-                })
-                .catch(err => {
-
-                    console.log("on est dans le catch et oui !!!!! ");
-                    console.log("L'erreur c'est : " + err);
-
-                    return res.status(400).json({
-                        speech: "ERREUR : " + err,
-                        message: "ERREUR : " + err,
-                        source: 'recherche_libre_courses'
-                    });
-                });
-            
-        }
-        else {
-            return res.json({
-                speech: "Courses",
-                data: { "facebook": facebookBot.getButtonLogin() },
-                source: 'recherche_libre_courses'
-            });
-        }
-    }
-
-    //else if (body.result.action === 'welcome_default') {
-    //    const sender_id = body.originalRequest.data.sender.id;
-    //    const user_profile = UserStore.getByFbId(sender_id);
-    //    const prenom = user_profile.prenom;
-    //    console.log("Prenom normal : " + prenom);
-    //    const prenomNormalisé = upperCaseFirstLetter(prenom.toLowerCase());
-    //    var existeUser = true;
-
-    //    if (existeUser) {
-    //        console.log("ACTION RECONNUE : welcome_default");
-    //        let text = "Bonjour " + prenomNormalisé + ", comment puis-je vous aider? Vous pouvez choisir une catégorie dans le menu ci-dessous ou directement me poser votre question. Vous pouvez également revenir à ce menu à tout moment, tout simplement en tapant la commande \"menu\".";
-    //        let messagedata = {
-    //            "attachment": {
-    //                "type": "template",
-    //                "payload": {
-    //                    "template_type": "generic",
-    //                    "elements": [
-    //                        {
-    //                            "title": "Menu Principal",
-    //                            "image_url": "https://img11.hostingpics.net/pics/345337MenuPrincipal.png",
-    //                            "buttons": [
-    //                                {
-    //                                    "title": "Recettes",
-    //                                    "type": "postback",
-    //                                    "webview_height_ratio": "tall",
-    //                                    "payload": "Recettes"
-    //                                },
-    //                                {
-    //                                    "title": "Faire ses courses",
-    //                                    "type": "postback",
-    //                                    "webview_height_ratio": "tall",
-    //                                    "payload": "Recettes"
-    //                                }
-    //                            ]
-    //                        }
-    //                    ]
-    //                }
-    //            }
-    //        };
-    //        facebookBot.doTextResponse(sender_id, text);
-    //        facebookBot.sendFBMessage(sender_id, messagedata);
-    //        //return res.json({
-    //        //    speech: "Voici les résultats de votre recherche:",
-    //        //    data: { "facebook": messagedata },
-    //        //    source: 'recherche_libre_courses'
-    //        //});
-    //    }
-    //}
-    else if (body.result.action === 'Localisation.Recue') {
-        console.log("body.result = " + JSON.stringify(body.result));
-
-        let context = getContextByName(body.result.contexts, "facebook_location");
-
-        if (context) {
-            let long = context.parameters.long;
-            let lat = context.parameters.lat;
-
-            getMagasin(lat, long)
-                .then((m) => {
-                    var listeMagasins = JSONbig.parse(m);
-
-                    if (listeMagasins[0]) {
-                        console.log("ID premier Magasin : " + JSON.stringify(listeMagasins[0].IdPdv));
-
-                        return res.json({
-                            speech: "Id premier magasin: " + listeMagasins[0].IdPdv,
-                            source: 'Localisation.Recue'
-                        });
-                    }
-
-                    return res.json({
-                        speech: "Aucun magasin",
-                        source: 'Localisation.Recue'
-                    });
-                })
-                .catch(err => {
-                    return res.status(400).json({
-                        speech: "ERREUR : " + err,
-                        message: "ERREUR : " + err,
-                        source: 'Localisation.Recue'
-                    });
-                });
-        }
-        else {
-            return res.json({
-                speech: "Localisation non recue",
-                source: 'Localisation.Recue'
-            });
-        }
-    }
-    else if (body.result.action === 'input.unknown') {
-
-        return res.json({
-            speech: "Je suis désolé mais je ne comprends pas encore votre requête. Souhaitez vous que je vous redirige vers un interlocuteur humain?",
-            source: 'input.unknown'
-        });
-    }
-
-    else if (body.result.action === 'Menu.Principal') {
-        const sender_id = body.originalRequest.data.sender.id;
-        const user_profile = UserStore.getByFbId(sender_id);
-
-        var existeUser = !isEmpty(user_profile);
-
-        if (existeUser) {
-            let text = "Comment puis-je vous aider? Vous pouvez choisir une catégorie dans le menu ci-dessous ou directement me poser votre question.Vous pouvez revenir à ce menu à tout moment, tout simplement en tapant la commande \"menu\".";
-            let messagedata = {
-                "attachment": {
-                    "type": "template",
-                    "payload": {
-                        "template_type": "generic",
-                        "elements": [
-                            {
-                                "title": "Menu Principal",
-                                "image_url": "https://img15.hostingpics.net/pics/159660logodrive.jpg",
-                                "buttons": [
-                                    {
-                                        "title": "Recettes",
-                                        "type": "postback",
-                                        "webview_height_ratio": "tall",
-                                        "payload": "Recettes"
-                                    },
-                                    {
-                                        "title": "Faire ses courses",
-                                        "type": "postback",
-                                        "webview_height_ratio": "tall",
-                                        "payload": "Faire ses courses"
-                                    }
-                                ]
-                            }
-                        ]
-                    }
-                }
-            };
-
-            facebookBot.sendFBSenderAction(sender_id, "typing_on")
-                .then(() => facebookBot.doTextResponse(sender_id, text))
-                .then(() => facebookBot.sleep(1000))
-                .then(() => facebookBot.sendFBSenderAction(sender_id, "typing_on"))
-                .then(() => facebookBot.sendFBMessage(sender_id, messagedata))
-        }
-        else {
-            return res.json({
-                speech: "Menu",
-                data: { "facebook": facebookBot.getButtonLogin() },
-                source: 'Menu.Principal'
-            });
-        }
-    }
-
-    
-});
-
-
 function getMagasin(lat, long) {
-
     return new Promise((resolve, reject) => {
-
         request({
             uri: `${MCO_URL}api/v1/pdv/distance?latitude=${lat}&longitude=${long}`,
             method: 'GET'
@@ -2167,39 +1907,19 @@ function getContextByName(contexts, name) {
     )[0];
 }
 
-app.get('/webhook/', (req, res) => {
-    if (req.query['hub.verify_token'] === FB_VERIFY_TOKEN) {
-        res.send(req.query['hub.challenge']);
-
-        setTimeout(() => {
-            facebookBot.doSubscribeRequest();
-        }, 3000);
-    } else {
-        res.send('Error, wrong validation token');
-    }
-});
-
-
-
 function parseCookies(cookiesString) {
     var list = {};
-
     cookiesString && cookiesString.split(';').forEach(function (c1) {
         c1 && c1.split(',').forEach(function (cookie) {
             var parts = cookie.split('=');
             list[parts.shift().trim()] = decodeURI(parts.join('='));
         });
     });
-
     return list;
 }
 
 function getProduit(param, idPdv, c) {
-    console.log("DEBUT getProduit");
     let produit1 = param['Nourriture'];
-
-    console.log("produit1 = " + produit1);
-
     var options ={
         method: 'POST',
         uri: FO_URL +"RechercheJs",
@@ -2211,18 +1931,14 @@ function getProduit(param, idPdv, c) {
         },
         json: true
     };
-
-    console.log("FIN getProduit");
-
     return new Promise((resolve, reject) => {
         request(options, (error, response) => {
             if (!error && response.statusCode == 200) {
-                console.log("ON A UN RETOUR 200 !!!!!!!");
                 console.log("voila le body = " + response.body);
                 resolve(response.body);
             }
             else {
-                console.log("ON FAIT UN REJECT");
+                console.log("Erreur WS getProduit: " + error);
                 reject(error);
             }
         })
@@ -2233,32 +1949,22 @@ function upperCaseFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
-
 function getRecette(param, mcoId) {
     let nourriture1 = param['Nourriture'];
     let nourriture2 = param['Nourriture1'];
     let nourriture3 = param['Nourriture2'];
     let nourriture4 = param['Nourriture21'];
-
     let my_array = [nourriture1, nourriture2, nourriture3, nourriture4];
-
     let resultat = '';
     let estPremier = true;
-
     for (var i = 0; i < my_array.length; i++) {
         if (my_array[i] != null && my_array != '') {
             resultat += (estPremier ? '' : ' ') + my_array[i];
             estPremier = false;
         }
     }
-
     resultat = encodeURIComponent(resultat);
     let url = `${SERVER_URL}recherche/recette/${nourriture1}`;
-    //let url = `http://ecorct2-fr-wsmcommerce.mousquetaires.com/api/v1/recherche/recette?mot=${resultat}`;
-    //let url = `http://wsmcommerce.intermarche.com/api/v1/recherche/recette?mot=${resultat}`;
-    console.log("URRRRRRRRRRRRRRRRRRRRRRLLLLL : " + url);
-
-    // TODO : REndre le TokenAuthentification dynamic
     var options = {
         method: 'GET',
         uri: url,
@@ -2266,9 +1972,6 @@ function getRecette(param, mcoId) {
             'TokenAuthentification': mcoId
         }
     };
-
-    console.log("DANS GETRECETTES TokenAuthentification = " + mcoId);
-
     return new Promise((resolve, reject) => {
         console.log('on est dans le promise');
         request(options, (error, response) => {
